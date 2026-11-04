@@ -1,7 +1,7 @@
 # israelrocklyn.info
 
-The source of [israelrocklyn.info](https://israelrocklyn.info), the portfolio of Israel Rocklyn, AI & Cloud
-Software Engineer.
+The source of [israelrocklyn.info](https://israelrocklyn.info), the portfolio of Israel Rocklyn, AI, ML & Cloud
+Engineer.
 
 It is a PHP site with no framework, no database and no build step. Content lives in three PHP data
 files, pages are rendered from shared templates, and every number on it comes from the evaluation

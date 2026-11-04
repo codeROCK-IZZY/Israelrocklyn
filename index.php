@@ -21,7 +21,7 @@ header('Cache-Control: no-cache'); // the form token is time-stamped
 
 view('head', [
     'title' => $p['name'] . ' · ' . $p['headline'],
-    'description' => 'Israel Rocklyn, AI & Cloud Software Engineer: 10 production-grade AI and cloud systems with tests, CI and measured results. RAG with citations, LLM agents with human approval, MLOps, model serving on Kubernetes, AWS.',
+    'description' => 'Israel Rocklyn, AI, ML & Cloud Engineer: 10 production-grade AI and cloud systems with tests, CI and measured results. RAG with citations, LLM agents with human approval, MLOps, model serving on Kubernetes, AWS.',
     'path' => '/',
     'rail' => true,
     'jsonld' => [
@@ -49,7 +49,7 @@ view('head', [
     </div>
     <figure class="portrait<?= $portrait ? '' : ' portrait-placeholder' ?>">
 <?php if ($portrait): ?>
-      <img src="<?= e(asset('img/portrait.webp')) ?>" alt="Portrait of <?= e($p['name']) ?>: half painted, half photograph" width="900" height="1000" fetchpriority="high">
+      <img src="<?= e(asset('img/portrait.webp')) ?>" alt="Portrait of <?= e($p['name']) ?>" width="900" height="1000" fetchpriority="high">
 <?php else: ?>
       <div class="portrait-art" aria-hidden="true"><span class="half half-paint"></span><span class="half half-wire"></span><span class="mono-mark">IR</span></div>
 <?php endif; ?>

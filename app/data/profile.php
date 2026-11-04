@@ -8,11 +8,11 @@ declare(strict_types=1);
 
 return [
     'name' => 'Israel Rocklyn',
-    'headline' => 'AI & Cloud Software Engineer',
+    'headline' => 'AI, ML & Cloud Engineer',
     'location' => 'United States',
     'github' => 'https://github.com/codeROCK-IZZY',
     'intro' => 'I build AI systems that prove they work, and the cloud platforms they run on.',
-    'summary' => 'AI & Cloud Engineer and Full-Stack Developer. I take products from data and models through the '
+    'summary' => 'AI, ML & Cloud Engineer and Full-Stack Developer. I take products from data and models through the '
         . 'API and interface to the infrastructure, and every one ships with tests, CI and measured results. '
         . 'I also build WordPress sites and run digital marketing, so I can help a product reach people, not only work.',
     'roles' => [
