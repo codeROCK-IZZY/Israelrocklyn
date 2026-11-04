@@ -1,0 +1,1 @@
+All 25 rules with severity, whether they fix automatically, and precision and recall on the labelled estate.
