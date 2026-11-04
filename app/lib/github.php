@@ -18,7 +18,7 @@ function github_status(array $repos): ?array
     $file = github_cache_file();
     $cached = is_file($file) ? json_decode((string) @file_get_contents($file), true) : null;
     if (is_array($cached) && ($cached['checked'] ?? 0) > time() - GITHUB_TTL) {
-        return $cached;
+        return ($cached['repos'] ?? []) !== [] ? $cached : null; // empty repos: a back-off marker
     }
     if (!function_exists('curl_multi_init') || getenv('PORTFOLIO_OFFLINE')) {
         return is_array($cached) ? $cached : null;
@@ -26,11 +26,11 @@ function github_status(array $repos): ?array
     $fresh = github_fetch($repos);
     if ($fresh === null) {
         // Back off: keep serving the old data, try again later.
-        if (is_array($cached)) {
-            $cached['checked'] = time() - GITHUB_TTL + 300;
-            @file_put_contents($file, json_encode($cached), LOCK_EX);
-        }
-        return is_array($cached) ? $cached : null;
+        // Back off for 5 minutes either way, so a rate-limited server is not asked again on every page view.
+        $marker = is_array($cached) ? $cached : ['repos' => []];
+        $marker['checked'] = time() - GITHUB_TTL + 300;
+        @file_put_contents($file, json_encode($marker), LOCK_EX);
+        return is_array($cached) && ($cached['repos'] ?? []) !== [] ? $cached : null;
     }
     @file_put_contents($file, json_encode($fresh), LOCK_EX);
     return $fresh;
@@ -45,23 +45,31 @@ function github_cache_file(): string
     return (is_dir($dir) && is_writable($dir) ? $dir : sys_get_temp_dir()) . '/github-status.json';
 }
 
-/** @return array{checked: int, repos: array<string, array{ci: string, pushed: string}>}|null */
+/**
+ * One request per repository for the latest CI run, plus one for every repository's last push: 12 requests
+ * for 11 projects, well inside the 60 an hour GitHub allows an unauthenticated server.
+ *
+ * @return array{checked: int, repos: array<string, array{ci: string, pushed: string}>}|null
+ */
 function github_fetch(array $repos): ?array
 {
+    $base = 'https://api.github.com/';
+    $urls = ['__list' => $base . 'users/' . GITHUB_OWNER . '/repos?per_page=100&sort=pushed'];
+    foreach ($repos as $repo) {
+        $urls[$repo] = $base . 'repos/' . GITHUB_OWNER . '/' . rawurlencode($repo) . '/actions/runs?branch=main&per_page=1&exclude_pull_requests=true';
+    }
     $mh = curl_multi_init();
     $handles = [];
-    foreach ($repos as $repo) {
-        foreach (['runs' => "/actions/runs?branch=main&per_page=1&exclude_pull_requests=true", 'repo' => ''] as $kind => $path) {
-            $ch = curl_init('https://api.github.com/repos/' . GITHUB_OWNER . '/' . rawurlencode($repo) . $path);
-            curl_setopt_array($ch, [
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_TIMEOUT => 4,
-                CURLOPT_CONNECTTIMEOUT => 2,
-                CURLOPT_HTTPHEADER => ['Accept: application/vnd.github+json', 'User-Agent: israelrocklyn.info', 'X-GitHub-Api-Version: 2022-11-28'],
-            ]);
-            curl_multi_add_handle($mh, $ch);
-            $handles[$repo][$kind] = $ch;
-        }
+    foreach ($urls as $key => $url) {
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 4,
+            CURLOPT_CONNECTTIMEOUT => 2,
+            CURLOPT_HTTPHEADER => ['Accept: application/vnd.github+json', 'User-Agent: israelrocklyn.info', 'X-GitHub-Api-Version: 2022-11-28'],
+        ]);
+        curl_multi_add_handle($mh, $ch);
+        $handles[$key] = $ch;
     }
     do {
         $status = curl_multi_exec($mh, $running);
@@ -70,24 +78,31 @@ function github_fetch(array $repos): ?array
         }
     } while ($running && $status === CURLM_OK);
 
+    $bodies = [];
+    foreach ($handles as $key => $ch) {
+        $bodies[$key] = json_decode((string) curl_multi_getcontent($ch), true);
+        curl_multi_remove_handle($mh, $ch);
+        curl_close($ch);
+    }
+    curl_multi_close($mh);
+
+    $pushed = [];
+    foreach (is_array($bodies['__list']) && array_is_list($bodies['__list']) ? $bodies['__list'] : [] as $r) {
+        if (is_array($r) && isset($r['name'])) {
+            $pushed[(string) $r['name']] = (string) ($r['pushed_at'] ?? '');
+        }
+    }
     $out = ['checked' => time(), 'repos' => []];
     $ok = 0;
-    foreach ($handles as $repo => $pair) {
-        $runs = json_decode((string) curl_multi_getcontent($pair['runs']), true);
-        $meta = json_decode((string) curl_multi_getcontent($pair['repo']), true);
-        $run = $runs['workflow_runs'][0] ?? null;
+    foreach ($repos as $repo) {
+        $run = $bodies[$repo]['workflow_runs'][0] ?? null;
         $ci = 'unknown';
         if (is_array($run)) {
             $ci = $run['status'] !== 'completed' ? 'running' : ($run['conclusion'] === 'success' ? 'passing' : 'failing');
             $ok++;
         }
-        $out['repos'][$repo] = ['ci' => $ci, 'pushed' => is_array($meta) ? (string) ($meta['pushed_at'] ?? '') : ''];
-        foreach ($pair as $ch) {
-            curl_multi_remove_handle($mh, $ch);
-            curl_close($ch);
-        }
+        $out['repos'][$repo] = ['ci' => $ci, 'pushed' => $pushed[$repo] ?? ''];
     }
-    curl_multi_close($mh);
     return $ok > 0 ? $out : null; // nothing usable (rate limit, network): keep the old cache
 }
 
