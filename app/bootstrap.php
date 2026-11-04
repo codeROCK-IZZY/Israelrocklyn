@@ -10,7 +10,7 @@
 declare(strict_types=1);
 
 const SITE_URL = 'https://israelrocklyn.info';
-const ASSET_VERSION = '6';
+const ASSET_VERSION = '7';
 
 ini_set('display_errors', '0');
 ini_set('log_errors', '1');
