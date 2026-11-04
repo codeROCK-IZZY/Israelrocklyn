@@ -1,0 +1,1 @@
+Zero revenue error on $19.1M where a naive append pipeline is off by $2.24M; zero duplicates; every invalid row quarantined.

@@ -10,7 +10,7 @@
 declare(strict_types=1);
 
 const SITE_URL = 'https://israelrocklyn.info';
-const ASSET_VERSION = '11';
+const ASSET_VERSION = '12';
 
 ini_set('display_errors', '0');
 ini_set('log_errors', '1');
@@ -106,7 +106,7 @@ function trace_order(): array
 {
     return ['distributed-ai-inference', 'ai-research-engine', 'intelligent-document-ai', 'multimodal-ai-assistant',
         'autonomous-business-platform', 'fraud-detection-engine', 'ai-predictive-maintenance', 'aws-mlops-platform',
-        'ai-developer-intelligence', 'aws-serverless-event-platform', 'aws-security-guardrails', 'aws-finops-optimizer', 'enterprise-aws-cloud-platform'];
+        'ai-developer-intelligence', 'aws-serverless-event-platform', 'aws-security-guardrails', 'aws-finops-optimizer', 'aws-data-lakehouse', 'enterprise-aws-cloud-platform'];
 }
 
 /** Data for the client-side shell and command palette (embedded as JSON; no extra request). */

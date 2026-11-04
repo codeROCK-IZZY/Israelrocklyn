@@ -33,6 +33,7 @@ return [
     ],
     // Capability => the projects that demonstrate it (slugs from projects.php).
     'capabilities' => [
+        'Data engineering: lakehouse, contracts, CDC, lineage' => ['aws-data-lakehouse', 'fraud-detection-engine'],
         'Retrieval-augmented generation with citations' => ['multimodal-ai-assistant', 'ai-research-engine', 'intelligent-document-ai', 'ai-developer-intelligence'],
         'LLM agents and tools with human approval' => ['autonomous-business-platform', 'multimodal-ai-assistant'],
         'Prompt-injection and abuse resistance' => ['multimodal-ai-assistant', 'autonomous-business-platform'],

@@ -1,0 +1,1 @@
+Every guarantee checked: redeliveries skipped, a breaking schema change held back, late events and corrections resolved, replays and rebuilds identical, time travel exact.
