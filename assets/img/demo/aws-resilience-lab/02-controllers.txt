@@ -1,0 +1,1 @@
+The guarded controller against a naive one: no split-brain writes, no false failovers on a checker blip, one failover instead of 86 in a gray failure.

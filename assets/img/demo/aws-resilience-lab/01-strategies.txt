@@ -1,0 +1,1 @@
+Four DR strategies after a lost region: active-active recovers in 3.4 minutes, backup and restore in 105, with lost writes and monthly cost side by side.
