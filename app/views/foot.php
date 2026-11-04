@@ -25,6 +25,17 @@
     <p class="palette-hint mono">↑↓ to move · Enter to open · Esc to close</p>
   </form>
 </dialog>
+<dialog class="lightbox" aria-label="Screenshot viewer">
+  <figure>
+    <figcaption></figcaption>
+  </figure>
+  <div class="lightbox-nav mono">
+    <button type="button" data-lb="prev" aria-label="Previous screenshot">←</button>
+    <span data-lb-count></span>
+    <button type="button" data-lb="next" aria-label="Next screenshot">→</button>
+    <button type="button" data-lb="close" aria-label="Close">esc</button>
+  </div>
+</dialog>
 <script type="application/json" id="site-data"><?= json_encode(site_data(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) ?></script>
 </body>
 </html>

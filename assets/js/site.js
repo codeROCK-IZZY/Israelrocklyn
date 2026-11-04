@@ -253,6 +253,53 @@
     body.addEventListener("click", () => { if (!window.getSelection()?.toString()) input.focus({ preventScroll: true }); });
   }
 
+  /* ------------------------------------------------------------ demo lightbox */
+  const lightbox = $(".lightbox");
+  const gallery = $("[data-gallery]");
+  if (lightbox && gallery && typeof lightbox.showModal === "function") {
+    const links = $$("a[data-shot]", gallery);
+    const figure = $("figure", lightbox);
+    const caption = $("figcaption", lightbox);
+    const count = $("[data-lb-count]", lightbox);
+    const img = document.createElement("img");
+    figure.prepend(img);
+    let index = 0;
+    const show = (i) => {
+      index = (i + links.length) % links.length;
+      const link = links[index];
+      const thumb = $("img", link);
+      img.src = link.href;
+      img.alt = thumb?.alt || "";
+      caption.textContent = thumb?.alt || "";
+      count.textContent = `${index + 1} / ${links.length}`;
+    };
+    links.forEach((link, i) => link.addEventListener("click", (e) => { e.preventDefault(); show(i); lightbox.showModal(); }));
+    lightbox.addEventListener("click", (e) => {
+      const action = e.target instanceof HTMLElement ? e.target.dataset.lb : undefined;
+      if (action === "prev") show(index - 1);
+      else if (action === "next") show(index + 1);
+      else if (action === "close" || e.target === lightbox) lightbox.close();
+    });
+    lightbox.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") show(index - 1);
+      if (e.key === "ArrowRight") show(index + 1);
+    });
+  }
+
+  /* ------------------------------------------------------------ copy buttons */
+  $$("[data-copy]").forEach((btn) =>
+    btn.addEventListener("click", async () => {
+      const code = btn.parentElement?.querySelector("code")?.textContent || "";
+      try {
+        await navigator.clipboard.writeText(code);
+        btn.textContent = "copied";
+      } catch {
+        btn.textContent = "select + copy";
+      }
+      setTimeout(() => { btn.textContent = "copy"; }, 1800);
+    }),
+  );
+
   /* ------------------------------------------------------------ contact form */
   const cform = $(".contact-form");
   if (cform) {

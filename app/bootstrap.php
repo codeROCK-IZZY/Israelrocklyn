@@ -10,7 +10,7 @@
 declare(strict_types=1);
 
 const SITE_URL = 'https://israelrocklyn.info';
-const ASSET_VERSION = '4';
+const ASSET_VERSION = '5';
 
 ini_set('display_errors', '0');
 ini_set('log_errors', '1');
@@ -68,6 +68,21 @@ function notes(): array
 {
     static $notes = null;
     return $notes ??= require __DIR__ . '/data/notes.php';
+}
+
+/**
+ * Demo screenshots for a project: assets/img/demo/<slug>/NN-name.webp, captioned by NN-name.txt.
+ * @return list<array{src: string, caption: string}>
+ */
+function demo_shots(string $slug): array
+{
+    $dir = dirname(__DIR__) . '/assets/img/demo/' . $slug;
+    $out = [];
+    foreach (glob($dir . '/*.webp') ?: [] as $file) {
+        $caption = @file_get_contents(substr($file, 0, -5) . '.txt');
+        $out[] = ['src' => '/assets/img/demo/' . $slug . '/' . basename($file), 'caption' => trim((string) $caption)];
+    }
+    return $out;
 }
 
 /** Saved colour theme (set by the theme toggle), so the right theme renders before any script runs. */

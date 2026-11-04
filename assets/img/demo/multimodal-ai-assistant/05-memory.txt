@@ -1,0 +1,1 @@
+Memory and tasks: visible, editable, deletable

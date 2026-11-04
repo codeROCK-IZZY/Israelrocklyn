@@ -123,7 +123,7 @@ view('head', [
 <?php endforeach; ?>
       </ul>
       <p class="tags mono"><?= e(implode(' · ', $x['stack'])) ?></p>
-      <p class="links"><a href="/work/<?= e($slug) ?>">Case study →</a> <a href="<?= e($x['repo']) ?>" rel="noopener">Code</a></p>
+      <p class="links"><a href="/work/<?= e($slug) ?>">Case study →</a><?php if (demo_shots($slug)): ?> <a href="/work/<?= e($slug) ?>#demo">Demo tour</a><?php endif; ?> <a href="<?= e($x['repo']) ?>" rel="noopener">Code</a></p>
     </div>
   </article>
 <?php endforeach; ?>

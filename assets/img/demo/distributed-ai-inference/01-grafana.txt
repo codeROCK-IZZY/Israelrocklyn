@@ -1,0 +1,1 @@
+A replica killed under load: the batch tenant is shed, interactive traffic keeps flowing

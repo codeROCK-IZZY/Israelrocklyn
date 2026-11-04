@@ -118,6 +118,10 @@ check('the résumé lists every project', count(array_filter(array_keys(projects
 check('every capability links to real projects', array_diff(array_merge(...array_values(profile()['capabilities'])), array_keys(projects())) === []);
 check('every note belongs to a real project', array_diff(array_column(notes(), 'project'), array_keys(projects())) === []);
 check('the trace covers every project once', count(array_unique(trace_order())) === count(projects()) && array_diff(trace_order(), array_keys(projects())) === []);
+$shots = array_merge(...array_map('demo_shots', array_keys(projects())));
+check('every demo screenshot has a caption', count($shots) > 20 && array_filter($shots, static fn ($x) => $x['caption'] === '') === []);
+check('every project has run-it-yourself commands', array_filter(projects(), static fn ($x) => count($x['run']) < 2) === []);
+check('the portrait exists', is_file(dirname(__DIR__) . '/assets/img/portrait.webp'));
 check('an unknown project is a 404', str_contains(render('work.php', ['slug' => 'nope']), 'No route to'));
 check('a malicious slug is a 404', str_contains(render('work.php', ['slug' => '../app/bootstrap']), 'No route to'));
 check('an unknown note is a 404', str_contains(render('note.php', ['slug' => 'nope']), 'No route to'));

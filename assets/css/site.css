@@ -391,6 +391,30 @@ a.hop-host:hover { color: var(--accent); }
 .case-next a { font: 600 clamp(1.6rem, 3vw, 2.4rem)/1.2 var(--display); text-decoration: none; letter-spacing: -0.03em; }
 @media (max-width: 760px) { .case-results { grid-template-columns: 1fr; } .case-results p { border-left: 0; border-top: 1px solid var(--line); } .case-results p:first-child { border-top: 0; } }
 
+/* demo tour, lightbox, run block */
+.case-wide { max-width: none; }
+.shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+.shot { margin: 0; }
+.shot a { display: block; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); background: var(--panel); }
+.shot img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; transition: transform 0.35s; }
+.shot a:hover img { transform: scale(1.03); }
+.shot figcaption { font-size: 0.88rem; color: var(--ink-2); margin-top: 0.55rem; }
+.shot:first-child { grid-column: span 2; grid-row: span 2; }
+@media (max-width: 860px) { .shots { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .shots { grid-template-columns: 1fr; } .shot:first-child { grid-column: auto; grid-row: auto; } }
+.lightbox { border: 0; padding: 0; background: transparent; max-width: 94vw; max-height: 94vh; color: var(--ink); }
+.lightbox::backdrop { background: rgb(4 5 8 / 0.88); backdrop-filter: blur(4px); }
+.lightbox figure { margin: 0; }
+.lightbox img { max-width: 92vw; max-height: 80vh; width: auto; border-radius: 10px; border: 1px solid var(--line-2); }
+.lightbox figcaption { color: #d8dce3; margin-top: 0.75rem; text-align: center; }
+.lightbox-nav { display: flex; gap: 0.75rem; justify-content: center; align-items: center; margin-top: 0.75rem; color: #9ba3b1; }
+.lightbox-nav button { background: #12161e; color: #ece9e2; border: 1px solid #2d3746; border-radius: 8px; padding: 0.4rem 0.8rem; cursor: pointer; font: inherit; }
+.codeblock { position: relative; }
+.codeblock pre { margin: 0; background: #07090c; color: #d9e1ea; border: 1px solid #222a37; border-radius: 10px; padding: 1.1rem 1.25rem; overflow-x: auto; font: 0.86rem/1.7 var(--mono); }
+.codeblock code { background: none; border: 0; padding: 0; color: inherit; }
+.copy-btn { position: absolute; top: 0.6rem; right: 0.6rem; background: #12161e; color: #9ba3b1; border: 1px solid #2d3746; border-radius: 6px; padding: 0.2rem 0.6rem; font-size: 0.75rem; cursor: pointer; }
+.copy-btn:hover { color: #ffb454; }
+
 .prose { max-width: 44rem; font-size: 1.08rem; margin-top: 2.5rem; }
 .prose h2 { font-size: 1.55rem; margin-top: 2.2rem; }
 .prose ul { padding-left: 1.2rem; }
