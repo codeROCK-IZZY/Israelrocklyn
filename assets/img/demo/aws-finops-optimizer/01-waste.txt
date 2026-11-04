@@ -1,0 +1,1 @@
+$36,788 a month identified on a $115k run rate, and every waste check at 100% precision and recall against ground truth.

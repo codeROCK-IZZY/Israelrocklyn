@@ -1,0 +1,1 @@
+Rightsizing on peaks: 0 unsafe downsizes against 77 for the average-CPU heuristic; anomaly detection with 0 false alarms against 33.
