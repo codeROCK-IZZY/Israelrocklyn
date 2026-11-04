@@ -7,10 +7,9 @@ ErrorDocument 404 /404.php
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
-  # One canonical address: HTTPS, no "www".
-  RewriteCond %{HTTPS} !=on [OR]
-  RewriteCond %{HTTP_HOST} ^www\. [NC]
-  RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1) [NC]
+  # One canonical address, without "www". (HTTP to HTTPS is done by 20i's edge, which terminates TLS:
+  # %{HTTPS} is never "on" here, so an HTTPS rule in this file would redirect forever.)
+  RewriteCond %{HTTP_HOST} ^www\.israelrocklyn\.info$ [NC]
   RewriteRule ^ https://israelrocklyn.info%{REQUEST_URI} [R=301,L]
 
   # Internal files are never served: application code, tests, docs, repository metadata.
