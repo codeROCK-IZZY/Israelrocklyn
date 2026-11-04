@@ -97,7 +97,7 @@ $home = render('index.php');
 check('home has the animated portrait stage and the now line', str_contains($home, 'data-portrait') && str_contains($home, 'class="now mono"'));
 check('home renders', str_contains($home, '<h1 id="hero-name"'), substr($home, 0, 300));
 check('home embeds valid site data for the shell', is_array(json_decode((string) preg_replace('~^.*<script type="application/json" id="site-data">(.*?)</script>.*$~s', '$1', $home), true)));
-check('home shows all ten trace hops', substr_count($home, 'class="trace-hop"') === 10);
+check('home shows a trace hop per project', substr_count($home, 'class="trace-hop"') === count(projects()));
 check('home is well-formed', wellformed($home) === [], implode('; ', array_slice(wellformed($home), 0, 3)));
 foreach (projects() as $slug => $x) {
     check("home links to {$slug}", str_contains($home, '/work/' . $slug));

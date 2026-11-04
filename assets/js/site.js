@@ -237,7 +237,7 @@
         window.location.href = `/work/${p.slug}`;
       },
       trace: () => {
-        print("trace-request --to israelrocklyn.info (10 hops max)", "t-dim");
+        print(`trace-request --to israelrocklyn.info (${data.projects.length} hops)`, "t-dim");
         const order = ["distributed-ai-inference", "ai-research-engine", "intelligent-document-ai", "multimodal-ai-assistant",
           "autonomous-business-platform", "fraud-detection-engine", "ai-predictive-maintenance", "aws-mlops-platform",
           "ai-developer-intelligence", "enterprise-aws-cloud-platform"];

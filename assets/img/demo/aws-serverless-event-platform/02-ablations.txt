@@ -1,0 +1,1 @@
+Each mechanism removed in turn, same workload and faults: duplicate orders, stuck orders, double charges, stock drift and duplicate e-mails appear.

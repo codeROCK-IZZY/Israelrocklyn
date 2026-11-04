@@ -27,7 +27,7 @@ header('Cache-Control: no-cache'); // the form token is time-stamped
 
 view('head', [
     'title' => $p['name'] . ' · ' . $p['headline'],
-    'description' => 'Israel Rocklyn, AI, ML & Cloud Engineer: 10 production-grade AI and cloud systems with tests, CI and measured results. RAG with citations, LLM agents with human approval, MLOps, model serving on Kubernetes, AWS.',
+    'description' => 'Israel Rocklyn, AI, ML & Cloud Engineer: ' . count($projects) . ' production-grade AI and cloud systems with tests, CI and measured results. RAG with citations, LLM agents with human approval, MLOps, model serving on Kubernetes, AWS.',
     'path' => '/',
     'rail' => true,
     'jsonld' => [
@@ -86,7 +86,7 @@ view('head', [
   </div>
 
   <div class="stats" data-count>
-    <p><strong>10</strong><span>production-grade systems, each with tests, CI and an evaluation</span></p>
+    <p><strong><?= count($projects) ?></strong><span>production-grade systems, each with tests, CI and an evaluation</span></p>
     <p><strong>92%</strong><span>grounded answers that cite page, line or timestamp</span></p>
     <p><strong>0</strong><span>errors when a server is killed under load</span></p>
     <p><strong>93%</strong><span>of fraud dollars caught at about 31 alerts a day</span></p>
@@ -98,13 +98,13 @@ view('head', [
 <section id="trace" class="section wrap" aria-labelledby="trace-title" data-section>
   <header class="section-head">
     <p class="eyebrow mono">01 · trace</p>
-    <h2 id="trace-title">Trace a request through ten systems I built</h2>
+    <h2 id="trace-title">Trace a request through every system I built</h2>
     <p class="muted">An AI request touches every layer: the gateway that admits it, the retrieval that grounds it, the model that answers, the agents that act, the monitoring that watches and the cloud underneath. Each hop below is one of my projects, with its measured result instead of a latency.</p>
   </header>
   <div class="trace-panel" data-trace>
     <div class="trace-head mono">
       <span>trace-request --to israelrocklyn.info</span>
-      <span class="muted">10 hops max · results from each repo's evaluation</span>
+      <span class="muted"><?= count(trace_order()) ?> hops · results from each repo's evaluation</span>
     </div>
     <ol class="trace-list">
       <li class="trace-hop is-origin"><span class="hop-n mono">0</span><span class="hop-host mono">you</span><span class="hop-role">where the request starts</span><span class="hop-val mono">0 ms</span></li>

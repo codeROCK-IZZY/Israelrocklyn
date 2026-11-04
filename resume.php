@@ -11,7 +11,7 @@ header('Cache-Control: public, max-age=3600');
 
 view('head', [
     'title' => 'Résumé · ' . $p['name'],
-    'description' => 'Résumé of ' . $p['name'] . ', ' . $p['headline'] . ': education, capabilities and ten projects with measured results.',
+    'description' => 'Résumé of ' . $p['name'] . ', ' . $p['headline'] . ': education, capabilities and ' . count(projects()) . ' projects with measured results.',
     'path' => '/resume',
 ]);
 ?>
