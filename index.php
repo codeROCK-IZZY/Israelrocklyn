@@ -7,6 +7,12 @@ $p = profile();
 $projects = projects();
 $featured = array_filter($projects, static fn (array $x): bool => $x['featured']);
 $live = live_status();
+$lastPush = null; // [slug, ISO time] of the most recent push across the project repos
+foreach ($live['repos'] ?? [] as $slug => $r) {
+    if (isset($projects[$slug]) && ($r['pushed'] ?? '') !== '' && ($lastPush === null || $r['pushed'] > $lastPush[1])) {
+        $lastPush = [$slug, $r['pushed']];
+    }
+}
 
 $config = config();
 $formReady = $config['recipient'] !== '' && $config['secret'] !== '';
@@ -47,13 +53,23 @@ view('head', [
       <p class="split-word">engineer</p>
       <p class="split-text">AI systems that prove they work: answers with citations, agents with human approval, models with honest evaluation.</p>
     </div>
-    <figure class="portrait<?= $portrait ? '' : ' portrait-placeholder' ?>">
+    <div class="portrait-stage" data-portrait>
+      <figure class="portrait<?= $portrait ? '' : ' portrait-placeholder' ?>">
+        <span class="portrait-grid" aria-hidden="true"></span>
 <?php if ($portrait): ?>
-      <img src="<?= e(asset('img/portrait.webp')) ?>" alt="Portrait of <?= e($p['name']) ?>" width="900" height="1000" fetchpriority="high">
+        <img src="<?= e(asset('img/portrait.webp')) ?>" alt="Portrait of <?= e($p['name']) ?>" width="900" height="1000" fetchpriority="high">
+        <span class="portrait-scan" aria-hidden="true"></span>
 <?php else: ?>
-      <div class="portrait-art" aria-hidden="true"><span class="half half-paint"></span><span class="half half-wire"></span><span class="mono-mark">IR</span></div>
+        <div class="portrait-art" aria-hidden="true"><span class="half half-paint"></span><span class="half half-wire"></span><span class="mono-mark">IR</span></div>
 <?php endif; ?>
-    </figure>
+      </figure>
+      <ul class="orbit mono" aria-hidden="true">
+        <li class="o1">LLMs</li>
+        <li class="o2">AWS</li>
+        <li class="o3">Kubernetes</li>
+        <li class="o4">MLOps</li>
+      </ul>
+    </div>
     <div class="split-side split-right">
       <p class="split-word mono">&lt;builder/&gt;</p>
       <p class="split-text">The cloud platforms they run on: AWS foundations, MLOps pipelines and model serving on Kubernetes.</p>
@@ -69,12 +85,14 @@ view('head', [
     </div>
   </div>
 
-  <div class="stats">
+  <div class="stats" data-count>
     <p><strong>10</strong><span>production-grade systems, each with tests, CI and an evaluation</span></p>
     <p><strong>92%</strong><span>grounded answers that cite page, line or timestamp</span></p>
     <p><strong>0</strong><span>errors when a server is killed under load</span></p>
     <p><strong>93%</strong><span>of fraud dollars caught at about 31 alerts a day</span></p>
   </div>
+
+  <p class="now mono"><span class="tag">now</span> building 5 new AWS projects and 8 AI systems, added here as each one ships<?php if ($lastPush !== null): ?> <span class="muted">· last push: <a href="/work/<?= e($lastPush[0]) ?>"><?= e($projects[$lastPush[0]]['title']) ?></a>, <time datetime="<?= e($lastPush[1]) ?>"><?= e(ago($lastPush[1])) ?></time></span><?php endif; ?></p>
 </section>
 
 <section id="trace" class="section wrap" aria-labelledby="trace-title" data-section>

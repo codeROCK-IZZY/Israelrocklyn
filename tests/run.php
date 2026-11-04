@@ -94,6 +94,7 @@ check('no raw IP is written to disk', !str_contains(implode('', array_map('file_
 
 echo "pages\n";
 $home = render('index.php');
+check('home has the animated portrait stage and the now line', str_contains($home, 'data-portrait') && str_contains($home, 'class="now mono"'));
 check('home renders', str_contains($home, '<h1 id="hero-name"'), substr($home, 0, 300));
 check('home embeds valid site data for the shell', is_array(json_decode((string) preg_replace('~^.*<script type="application/json" id="site-data">(.*?)</script>.*$~s', '$1', $home), true)));
 check('home shows all ten trace hops', substr_count($home, 'class="trace-hop"') === 10);
@@ -115,6 +116,7 @@ foreach (notes() as $slug => $n) {
 }
 $resume = render('resume.php');
 check('the résumé lists every project', count(array_filter(array_keys(projects()), static fn ($s) => str_contains($resume, e(projects()[$s]['title'])))) === count(projects()));
+check('the résumé carries a QR code to the site', str_contains($resume, 'qr-site.svg') && is_file(__DIR__ . '/../assets/img/qr-site.svg'));
 check('every capability links to real projects', array_diff(array_merge(...array_values(profile()['capabilities'])), array_keys(projects())) === []);
 check('every note belongs to a real project', array_diff(array_column(notes(), 'project'), array_keys(projects())) === []);
 check('the trace covers every project once', count(array_unique(trace_order())) === count(projects()) && array_diff(trace_order(), array_keys(projects())) === []);

@@ -63,6 +63,50 @@
     }, { threshold: 0.25 }).observe(trace);
   }
 
+  /* ------------------------------------------------------------ portrait tilt */
+  const stage = $("[data-portrait]");
+  if (stage && !reduceMotion && window.matchMedia("(pointer: fine)").matches) {
+    const hero = stage.closest(".hero") || document.body;
+    let frame = 0;
+    hero.addEventListener("pointermove", (ev) => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const r = stage.getBoundingClientRect();
+        // -1..1 from the portrait's centre, clamped so far-away pointers don't over-rotate.
+        const x = Math.max(-1, Math.min(1, (ev.clientX - r.left - r.width / 2) / r.width));
+        const y = Math.max(-1, Math.min(1, (ev.clientY - r.top - r.height / 2) / r.height));
+        stage.style.setProperty("--ry", `${(x * 7).toFixed(2)}deg`);
+        stage.style.setProperty("--rx", `${(-y * 5).toFixed(2)}deg`);
+        stage.style.setProperty("--px", `${(x * 8).toFixed(1)}px`);
+        stage.style.setProperty("--py", `${(y * 6).toFixed(1)}px`);
+      });
+    });
+    hero.addEventListener("pointerleave", () => {
+      ["--rx", "--ry", "--px", "--py"].forEach((k) => stage.style.removeProperty(k));
+    });
+  }
+
+  /* ------------------------------------------------------------ count-up stats */
+  const counters = $("[data-count]");
+  if (counters && !reduceMotion && "IntersectionObserver" in window) {
+    const nums = $$("strong", counters).map((el) => {
+      const m = el.textContent.match(/^(\d+)(.*)$/);
+      return m && Number(m[1]) > 0 ? { el, to: Number(m[1]), suffix: m[2] } : null;
+    }).filter(Boolean);
+    new IntersectionObserver((entries, obs) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      obs.disconnect();
+      const start = performance.now();
+      const tick = (now) => {
+        const t = Math.min(1, (now - start) / 1200);
+        const eased = 1 - Math.pow(1 - t, 3);
+        nums.forEach(({ el, to, suffix }) => { el.textContent = Math.round(to * eased) + suffix; });
+        if (t < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }, { threshold: 0.4 }).observe(counters);
+  }
+
   /* ------------------------------------------------------------ project filters */
   const chips = $$(".chip[data-filter]");
   const cards = $$(".card[data-area]");

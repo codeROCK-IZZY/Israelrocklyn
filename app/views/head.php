@@ -42,6 +42,7 @@ $sections = ['top' => 'Intro', 'trace' => 'Trace', 'work' => 'Work', 'capabiliti
 <body<?= !empty($rail) ? ' class="has-rail"' : '' ?>>
 <a class="skip" href="#main">Skip to content</a>
 <div class="bg-grid" aria-hidden="true"></div>
+<div class="scroll-progress" aria-hidden="true"></div>
 <header class="site-header">
   <div class="header-inner">
     <a class="brand" href="/" aria-label="<?= e($p['name']) ?>, home"><span class="brand-mark" aria-hidden="true">IR</span><span class="brand-name">israel<span>.rocklyn</span></span></a>
