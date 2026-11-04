@@ -25,12 +25,23 @@ function github_status(array $repos): ?array
     }
     $fresh = github_fetch($repos);
     if ($fresh === null) {
-        // Back off: keep serving the old data, try again later.
         // Back off for 5 minutes either way, so a rate-limited server is not asked again on every page view.
         $marker = is_array($cached) ? $cached : ['repos' => []];
         $marker['checked'] = time() - GITHUB_TTL + 300;
         @file_put_contents($file, json_encode($marker), LOCK_EX);
         return is_array($cached) && ($cached['repos'] ?? []) !== [] ? $cached : null;
+    }
+    // A partial answer (some requests rate-limited) keeps each missing repo's last known value.
+    foreach ($fresh['repos'] as $repo => $r) {
+        $old = $cached['repos'][$repo] ?? null;
+        if (is_array($old)) {
+            if ($r['ci'] === 'unknown') {
+                $fresh['repos'][$repo]['ci'] = $old['ci'];
+            }
+            if ($r['pushed'] === '') {
+                $fresh['repos'][$repo]['pushed'] = $old['pushed'];
+            }
+        }
     }
     @file_put_contents($file, json_encode($fresh), LOCK_EX);
     return $fresh;
