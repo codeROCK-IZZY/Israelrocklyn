@@ -1,0 +1,228 @@
+<?php
+/**
+ * The projects, in display order. Every number comes from the evaluation or benchmark committed in
+ * that project's repository; follow the repo link for the full report.
+ *
+ * area: ai (LLM / RAG / agents), ml (machine learning), platform (cloud, MLOps, serving)
+ */
+
+declare(strict_types=1);
+
+const GH = 'https://github.com/codeROCK-IZZY/';
+
+return [
+    'multimodal-ai-assistant' => [
+        'title' => 'Multimodal AI Assistant',
+        'area' => 'ai',
+        'featured' => true,
+        'tagline' => 'Ask about a receipt photo, a scanned PDF or a voice memo, and get an answer that cites the page, line or timestamp.',
+        'problem' => 'Everyday information arrives as images, PDFs, scans and voice notes. General chat assistants make up what a file says, don\'t show where an answer came from, and send everything to a third-party API. Assistants that can also act add a new risk: an uploaded file can carry instructions a model may follow.',
+        'built' => [
+            'Typed or spoken questions over photos, PDFs, Word files and recordings, with Whisper speech recognition and Piper voice replies, all running locally on CPU.',
+            'Two-stage retrieval: embeddings plus lexical overlap, then a cross-encoder that decides whether the files really answer the question. If not, it says so.',
+            'Tools (tasks, memory, calculator) behind a permission gate. When a conversation contains files, every data-changing tool needs confirmation, so prompt injection can\'t act.',
+            'An evaluation suite enforced in CI: OCR, speech, grounded Q&A, tool routing, injection and memory controls.',
+        ],
+        'results' => [
+            ['92%', 'grounded-answer accuracy on 25 questions over 7 files'],
+            ['4%', 'speech word error rate (Whisper base.en)'],
+            ['0', 'data changes from prompt-injection attempts'],
+        ],
+        'stack' => ['Python', 'FastAPI', 'faster-whisper', 'Piper TTS', 'RapidOCR', 'cross-encoder', 'PostgreSQL', 'React'],
+        'image' => 'multimodal.webp',
+        'image_alt' => 'The assistant answering a question about a receipt, with a citation to the receipt lines',
+        'repo' => GH . 'multimodal-ai-assistant',
+    ],
+    'distributed-ai-inference' => [
+        'title' => 'Distributed AI Inference',
+        'area' => 'platform',
+        'featured' => true,
+        'tagline' => 'Model serving that stays predictable when demand exceeds capacity.',
+        'problem' => 'Model serving breaks in the same few ways: overload turns into timeouts, one tenant\'s batch job takes everyone down, replica restarts become client errors, and large requests can\'t use the whole cluster.',
+        'built' => [
+            'A Go gateway with per-tenant quotas counted in texts, and admission control sized with Little\'s law, so excess load gets an immediate 503 instead of a timeout.',
+            'Priority admission: batch tenants are shed first so interactive traffic keeps its headroom.',
+            'End-to-end deadlines, fan-out of large requests across replicas, power-of-two-choices routing, retries and replica ejection.',
+            'Python workers with dynamic batching on ONNX Runtime; Kubernetes manifests with KEDA scaling on queue depth, tested on a real kind cluster in CI.',
+        ],
+        'results' => [
+            ['38.6 vs 0.05', 'requests/s served at 2× overload, with vs without admission control'],
+            ['98.7% vs 23.8%', 'interactive requests served while a batch tenant floods'],
+            ['0', 'errors when a replica is killed under load'],
+        ],
+        'stack' => ['Go', 'Python', 'ONNX Runtime', 'Kubernetes', 'KEDA', 'Prometheus', 'Grafana'],
+        'image' => 'inference.webp',
+        'image_alt' => 'Grafana dashboard showing traffic by tenant while a replica is killed and restarted',
+        'repo' => GH . 'distributed-ai-inference',
+    ],
+    'aws-mlops-platform' => [
+        'title' => 'AWS MLOps Platform',
+        'area' => 'platform',
+        'featured' => true,
+        'tagline' => 'Keeps a production model healthy after it ships.',
+        'problem' => 'Most ML projects end at "the model works on the test set". In production the data keeps changing, models get quietly worse, scheduled retraining ships models nobody checked, and drift dashboards raise alarms nobody can act on.',
+        'built' => [
+            'Data contracts and versioned datasets; tracked, reproducible training with MLflow and a model registry.',
+            'Promotion gates that score the candidate and the champion on the same fresh data: quality floor, no regression, calibration, recall for every equipment type, latency.',
+            'Monitoring of input drift, prediction drift and measured performance; alerts start a retraining run by themselves.',
+            'A SageMaker-compatible model server and canary deployments that roll back automatically when error or latency alarms fire.',
+        ],
+        'results' => [
+            ['0 months', 'from each simulated change to its first alert'],
+            ['0 of 12', 'false alarms on independent stable months'],
+            ['0.64 vs 0.58', 'PR-AUC during drift, managed vs never retrained'],
+        ],
+        'stack' => ['Python', 'MLflow', 'XGBoost', 'SageMaker', 'Terraform', 'FastAPI', 'React'],
+        'image' => 'mlops.webp',
+        'image_alt' => 'Monitoring dashboard: model PR-AUC per month and drift per feature',
+        'repo' => GH . 'aws-mlops-platform',
+    ],
+    'autonomous-business-platform' => [
+        'title' => 'Autonomous Business Operations',
+        'area' => 'ai',
+        'featured' => true,
+        'tagline' => 'AI agents for refunds, supplier invoices and purchase requests, with a human approving anything risky.',
+        'problem' => 'Back-office work is repetitive and mostly automatable, but nobody can let software refund customers or pay suppliers unsupervised. One manipulated e-mail, one duplicate invoice or one retry that pays twice costs real money.',
+        'built' => [
+            'Three LangGraph agents working through permissioned tools: refunds, three-way invoice matching, and purchase requests against budgets.',
+            'Human approval exactly where policy requires it; approvers see the reason and the evidence, and nobody can approve their own request.',
+            'Idempotent tools and retries, so a crash or a repeated step never pays twice.',
+            'A hash-chained, tamper-evident audit trail of every step.',
+        ],
+        'results' => [
+            ['96.9%', 'correct outcomes on 129 labelled cases'],
+            ['100%', 'approval precision and recall'],
+            ['0', 'safety violations in the evaluation'],
+        ],
+        'stack' => ['Python', 'LangGraph', 'Claude API', 'PostgreSQL', 'FastAPI', 'React'],
+        'image' => 'agents.webp',
+        'image_alt' => 'An agent run paused, waiting for a human to approve a refund',
+        'repo' => GH . 'autonomous-business-platform',
+    ],
+    'intelligent-document-ai' => [
+        'title' => 'Intelligent Document AI',
+        'area' => 'ai',
+        'featured' => false,
+        'tagline' => 'Turns PDFs, Word files and scans into structured data, and answers questions only from the documents, with citations.',
+        'problem' => 'Finding one figure or clause means opening files one by one, key data is re-typed by hand, and general chatbots answer confidently even when the document says something different.',
+        'built' => [
+            'OCR for scanned pages, classification, and validated field extraction for invoices and contracts.',
+            'Hybrid keyword and semantic search; Q&A that cites the exact page and passage or says "not found".',
+            'Per-document sharing enforced inside the retrieval query, plus versions, comparisons and duplicate detection.',
+        ],
+        'results' => [
+            ['1.0', 'retrieval recall@5'],
+            ['100%', 'field extraction on the evaluation set'],
+            ['1.6%', 'OCR character error rate'],
+        ],
+        'stack' => ['Python', 'FastAPI', 'Tesseract', 'pgvector', 'Claude citations', 'React'],
+        'image' => 'documents.webp',
+        'image_alt' => 'A grounded answer citing the page and passage of a contract',
+        'repo' => GH . 'intelligent-document-ai',
+    ],
+    'fraud-detection-engine' => [
+        'title' => 'Fraud Detection Engine',
+        'area' => 'ml',
+        'featured' => false,
+        'tagline' => 'Real-time fraud scoring on a Kafka stream, with explanations and an analyst case workflow.',
+        'problem' => 'Rule-only systems miss new fraud patterns and bury analysts in false alarms, while many ML models are black boxes tested in ways that overstate how well they work.',
+        'built' => [
+            'Real-time scoring through a REST API and a Kafka stream, explained in plain language with SHAP.',
+            'Alert volume sized to what the analyst team can review each day, grouped into one case per card.',
+            'An investigation console whose decisions become training labels; drift monitoring; advisory by design.',
+        ],
+        'results' => [
+            ['93%', 'of fraud dollars caught at about 31 alerts per day'],
+            ['96%', 'precision in the critical risk band'],
+            ['0', 'payments blocked automatically: humans decide'],
+        ],
+        'stack' => ['Python', 'Apache Kafka', 'XGBoost', 'SHAP', 'FastAPI', 'React'],
+        'image' => null,
+        'image_alt' => '',
+        'repo' => GH . 'fraud-detection-engine',
+    ],
+    'ai-predictive-maintenance' => [
+        'title' => 'AI Predictive Maintenance',
+        'area' => 'ml',
+        'featured' => false,
+        'tagline' => 'Predicts equipment failures days ahead from sensor data and explains every prediction.',
+        'problem' => 'Repairing machines after they break stops production; servicing on a calendar replaces healthy parts and still misses failures that develop between visits.',
+        'built' => [
+            'Failure probability, health score and remaining useful life for pumps, compressors and motors.',
+            'SHAP explanations grouped by sensor and written as plain sentences, plus rule-based maintenance recommendations.',
+            'A fleet dashboard, alerts, a what-if simulator and a versioned model registry with rollback.',
+        ],
+        'results' => [
+            ['34 of 35', 'held-out failures flagged'],
+            ['6.6 days', 'of warning on average'],
+            ['0.83', 'precision'],
+        ],
+        'stack' => ['Python', 'scikit-learn', 'XGBoost', 'SHAP', 'FastAPI', 'React'],
+        'image' => 'maintenance.webp',
+        'image_alt' => 'Fleet dashboard with risk levels per machine',
+        'repo' => GH . 'ai-predictive-maintenance',
+    ],
+    'ai-research-engine' => [
+        'title' => 'AI Research & Knowledge Engine',
+        'area' => 'ai',
+        'featured' => false,
+        'tagline' => 'Team knowledge bases with hybrid search, re-ranking, and answers that cite their sources.',
+        'problem' => 'Company knowledge is scattered across wikis, PDFs and web pages; keyword search misses different wording and ungrounded assistants invent answers.',
+        'built' => [
+            'Shared knowledge bases with permissions, built from files, ZIP archives and safely fetched web pages.',
+            'Hybrid keyword and vector search with a cross-encoder re-ranker, and answers that cite every sentence or say "not found".',
+            'Warnings when sources disagree, plus concept graphs and duplicate detection.',
+        ],
+        'results' => [
+            ['99.3%', 'citation precision'],
+            ['100%', 'correct "not found" answers'],
+            ['1.0', 'MRR with re-ranking'],
+        ],
+        'stack' => ['Python', 'FastAPI', 'pgvector', 'ONNX re-ranker', 'React'],
+        'image' => null,
+        'image_alt' => '',
+        'repo' => GH . 'ai-research-engine',
+    ],
+    'ai-developer-intelligence' => [
+        'title' => 'AI Developer Intelligence',
+        'area' => 'ai',
+        'featured' => false,
+        'tagline' => 'Understands any codebase: search by meaning, cited answers, architecture, risks and change impact.',
+        'problem' => 'In a large or unfamiliar codebase, "where is this done, what calls this, is it safe to change?" takes hours, and risky areas live in people\'s heads.',
+        'built' => [
+            'Parsing of five languages with tree-sitter; semantic and keyword code search.',
+            'Answers with file-and-line citations, symbol navigation, and an architecture view ranked with PageRank.',
+            'Security and quality findings with fixes, and change-impact analysis.',
+        ],
+        'results' => [
+            ['100%', 'precision and recall on 21 planted findings'],
+            ['95%', 'semantic search recall@5'],
+            ['5', 'languages parsed'],
+        ],
+        'stack' => ['Python', 'tree-sitter', 'pgvector', 'FastAPI', 'React'],
+        'image' => 'devintel.webp',
+        'image_alt' => 'Repository overview with languages, central files and findings',
+        'repo' => GH . 'ai-developer-intelligence',
+    ],
+    'enterprise-aws-cloud-platform' => [
+        'title' => 'Enterprise AWS Cloud Platform',
+        'area' => 'platform',
+        'featured' => false,
+        'tagline' => 'A Terraform landing zone: the multi-account AWS foundation that application teams deploy onto.',
+        'problem' => 'Once several teams build on AWS, a single account stops working: no blast-radius control, weak audit evidence, network sprawl and long-lived credentials.',
+        'built' => [
+            'AWS Organizations with guardrail policies, tamper-resistant org-wide logging, GuardDuty and Security Hub.',
+            'A hub-and-spoke Transit Gateway network with address management and prod/non-prod isolation.',
+            'Single sign-on for people, keyless deploys for pipelines, all driven by three YAML files.',
+        ],
+        'results' => [
+            ['32', 'Terraform tests on a mocked provider'],
+            ['0', 'Checkov failures (every skip justified inline)'],
+            ['0', 'AWS accounts needed to test it in CI'],
+        ],
+        'stack' => ['Terraform', 'AWS Organizations', 'Transit Gateway', 'IPAM', 'Checkov', 'Python'],
+        'image' => null,
+        'image_alt' => '',
+        'repo' => GH . 'enterprise-aws-cloud-platform',
+    ],
+];

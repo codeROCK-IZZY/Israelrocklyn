@@ -1,0 +1,115 @@
+<?php
+/**
+ * Test runner with no dependencies:  php tests/run.php
+ * Unit tests for the contact form logic, and render tests for every page.
+ */
+
+declare(strict_types=1);
+
+require __DIR__ . '/../app/bootstrap.php';
+
+$failures = 0;
+$count = 0;
+
+function check(string $name, bool $ok, string $detail = ''): void
+{
+    global $failures, $count;
+    $count++;
+    if ($ok) {
+        echo "  ok    {$name}\n";
+    } else {
+        $failures++;
+        echo "  FAIL  {$name}" . ($detail !== '' ? " ({$detail})" : '') . "\n";
+    }
+}
+
+/** Render a page script in a separate PHP process (pages call exit/header) and return its output. */
+function render(string $script, array $get = [], array $server = []): string
+{
+    $root = dirname(__DIR__);
+    $code = '$_GET = ' . var_export($get, true) . '; $_SERVER = array_merge($_SERVER, ' . var_export($server, true) . ');'
+        . ' chdir(' . var_export($root, true) . '); require ' . var_export($root . '/' . $script, true) . ';';
+    $cmd = escapeshellarg(PHP_BINARY) . ' -d display_errors=stderr -r ' . escapeshellarg($code) . ' 2>&1';
+    return (string) shell_exec($cmd);
+}
+
+function wellformed(string $html): array
+{
+    $doc = new DOMDocument();
+    libxml_use_internal_errors(true);
+    $doc->loadHTML($html);
+    $errors = array_filter(libxml_get_errors(), static function (LibXMLError $e): bool {
+        // libxml predates HTML5 and reports unknown HTML5 elements; anything else is a real error.
+        return !str_contains($e->message, 'invalid in Entity') && !preg_match('/Tag \w+ invalid/', $e->message);
+    });
+    libxml_clear_errors();
+    return array_map(static fn (LibXMLError $e): string => trim($e->message) . ' line ' . $e->line, $errors);
+}
+
+echo "contact: tokens\n";
+$secret = str_repeat('a', 64);
+$t = contact_token($secret, 1_000_000_000);
+check('a fresh token is too fast', contact_check_token($t, $secret, 1_000_000_001) === 'too_fast');
+check('a token after a few seconds is valid', contact_check_token($t, $secret, 1_000_000_010) === null);
+check('an old token has expired', contact_check_token($t, $secret, 1_000_000_000 + 7201) === 'expired');
+check('a token signed with another secret is invalid', contact_check_token($t, str_repeat('b', 64), 1_000_000_010) === 'invalid');
+check('a tampered timestamp is invalid', contact_check_token('1000000005' . substr($t, 10), $secret, 1_000_000_010) === 'invalid');
+check('garbage is invalid', contact_check_token('hello', $secret) === 'invalid');
+
+echo "contact: validation\n";
+$good = ['name' => 'Ada Lovelace', 'email' => 'ada@example.com', 'subject' => 'Role', 'message' => 'We would like to talk about an AI engineer role.'];
+[$data, $errors] = contact_validate($good);
+check('a valid message passes', $errors === [], json_encode($errors));
+[, $errors] = contact_validate(['name' => 'A', 'email' => 'nope', 'message' => 'short']);
+check('name, email and message are checked', array_keys($errors) === ['name', 'email', 'message'], json_encode($errors));
+[$data] = contact_validate(array_merge($good, ['name' => "Ada\r\nBcc: victim@example.com"]));
+check('line breaks are removed from single-line fields', !str_contains($data['name'], "\n") && !str_contains($data['name'], "\r"));
+[, $errors] = contact_validate(array_merge($good, ['email' => "ada@example.com\r\nBcc: x@example.com"]));
+check('an email with a header injection is rejected', isset($errors['email']));
+[, $errors] = contact_validate(array_merge($good, ['message' => str_repeat('see https://x.example ', 5)]));
+check('more than 3 links is rejected', isset($errors['message']));
+[$data] = contact_validate(array_merge($good, ['message' => "Hello\x00 there, this is long enough to pass."]));
+check('control characters are stripped', !str_contains($data['message'], "\x00"));
+
+echo "contact: mail\n";
+[$data] = contact_validate($good);
+$mail = contact_build_mail($data, 'owner@example.com', 'no-reply@israelrocklyn.info', '203.0.113.9', 0);
+check('From is always this domain', str_contains($mail['headers'], 'From: Portfolio <no-reply@israelrocklyn.info>'));
+check('Reply-To is the visitor', str_contains($mail['headers'], 'Reply-To: ada@example.com'));
+check('the raw IP is not in the mail', !str_contains($mail['body'], '203.0.113.9'));
+check('headers contain exactly six lines', count(explode("\r\n", $mail['headers'])) === 6);
+
+echo "contact: rate limit\n";
+$dir = sys_get_temp_dir() . '/rl-test-' . bin2hex(random_bytes(4));
+$results = [];
+for ($i = 0; $i < 6; $i++) {
+    $results[] = contact_rate_limit_ok('198.51.100.1', $dir, 5000 + $i);
+}
+check('five messages an hour pass, the sixth is refused', $results === [true, true, true, true, true, false]);
+check('another address is unaffected', contact_rate_limit_ok('198.51.100.2', $dir, 5010));
+check('the window slides', contact_rate_limit_ok('198.51.100.1', $dir, 5000 + 3601));
+check('no raw IP is written to disk', !str_contains(implode('', array_map('file_get_contents', glob($dir . '/*'))), '198.51.100.1')
+    && !preg_grep('/198/', scandir($dir)));
+
+echo "pages\n";
+$home = render('index.php');
+check('home renders', str_contains($home, '<h1 id="hero-title">'), substr($home, 0, 300));
+check('home is well-formed', wellformed($home) === [], implode('; ', array_slice(wellformed($home), 0, 3)));
+foreach (projects() as $slug => $x) {
+    check("home links to {$slug}", str_contains($home, '/work/' . $slug));
+}
+check('home shows the setup notice without a config', str_contains($home, 'contact form is being set up'));
+check('home has no spoofable status text', !str_contains(render('index.php', ['contact' => '<b>hacked</b>']), 'hacked'));
+foreach (projects() as $slug => $x) {
+    $page = render('work.php', ['slug' => $slug]);
+    check("case study {$slug} renders", str_contains($page, '<h1>' . e($x['title']) . '</h1>'));
+    check("case study {$slug} is well-formed", wellformed($page) === [], implode('; ', array_slice(wellformed($page), 0, 3)));
+}
+check('an unknown project is a 404', str_contains(render('work.php', ['slug' => 'nope']), "doesn't <em>exist</em>"));
+check('a malicious slug is a 404', str_contains(render('work.php', ['slug' => '../app/bootstrap']), "doesn't <em>exist</em>"));
+$sitemap = render('sitemap.php');
+check('the sitemap lists every page', substr_count($sitemap, '<loc>') === count(projects()) + 1);
+check('the sitemap is valid XML', @simplexml_load_string($sitemap) !== false);
+
+echo "\n{$count} checks, {$failures} failed\n";
+exit($failures > 0 ? 1 : 0);

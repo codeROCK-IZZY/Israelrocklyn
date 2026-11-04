@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  php:
+    name: "PHP ${{ matrix.php }}: lint and tests"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ["8.2", "8.3", "8.4"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, dom, simplexml
+          coverage: none
+      - name: Lint every PHP file
+        run: find . -name '*.php' -not -path './.git/*' -print0 | xargs -0 -n1 php -l
+      - name: Tests (contact form logic, every page renders and is well-formed)
+        run: php tests/run.php
+
+  html:
+    name: HTML validation (W3C Nu validator)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          coverage: none
+      - name: Render every page with a test configuration
+        run: |
+          printf "<?php return ['recipient' => 'ci@example.com', 'secret' => '%s'];\n" "$(openssl rand -hex 32)" > ../contact-config.php
+          php -S 127.0.0.1:8000 router.php > /tmp/server.log 2>&1 &
+          sleep 1
+          mkdir -p /tmp/pages
+          curl -sf http://127.0.0.1:8000/ -o /tmp/pages/index.html
+          for slug in $(php -r 'require "app/bootstrap.php"; echo implode(" ", array_keys(projects()));'); do
+            curl -sf "http://127.0.0.1:8000/work/$slug" -o "/tmp/pages/$slug.html"
+          done
+          curl -s http://127.0.0.1:8000/no-such-page -o /tmp/pages/404.html
+          ls /tmp/pages
+      - name: Validate
+        run: docker run --rm -v /tmp/pages:/pages ghcr.io/validator/validator:latest vnu --errors-only --skip-non-html /pages
+
+  secrets-scan:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Scan full git history
+        env:
+          GITLEAKS_VERSION: 8.24.3
+        run: |
+          curl -sSfL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" | tar xz gitleaks
+          ./gitleaks git --redact --verbose --exit-code 1 .
