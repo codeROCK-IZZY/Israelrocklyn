@@ -50,7 +50,7 @@ view('head', [
 
   <div class="split">
     <div class="split-side split-left">
-      <p class="split-word">engineer</p>
+      <p class="split-word">AI Engineer</p>
       <p class="split-text">AI systems that prove they work: answers with citations, agents with human approval, models with honest evaluation.</p>
     </div>
     <div class="portrait-stage" data-portrait>
