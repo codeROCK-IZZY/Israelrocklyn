@@ -39,13 +39,17 @@ jobs:
       - name: Render every page with a test configuration
         run: |
           printf "<?php return ['recipient' => 'ci@example.com', 'secret' => '%s'];\n" "$(openssl rand -hex 32)" > ../contact-config.php
-          php -S 127.0.0.1:8000 router.php > /tmp/server.log 2>&1 &
+          PORTFOLIO_OFFLINE=1 php -S 127.0.0.1:8000 router.php > /tmp/server.log 2>&1 &
           sleep 1
           mkdir -p /tmp/pages
           curl -sf http://127.0.0.1:8000/ -o /tmp/pages/index.html
           for slug in $(php -r 'require "app/bootstrap.php"; echo implode(" ", array_keys(projects()));'); do
             curl -sf "http://127.0.0.1:8000/work/$slug" -o "/tmp/pages/$slug.html"
           done
+          for slug in $(php -r 'require "app/bootstrap.php"; echo implode(" ", array_keys(notes()));'); do
+            curl -sf "http://127.0.0.1:8000/notes/$slug" -o "/tmp/pages/note-$slug.html"
+          done
+          curl -sf http://127.0.0.1:8000/resume -o /tmp/pages/resume.html
           curl -s http://127.0.0.1:8000/no-such-page -o /tmp/pages/404.html
           ls /tmp/pages
       - name: Validate

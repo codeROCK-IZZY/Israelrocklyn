@@ -6,6 +6,7 @@
 
 declare(strict_types=1);
 
+putenv('PORTFOLIO_OFFLINE=1'); // no GitHub calls from tests
 require __DIR__ . '/../app/bootstrap.php';
 
 $failures = 0;
@@ -29,7 +30,7 @@ function render(string $script, array $get = [], array $server = []): string
     $root = dirname(__DIR__);
     $code = '$_GET = ' . var_export($get, true) . '; $_SERVER = array_merge($_SERVER, ' . var_export($server, true) . ');'
         . ' chdir(' . var_export($root, true) . '); require ' . var_export($root . '/' . $script, true) . ';';
-    $cmd = escapeshellarg(PHP_BINARY) . ' -d display_errors=stderr -r ' . escapeshellarg($code) . ' 2>&1';
+    $cmd = 'PORTFOLIO_OFFLINE=1 ' . escapeshellarg(PHP_BINARY) . ' -d display_errors=stderr -r ' . escapeshellarg($code) . ' 2>&1';
     return (string) shell_exec($cmd);
 }
 
@@ -93,7 +94,9 @@ check('no raw IP is written to disk', !str_contains(implode('', array_map('file_
 
 echo "pages\n";
 $home = render('index.php');
-check('home renders', str_contains($home, '<h1 id="hero-title">'), substr($home, 0, 300));
+check('home renders', str_contains($home, '<h1 id="hero-name"'), substr($home, 0, 300));
+check('home embeds valid site data for the shell', is_array(json_decode((string) preg_replace('~^.*<script type="application/json" id="site-data">(.*?)</script>.*$~s', '$1', $home), true)));
+check('home shows all ten trace hops', substr_count($home, 'class="trace-hop"') === 10);
 check('home is well-formed', wellformed($home) === [], implode('; ', array_slice(wellformed($home), 0, 3)));
 foreach (projects() as $slug => $x) {
     check("home links to {$slug}", str_contains($home, '/work/' . $slug));
@@ -105,10 +108,21 @@ foreach (projects() as $slug => $x) {
     check("case study {$slug} renders", str_contains($page, '<h1>' . e($x['title']) . '</h1>'));
     check("case study {$slug} is well-formed", wellformed($page) === [], implode('; ', array_slice(wellformed($page), 0, 3)));
 }
-check('an unknown project is a 404', str_contains(render('work.php', ['slug' => 'nope']), "doesn't <em>exist</em>"));
-check('a malicious slug is a 404', str_contains(render('work.php', ['slug' => '../app/bootstrap']), "doesn't <em>exist</em>"));
+foreach (notes() as $slug => $n) {
+    $page = render('note.php', ['slug' => $slug]);
+    check("note {$slug} renders", str_contains($page, '<h1>' . e($n['title']) . '</h1>'));
+    check("note {$slug} is well-formed", wellformed($page) === [], implode('; ', array_slice(wellformed($page), 0, 3)));
+}
+$resume = render('resume.php');
+check('the résumé lists every project', count(array_filter(array_keys(projects()), static fn ($s) => str_contains($resume, e(projects()[$s]['title'])))) === count(projects()));
+check('every capability links to real projects', array_diff(array_merge(...array_values(profile()['capabilities'])), array_keys(projects())) === []);
+check('every note belongs to a real project', array_diff(array_column(notes(), 'project'), array_keys(projects())) === []);
+check('the trace covers every project once', count(array_unique(trace_order())) === count(projects()) && array_diff(trace_order(), array_keys(projects())) === []);
+check('an unknown project is a 404', str_contains(render('work.php', ['slug' => 'nope']), 'No route to'));
+check('a malicious slug is a 404', str_contains(render('work.php', ['slug' => '../app/bootstrap']), 'No route to'));
+check('an unknown note is a 404', str_contains(render('note.php', ['slug' => 'nope']), 'No route to'));
 $sitemap = render('sitemap.php');
-check('the sitemap lists every page', substr_count($sitemap, '<loc>') === count(projects()) + 1);
+check('the sitemap lists every page', substr_count($sitemap, '<loc>') === count(projects()) + count(notes()) + 2);
 check('the sitemap is valid XML', @simplexml_load_string($sitemap) !== false);
 
 echo "\n{$count} checks, {$failures} failed\n";

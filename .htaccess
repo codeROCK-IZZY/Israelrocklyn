@@ -18,6 +18,8 @@ ErrorDocument 404 /404.php
 
   # Clean URLs.
   RewriteRule ^work/([a-z0-9-]+)/?$ work.php?slug=$1 [L,QSA]
+  RewriteRule ^notes/([a-z0-9-]+)/?$ note.php?slug=$1 [L,QSA]
+  RewriteRule ^resume/?$ resume.php [L]
   RewriteRule ^sitemap\.xml$ sitemap.php [L]
   RewriteRule ^index\.php$ / [R=301,L]
 </IfModule>

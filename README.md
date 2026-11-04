@@ -3,17 +3,21 @@
 The source of [israelrocklyn.info](https://israelrocklyn.info), the portfolio of Israel Rocklyn, AI & Cloud
 Software Engineer.
 
-It is a small PHP site with no framework, no database and no build step: content lives in two PHP data
-files, pages are rendered from shared templates, and the only dynamic feature is a contact form. That
-keeps it fast, cheap to host and easy to audit.
+It is a PHP site with no framework, no database and no build step. Content lives in three PHP data
+files, pages are rendered from shared templates, and every number on it comes from the evaluation
+committed in the project's own repository.
 
 | | |
 |---|---|
-| **Pages** | home, a case study per project (`/work/<slug>`), a 404 page and a generated `sitemap.xml` |
-| **Content** | [app/data/profile.php](app/data/profile.php) (about, education, skills, services) and [app/data/projects.php](app/data/projects.php) (the projects and their measured results) |
-| **Design** | editorial layout in plain CSS: Fraunces and Inter, self-hosted, light and dark palettes that follow the visitor's system setting |
-| **JavaScript** | progressive enhancement only (mobile menu, project filters, inline form errors); everything works without it |
-| **Hosting** | Apache + PHP 8.2 or later (20i Linux hosting); deployed from this repository with 20i's Git Version Control |
+| **Home** | split-portrait hero; a "trace a request" panel where each hop is a project with its measured result; selected work with live CI status; skills with the projects that prove them; engineering notes; an in-browser shell; services; contact |
+| **Case studies** (`/work/<slug>`) | the problem, an architecture flow, what was built, lessons learned, known limitations, stack, related notes, live CI status and last push |
+| **Engineering notes** (`/notes/<slug>`) | short write-ups of real problems from the projects (Little's law in model serving, false drift alarms, honest evaluation, thread spinning, abstention) |
+| **Résumé** (`/resume`) | generated from the same data, with print styles for a clean PDF |
+| **Live data** | each repository's latest GitHub Actions result and last push, fetched server-side in parallel and cached for 30 minutes ([app/lib/github.php](app/lib/github.php)) |
+| **Interaction** | command palette (Ctrl/⌘ + K), a shell (`help`, `ls`, `cat`, `open`, `trace`, …), project filters, dark and light themes; all progressive enhancement, so every page works without JavaScript |
+| **Content** | [app/data/profile.php](app/data/profile.php), [app/data/projects.php](app/data/projects.php), [app/data/notes.php](app/data/notes.php) |
+| **Design** | dark technical layout with an amber accent; Space Grotesk, Inter and JetBrains Mono, self-hosted |
+| **Hosting** | Apache + PHP 8.2 or later (20i Linux hosting) |
 
 ## Security and privacy
 
@@ -29,7 +33,8 @@ keeps it fast, cheap to host and easy to audit.
 - **Headers:**
   - a Content-Security-Policy that allows only same-origin scripts, styles and fonts (no inline code)
   - HSTS, `X-Frame-Options: DENY`, `nosniff` and a strict referrer policy
-- **Fonts and images are self-hosted**, so pages make no third-party requests.
+- **Fonts and images are self-hosted**, so pages make no third-party requests from the browser. The
+  GitHub status check runs on the server.
 - **Internal files are never served:** `app/`, `tests/`, the repository metadata and this README all
   return 404.
 
@@ -37,7 +42,7 @@ keeps it fast, cheap to host and easy to audit.
 
 ```bash
 php -S localhost:8000 router.php      # router.php mirrors the .htaccess rules
-php tests/run.php                     # 58 checks: form logic, and every page renders and is well-formed
+php tests/run.php                     # 75 checks: form logic, data integrity, every page renders and is well-formed
 ```
 
 No PHP installed? Use Docker:
@@ -79,5 +84,5 @@ Change the text in `app/data/profile.php` or `app/data/projects.php`. A new proj
 The home page, its case-study page and the sitemap pick it up automatically. After changing CSS or
 JavaScript, bump `ASSET_VERSION` in `app/bootstrap.php` so browsers fetch the new files.
 
-Fonts: [Fraunces](https://github.com/undercasetype/Fraunces) and [Inter](https://github.com/rsms/inter),
+Fonts: [Space Grotesk](https://github.com/floriankarsten/space-grotesk), [Inter](https://github.com/rsms/inter) and [JetBrains Mono](https://github.com/JetBrains/JetBrainsMono),
 under the SIL Open Font License ([licences](assets/fonts)).

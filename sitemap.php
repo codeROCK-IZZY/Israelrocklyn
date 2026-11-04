@@ -12,6 +12,10 @@ $urls = ['/'];
 foreach (array_keys(projects()) as $slug) {
     $urls[] = '/work/' . $slug;
 }
+foreach (array_keys(notes()) as $slug) {
+    $urls[] = '/notes/' . $slug;
+}
+$urls[] = '/resume';
 echo '<?xml version="1.0" encoding="UTF-8"?>', "\n";
 echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">', "\n";
 foreach ($urls as $u) {

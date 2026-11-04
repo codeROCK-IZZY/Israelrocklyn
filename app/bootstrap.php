@@ -10,12 +10,13 @@
 declare(strict_types=1);
 
 const SITE_URL = 'https://israelrocklyn.info';
-const ASSET_VERSION = '2';
+const ASSET_VERSION = '4';
 
 ini_set('display_errors', '0');
 ini_set('log_errors', '1');
 
 require __DIR__ . '/lib/contact.php';
+require __DIR__ . '/lib/github.php';
 
 /** Settings with safe defaults; the config file overrides them. */
 function config(): array
@@ -61,6 +62,56 @@ function projects(): array
 {
     static $projects = null;
     return $projects ??= require __DIR__ . '/data/projects.php';
+}
+
+function notes(): array
+{
+    static $notes = null;
+    return $notes ??= require __DIR__ . '/data/notes.php';
+}
+
+/** Saved colour theme (set by the theme toggle), so the right theme renders before any script runs. */
+function theme(): string
+{
+    return ($_COOKIE['theme'] ?? '') === 'light' ? 'light' : 'dark';
+}
+
+/** Live CI status for every project repository (cached; may be null). */
+function live_status(): ?array
+{
+    static $status = false;
+    if ($status === false) {
+        $status = github_status(array_keys(projects()));
+    }
+    return $status;
+}
+
+/** Projects in the order a request travels through them (the trace on the home page). */
+function trace_order(): array
+{
+    return ['distributed-ai-inference', 'ai-research-engine', 'intelligent-document-ai', 'multimodal-ai-assistant',
+        'autonomous-business-platform', 'fraud-detection-engine', 'ai-predictive-maintenance', 'aws-mlops-platform',
+        'ai-developer-intelligence', 'enterprise-aws-cloud-platform'];
+}
+
+/** Data for the client-side shell and command palette (embedded as JSON; no extra request). */
+function site_data(): array
+{
+    $p = profile();
+    return [
+        'name' => $p['name'],
+        'headline' => $p['headline'],
+        'location' => $p['location'],
+        'github' => $p['github'],
+        'roles' => $p['roles'],
+        'education' => array_map(static fn (array $e): string => $e['degree'] . ' (' . $e['focus'] . ')', $p['education']),
+        'skills' => $p['skills'],
+        'projects' => array_map(static fn (array $x, string $slug): array => [
+            'slug' => $slug, 'title' => $x['title'], 'tagline' => $x['tagline'], 'repo' => $x['repo'],
+            'results' => $x['results'], 'stack' => $x['stack'], 'hop' => $x['hop'],
+        ], projects(), array_keys(projects())),
+        'notes' => array_map(static fn (array $n, string $slug): array => ['slug' => $slug, 'title' => $n['title']], notes(), array_keys(notes())),
+    ];
 }
 
 function profile(): array

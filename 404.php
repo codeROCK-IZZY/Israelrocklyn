@@ -11,12 +11,12 @@ view('head', [
 ]);
 ?>
 <section class="hero wrap notfound">
-  <p class="eyebrow">404</p>
-  <h1>This page doesn't <em>exist</em>.</h1>
-  <p class="lede">The link may be old or mistyped. The work is all on the home page.</p>
+  <p class="hero-meta mono"><span class="tag tag-error">404</span> trace-request: destination unreachable</p>
+  <h1 class="hero-name">No route to <span>host</span></h1>
+  <p class="lede">The link may be old or mistyped. Press <kbd>Ctrl</kbd> <kbd>K</kbd> to search, or head back.</p>
   <div class="hero-actions">
     <a class="button" href="/#work">See the work</a>
-    <a class="button button-quiet" href="/">Home</a>
+    <a class="button button-ghost" href="/">Home</a>
   </div>
 </section>
 <?php view('foot'); ?>

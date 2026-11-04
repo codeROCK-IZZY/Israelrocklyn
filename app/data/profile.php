@@ -31,6 +31,21 @@ return [
         ['title' => 'Secure by default', 'text' => 'Least privilege, no long-lived keys, input validation and audit trails, from the first commit rather than before launch.'],
         ['title' => 'Write it down', 'text' => 'Design docs, runbooks and known limitations in every repository, so the next engineer can operate and change it.'],
     ],
+    // Capability => the projects that demonstrate it (slugs from projects.php).
+    'capabilities' => [
+        'Retrieval-augmented generation with citations' => ['multimodal-ai-assistant', 'ai-research-engine', 'intelligent-document-ai', 'ai-developer-intelligence'],
+        'LLM agents and tools with human approval' => ['autonomous-business-platform', 'multimodal-ai-assistant'],
+        'Prompt-injection and abuse resistance' => ['multimodal-ai-assistant', 'autonomous-business-platform'],
+        'Classical ML with explanations (XGBoost, SHAP)' => ['fraud-detection-engine', 'ai-predictive-maintenance', 'aws-mlops-platform'],
+        'Honest evaluation and measured results' => ['fraud-detection-engine', 'aws-mlops-platform', 'multimodal-ai-assistant', 'distributed-ai-inference'],
+        'MLOps: registry, promotion gates, drift monitoring' => ['aws-mlops-platform', 'ai-predictive-maintenance'],
+        'Model serving: batching, load shedding, failover' => ['distributed-ai-inference'],
+        'Speech, vision and OCR pipelines' => ['multimodal-ai-assistant', 'intelligent-document-ai'],
+        'Real-time streaming (Kafka)' => ['fraud-detection-engine'],
+        'AWS foundations as code (Terraform)' => ['enterprise-aws-cloud-platform', 'aws-mlops-platform'],
+        'Kubernetes and autoscaling' => ['distributed-ai-inference'],
+        'Code intelligence (parsing, call graphs)' => ['ai-developer-intelligence'],
+    ],
     'skills' => [
         'AI & machine learning' => ['RAG with citations', 'LLM agents with human approval', 'Claude API', 'LangGraph', 'scikit-learn', 'XGBoost', 'SHAP', 'ONNX Runtime', 'Whisper', 'OCR', 'pgvector', 'MLflow', 'Model evaluation'],
         'Backend & data' => ['Python', 'Go', 'FastAPI', 'PostgreSQL', 'SQLAlchemy', 'Apache Kafka', 'Job queues', 'REST API design', 'PHP'],

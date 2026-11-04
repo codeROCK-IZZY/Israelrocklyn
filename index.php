@@ -6,21 +6,24 @@ require __DIR__ . '/app/bootstrap.php';
 $p = profile();
 $projects = projects();
 $featured = array_filter($projects, static fn (array $x): bool => $x['featured']);
-$more = array_filter($projects, static fn (array $x): bool => !$x['featured']);
+$live = live_status();
 
 $config = config();
 $formReady = $config['recipient'] !== '' && $config['secret'] !== '';
 $token = $formReady ? contact_token($config['secret']) : '';
 $status = (string) ($_GET['contact'] ?? '');
 $statusMessage = CONTACT_MESSAGES[$status] ?? null;
+$portrait = is_file(__DIR__ . '/assets/img/portrait.webp');
+$areaNames = ['ai' => 'AI & LLM', 'ml' => 'Machine learning', 'platform' => 'Cloud & platform'];
 
 send_page_headers();
 header('Cache-Control: no-cache'); // the form token is time-stamped
 
 view('head', [
     'title' => $p['name'] . ' · ' . $p['headline'],
-    'description' => 'Israel Rocklyn, AI & Cloud Software Engineer: AI systems with measured results (RAG with citations, LLM agents, ML models) and the cloud platforms they run on. 10 projects with tests, CI and evaluations.',
+    'description' => 'Israel Rocklyn, AI & Cloud Software Engineer: 10 production-grade AI and cloud systems with tests, CI and measured results. RAG with citations, LLM agents with human approval, MLOps, model serving on Kubernetes, AWS.',
     'path' => '/',
+    'rail' => true,
     'jsonld' => [
         '@context' => 'https://schema.org',
         '@type' => 'Person',
@@ -28,156 +31,239 @@ view('head', [
         'jobTitle' => $p['headline'],
         'url' => SITE_URL . '/',
         'sameAs' => [$p['github']],
-        'knowsAbout' => ['Artificial intelligence', 'Machine learning', 'Large language models', 'MLOps', 'Cloud computing', 'AWS', 'Kubernetes', 'WordPress', 'SEO'],
+        'knowsAbout' => array_keys($p['capabilities']),
         'hasCredential' => array_map(static fn (array $ed): array => [
             '@type' => 'EducationalOccupationalCredential', 'credentialCategory' => 'degree', 'name' => $ed['degree'] . ', ' . $ed['focus'],
         ], $p['education']),
     ],
 ]);
 ?>
-<section class="hero wrap" aria-labelledby="hero-title">
-  <p class="eyebrow"><?= e($p['headline']) ?> · Open to opportunities</p>
-  <h1 id="hero-title">I build AI systems that <em>prove</em> they work, and the cloud platforms they run on.</h1>
-  <p class="lede"><?= e($p['summary']) ?></p>
-  <div class="hero-actions">
-    <a class="button" href="#work">See the work</a>
-    <a class="button button-quiet" href="#contact">Get in touch</a>
+<section id="top" class="hero wrap" aria-labelledby="hero-name" data-section>
+  <p class="hero-meta mono"><span class="tag">hop 00</span> you → israelrocklyn.info · <?= e($p['headline']) ?> · <?= e($p['location']) ?></p>
+  <h1 id="hero-name" class="hero-name">Israel <span>Rocklyn</span></h1>
+
+  <div class="split">
+    <div class="split-side split-left">
+      <p class="split-word">engineer</p>
+      <p class="split-text">AI systems that prove they work: answers with citations, agents with human approval, models with honest evaluation.</p>
+    </div>
+    <figure class="portrait<?= $portrait ? '' : ' portrait-placeholder' ?>">
+<?php if ($portrait): ?>
+      <img src="<?= e(asset('img/portrait.webp')) ?>" alt="Portrait of <?= e($p['name']) ?>: half painted, half photograph" width="900" height="1000" fetchpriority="high">
+<?php else: ?>
+      <div class="portrait-art" aria-hidden="true"><span class="half half-paint"></span><span class="half half-wire"></span><span class="mono-mark">IR</span></div>
+<?php endif; ?>
+    </figure>
+    <div class="split-side split-right">
+      <p class="split-word mono">&lt;builder/&gt;</p>
+      <p class="split-text">The cloud platforms they run on: AWS foundations, MLOps pipelines and model serving on Kubernetes.</p>
+    </div>
   </div>
-  <dl class="facts">
-    <div><dt>Education</dt><dd>M.S. Computer Science (AI) · B.Sc. Information Systems</dd></div>
-    <div><dt>Location</dt><dd><?= e($p['location']) ?></dd></div>
-    <div><dt>Shipped</dt><dd>10 projects, each with tests, CI and an evaluation</dd></div>
-  </dl>
+
+  <div class="hero-foot">
+    <p class="lede"><?= e($p['summary']) ?></p>
+    <div class="hero-actions">
+      <a class="button" href="#trace">Trace a request <span aria-hidden="true">↓</span></a>
+      <a class="button button-ghost mono" href="#shell">Open a shell <span aria-hidden="true">›_</span></a>
+      <a class="text-link" href="/resume">Résumé</a>
+    </div>
+  </div>
+
+  <div class="stats">
+    <p><strong>10</strong><span>production-grade systems, each with tests, CI and an evaluation</span></p>
+    <p><strong>92%</strong><span>grounded answers that cite page, line or timestamp</span></p>
+    <p><strong>0</strong><span>errors when a server is killed under load</span></p>
+    <p><strong>93%</strong><span>of fraud dollars caught at about 31 alerts a day</span></p>
+  </div>
 </section>
 
-<section class="proof" aria-label="Highlights">
-  <div class="wrap proof-grid">
-    <p><strong>92%</strong> grounded-answer accuracy, citing page, line or timestamp</p>
-    <p><strong>0</strong> errors when a server is killed under load</p>
-    <p><strong>93%</strong> of fraud dollars caught at about 31 alerts a day</p>
-    <p><strong>96.9%</strong> correct outcomes for AI agents, with human approval</p>
-  </div>
-</section>
-
-<section id="work" class="section wrap" aria-labelledby="work-title">
+<section id="trace" class="section wrap" aria-labelledby="trace-title" data-section>
   <header class="section-head">
-    <p class="section-label">01 · Selected work</p>
-    <h2 id="work-title">Four systems, start to finish</h2>
-    <p class="muted">Each one solves a stated problem, ships with tests and CI, and reports its numbers, including the ones that came out badly.</p>
+    <p class="eyebrow mono">01 · trace</p>
+    <h2 id="trace-title">Trace a request through ten systems I built</h2>
+    <p class="muted">An AI request touches every layer: the gateway that admits it, the retrieval that grounds it, the model that answers, the agents that act, the monitoring that watches and the cloud underneath. Each hop below is one of my projects, with its measured result instead of a latency.</p>
   </header>
-
-<?php $i = 0; foreach ($featured as $slug => $x): $i++; ?>
-  <article class="feature<?= $i % 2 === 0 ? ' feature-flip' : '' ?>">
-    <a class="feature-img" href="/work/<?= e($slug) ?>" tabindex="-1" aria-hidden="true">
-      <img src="/assets/img/<?= e($x['image']) ?>" alt="" width="1280" height="800"<?= $i > 1 ? ' loading="lazy"' : '' ?> decoding="async">
-    </a>
-    <div class="feature-text">
-      <p class="kicker"><?= e(['ai' => 'AI & LLM', 'ml' => 'Machine learning', 'platform' => 'Cloud & platform'][$x['area']]) ?></p>
-      <h3><a href="/work/<?= e($slug) ?>"><?= e($x['title']) ?></a></h3>
-      <p><?= e($x['tagline']) ?></p>
-      <ul class="results">
-<?php foreach ($x['results'] as [$value, $label]): ?>
-        <li><strong><?= e($value) ?></strong> <span><?= e($label) ?></span></li>
-<?php endforeach; ?>
-      </ul>
-      <p class="tags"><?= e(implode(' · ', $x['stack'])) ?></p>
-      <p class="links"><a href="/work/<?= e($slug) ?>">Read the case study</a> <a href="<?= e($x['repo']) ?>" rel="noopener">Code on GitHub</a></p>
+  <div class="trace-panel" data-trace>
+    <div class="trace-head mono">
+      <span>trace-request --to israelrocklyn.info</span>
+      <span class="muted">10 hops max · results from each repo's evaluation</span>
     </div>
-  </article>
-<?php endforeach; ?>
-
-  <div class="more-head">
-    <h3>More projects</h3>
-    <div class="filters" role="group" aria-label="Filter projects">
-      <button type="button" class="chip" data-filter="all" aria-pressed="true">All</button>
-      <button type="button" class="chip" data-filter="ai" aria-pressed="false">AI &amp; LLM</button>
-      <button type="button" class="chip" data-filter="ml" aria-pressed="false">Machine learning</button>
-      <button type="button" class="chip" data-filter="platform" aria-pressed="false">Cloud &amp; platform</button>
-    </div>
-  </div>
-  <div class="cards">
-<?php foreach ($more as $slug => $project) { view('project-card', ['slug' => $slug, 'project' => $project]); } ?>
-  </div>
-</section>
-
-<section id="approach" class="section section-tint" aria-labelledby="approach-title">
-  <div class="wrap">
-    <header class="section-head">
-      <p class="section-label">02 · Approach</p>
-      <h2 id="approach-title">How I build</h2>
-    </header>
-    <ol class="principles">
-<?php foreach ($p['principles'] as $pr): ?>
-      <li><h3><?= e($pr['title']) ?></h3><p><?= e($pr['text']) ?></p></li>
+    <ol class="trace-list">
+      <li class="trace-hop is-origin"><span class="hop-n mono">0</span><span class="hop-host mono">you</span><span class="hop-role">where the request starts</span><span class="hop-val mono">0 ms</span></li>
+<?php $n = 0; foreach (trace_order() as $slug): $x = $projects[$slug]; $n++; ?>
+      <li class="trace-hop">
+        <span class="hop-n mono"><?= $n ?></span>
+        <a class="hop-host mono" href="/work/<?= e($slug) ?>"><?= e($x['hop']['host']) ?></a>
+        <span class="hop-role"><?= e($x['hop']['role']) ?> <span class="muted">· <?= e($x['title']) ?></span></span>
+        <span class="hop-val mono"><?= e($x['hop']['value']) ?><small><?= e($x['hop']['label']) ?></small></span>
+      </li>
 <?php endforeach; ?>
     </ol>
   </div>
 </section>
 
-<section id="about" class="section wrap" aria-labelledby="about-title">
+<section id="work" class="section wrap" aria-labelledby="work-title" data-section>
   <header class="section-head">
-    <p class="section-label">03 · About</p>
-    <h2 id="about-title">Engineer first, with an eye on the business</h2>
+    <p class="eyebrow mono">02 · work</p>
+    <h2 id="work-title">Selected work</h2>
+    <p class="muted">Every project solves a stated problem, ships with tests and CI, and reports its numbers, including the ones that came out badly.<?= $live ? ' Build status is checked live against GitHub.' : '' ?></p>
   </header>
-  <div class="about-grid">
+<?php $i = 0; foreach ($featured as $slug => $x): $i++; ?>
+  <article class="feature<?= $i % 2 === 0 ? ' feature-flip' : '' ?>">
+    <a class="feature-img" href="/work/<?= e($slug) ?>" tabindex="-1" aria-hidden="true">
+      <img src="/assets/img/<?= e($x['image']) ?>" alt="" width="1280" height="800" loading="lazy" decoding="async">
+    </a>
+    <div class="feature-text">
+      <p class="kicker mono"><?= e($areaNames[$x['area']]) ?><?php view('ci-badge', ['slug' => $slug]); ?></p>
+      <h3><a href="/work/<?= e($slug) ?>"><?= e($x['title']) ?></a></h3>
+      <p><?= e($x['tagline']) ?></p>
+      <ul class="results">
+<?php foreach ($x['results'] as [$value, $label]): ?>
+        <li><strong class="mono"><?= e($value) ?></strong><span><?= e($label) ?></span></li>
+<?php endforeach; ?>
+      </ul>
+      <p class="tags mono"><?= e(implode(' · ', $x['stack'])) ?></p>
+      <p class="links"><a href="/work/<?= e($slug) ?>">Case study →</a> <a href="<?= e($x['repo']) ?>" rel="noopener">Code</a></p>
+    </div>
+  </article>
+<?php endforeach; ?>
+
+  <div class="more-head">
+    <h3>All projects</h3>
+    <div class="filters" role="group" aria-label="Filter projects">
+      <button type="button" class="chip" data-filter="all" aria-pressed="true">All</button>
+<?php foreach ($areaNames as $k => $label): ?>
+      <button type="button" class="chip" data-filter="<?= e($k) ?>" aria-pressed="false"><?= e($label) ?></button>
+<?php endforeach; ?>
+    </div>
+  </div>
+  <div class="cards">
+<?php foreach ($projects as $slug => $project) { view('project-card', ['slug' => $slug, 'project' => $project]); } ?>
+  </div>
+</section>
+
+<section id="capabilities" class="section wrap" aria-labelledby="cap-title" data-section>
+  <header class="section-head">
+    <p class="eyebrow mono">03 · capabilities</p>
+    <h2 id="cap-title">Skills, with the evidence</h2>
+    <p class="muted">Not a wall of logos: each capability links to the projects that prove it.</p>
+  </header>
+  <div class="capabilities">
+<?php foreach ($p['capabilities'] as $cap => $slugs): ?>
+    <div class="capability">
+      <h3><?= e($cap) ?></h3>
+      <p class="proof-count mono"><?= count($slugs) ?> project<?= count($slugs) > 1 ? 's' : '' ?></p>
+      <ul>
+<?php foreach ($slugs as $s): ?>
+        <li><a href="/work/<?= e($s) ?>"><?= e($projects[$s]['title']) ?></a></li>
+<?php endforeach; ?>
+      </ul>
+    </div>
+<?php endforeach; ?>
+  </div>
+
+  <div class="two-col">
     <div>
-      <p class="lede-sm">I work across the whole path of an AI product: data and models, the API around them, the interface people use, and the cloud platform underneath. My Information Systems background means projects start from a business problem; my Computer Science master's, with a concentration in AI, means the models are chosen and evaluated with care.</p>
-      <h3 class="small-head">Roles I'm open to</h3>
+      <h3 class="small-head mono">how I build</h3>
+      <ol class="principles">
+<?php foreach ($p['principles'] as $pr): ?>
+        <li><strong><?= e($pr['title']) ?></strong> <?= e($pr['text']) ?></li>
+<?php endforeach; ?>
+      </ol>
+    </div>
+    <div>
+      <h3 class="small-head mono">education</h3>
+<?php foreach ($p['education'] as $ed): ?>
+      <div class="edu">
+        <p class="edu-degree"><?= e($ed['degree']) ?></p>
+        <p class="kicker mono"><?= e($ed['focus']) ?></p>
+        <p class="muted"><?= e($ed['note']) ?></p>
+      </div>
+<?php endforeach; ?>
+      <h3 class="small-head mono">open to</h3>
       <p class="roles"><?= e(implode(' · ', $p['roles'])) ?></p>
     </div>
-    <div class="education">
-<?php foreach ($p['education'] as $ed): ?>
-      <article>
-        <h3><?= e($ed['degree']) ?></h3>
-        <p class="kicker"><?= e($ed['focus']) ?></p>
-        <p class="muted"><?= e($ed['note']) ?></p>
-      </article>
-<?php endforeach; ?>
-    </div>
   </div>
-  <div class="skills">
+
+  <div class="stack-groups">
 <?php foreach ($p['skills'] as $group => $items): ?>
     <div>
-      <h3 class="small-head"><?= e($group) ?></h3>
-      <ul><?php foreach ($items as $s): ?><li><?= e($s) ?></li><?php endforeach; ?></ul>
+      <h3 class="small-head mono"><?= e(strtolower($group)) ?></h3>
+      <p class="stack-list"><?php foreach ($items as $s): ?><span><?= e($s) ?></span><?php endforeach; ?></p>
     </div>
 <?php endforeach; ?>
   </div>
 </section>
 
-<section id="services" class="section section-tint" aria-labelledby="services-title">
-  <div class="wrap">
-    <header class="section-head">
-      <p class="section-label">04 · Web &amp; growth</p>
-      <h2 id="services-title">Websites and digital marketing</h2>
-      <p class="muted">Besides engineering AI systems, I build and grow websites, so I can ship a product and help it reach the right people.</p>
-    </header>
-    <div class="services">
-<?php foreach ($p['services'] as $sv): ?>
-      <article><h3><?= e($sv['title']) ?></h3><p><?= e($sv['text']) ?></p></article>
-<?php endforeach; ?>
-    </div>
-  </div>
-</section>
-
-<section id="contact" class="section wrap contact" aria-labelledby="contact-title">
+<section id="notes" class="section wrap" aria-labelledby="notes-title" data-section>
   <header class="section-head">
-    <p class="section-label">05 · Contact</p>
+    <p class="eyebrow mono">04 · notes</p>
+    <h2 id="notes-title">Engineering notes</h2>
+    <p class="muted">Short write-ups of real problems from these projects: what broke, how I measured it, and the fix.</p>
+  </header>
+  <div class="notes">
+<?php foreach (notes() as $slug => $note): ?>
+    <a class="note-card" href="/notes/<?= e($slug) ?>">
+      <p class="mono muted small"><?= e(date('M j, Y', (int) strtotime($note['date']))) ?> · <?= e($projects[$note['project']]['title']) ?></p>
+      <h3><?= e($note['title']) ?></h3>
+      <p class="muted"><?= e($note['summary']) ?></p>
+      <span class="text-link">Read →</span>
+    </a>
+<?php endforeach; ?>
+  </div>
+</section>
+
+<section id="shell" class="section wrap" aria-labelledby="shell-title" data-section>
+  <header class="section-head">
+    <p class="eyebrow mono">05 · shell</p>
+    <h2 id="shell-title">Prefer a terminal?</h2>
+    <p class="muted">Explore this portfolio from the command line. Try <code>help</code>, <code>ls</code>, <code>trace</code> or <code>open fraud-detection-engine</code>.</p>
+  </header>
+  <div class="terminal" data-shell>
+    <div class="terminal-bar mono"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span>guest@israelrocklyn.info: ~</span></div>
+    <div class="terminal-body mono">
+      <div class="terminal-out" aria-live="polite"><noscript><p>The shell needs JavaScript. Everything it shows is also on this page.</p></noscript></div>
+      <form class="terminal-line" autocomplete="off">
+        <label for="shell-input" class="prompt">guest@ir:~$</label>
+        <input id="shell-input" type="text" spellcheck="false" autocapitalize="off">
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="services" class="section wrap" aria-labelledby="services-title" data-section>
+  <header class="section-head">
+    <p class="eyebrow mono">06 · web &amp; growth</p>
+    <h2 id="services-title">Websites and digital marketing</h2>
+    <p class="muted">Besides engineering AI systems, I build and grow websites, so a product can also reach the right people.</p>
+  </header>
+  <div class="services">
+<?php foreach ($p['services'] as $sv): ?>
+    <article><h3><?= e($sv['title']) ?></h3><p><?= e($sv['text']) ?></p></article>
+<?php endforeach; ?>
+  </div>
+</section>
+
+<section id="contact" class="section wrap contact" aria-labelledby="contact-title" data-section>
+  <header class="section-head">
+    <p class="eyebrow mono">07 · contact</p>
     <h2 id="contact-title">Let's build something</h2>
     <p class="muted">Hiring for AI, ML, cloud or full-stack work, or need a website that brings in customers? Send a message and I'll reply by email.</p>
   </header>
   <div class="contact-grid">
 <?php if ($formReady): ?>
     <form class="contact-form" action="/contact.php" method="post" novalidate>
-      <div class="field">
-        <label for="name">Name</label>
-        <input id="name" name="name" type="text" autocomplete="name" required minlength="2" maxlength="100" aria-describedby="name-error">
-        <p class="field-error" id="name-error" hidden></p>
-      </div>
-      <div class="field">
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" autocomplete="email" required maxlength="254" aria-describedby="email-error">
-        <p class="field-error" id="email-error" hidden></p>
+      <div class="field-row">
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" autocomplete="name" required minlength="2" maxlength="100" aria-describedby="name-error">
+          <p class="field-error" id="name-error" hidden></p>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" required maxlength="254" aria-describedby="email-error">
+          <p class="field-error" id="email-error" hidden></p>
+        </div>
       </div>
       <div class="field">
         <label for="subject">Subject <span class="muted">(optional)</span></label>
@@ -201,9 +287,10 @@ view('head', [
     <p class="form-status is-error">The contact form is being set up. Please reach me through GitHub for now.</p>
 <?php endif; ?>
     <aside class="contact-aside">
-      <h3 class="small-head">Elsewhere</h3>
-      <p><a href="<?= e($p['github']) ?>" rel="me noopener">GitHub · codeROCK-IZZY</a></p>
-      <h3 class="small-head">Good to know</h3>
+      <h3 class="small-head mono">elsewhere</h3>
+      <p><a href="<?= e($p['github']) ?>" rel="me noopener">github.com/codeROCK-IZZY</a></p>
+      <p><a href="/resume">Printable résumé</a></p>
+      <h3 class="small-head mono">good to know</h3>
       <p class="muted">Available for hire, based in the <?= e($p['location']) ?>. Messages go straight to my inbox; your address is used only to reply.</p>
     </aside>
   </div>

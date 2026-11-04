@@ -19,6 +19,15 @@ if (preg_match('~^/work/([a-z0-9-]+)/?$~', $path, $m)) {
     require __DIR__ . '/work.php';
     return true;
 }
+if (preg_match('~^/notes/([a-z0-9-]+)/?$~', $path, $m)) {
+    $_GET['slug'] = $m[1];
+    require __DIR__ . '/note.php';
+    return true;
+}
+if ($path === '/resume' || $path === '/resume/') {
+    require __DIR__ . '/resume.php';
+    return true;
+}
 if ($path === '/sitemap.xml') {
     require __DIR__ . '/sitemap.php';
     return true;
