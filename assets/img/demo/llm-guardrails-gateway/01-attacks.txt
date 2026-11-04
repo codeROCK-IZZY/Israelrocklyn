@@ -1,0 +1,1 @@
+Attack success by family: 100% with no gateway, 91% with a keyword filter, 0% through the full gateway.
