@@ -33,6 +33,7 @@ return [
     ],
     // Capability => the projects that demonstrate it (slugs from projects.php).
     'capabilities' => [
+        'Recommender systems: matrix factorisation, cold start, serving' => ['recommender-system'],
         'Resilience: multi-region DR, failover, chaos drills' => ['aws-resilience-lab', 'distributed-ai-inference', 'aws-serverless-event-platform'],
         'Data engineering: lakehouse, contracts, CDC, lineage' => ['aws-data-lakehouse', 'fraud-detection-engine'],
         'Retrieval-augmented generation with citations' => ['multimodal-ai-assistant', 'ai-research-engine', 'intelligent-document-ai', 'ai-developer-intelligence'],

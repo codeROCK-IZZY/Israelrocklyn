@@ -1,0 +1,1 @@
+A random split flatters every model; the hyperparameters each model was given, all chosen on validation.
