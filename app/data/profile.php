@@ -33,6 +33,7 @@ return [
     ],
     // Capability => the projects that demonstrate it (slugs from projects.php).
     'capabilities' => [
+        'Computer vision: unsupervised anomaly detection' => ['visual-anomaly-detection', 'intelligent-document-ai'],
         'Feature stores: point-in-time correctness, training/serving skew' => ['feature-store', 'aws-mlops-platform'],
         'Experimentation and causal inference: A/B tests, CUPED, sequential testing' => ['experimentation-platform', 'llm-evaluation-platform'],
         'Entity resolution and data quality' => ['entity-resolution', 'aws-data-lakehouse'],

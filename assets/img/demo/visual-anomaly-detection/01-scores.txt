@@ -1,0 +1,1 @@
+AUROC by surface and by defect for four detectors, and what each catches at the operating threshold.
