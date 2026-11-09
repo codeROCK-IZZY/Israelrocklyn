@@ -33,6 +33,7 @@ return [
     ],
     // Capability => the projects that demonstrate it (slugs from projects.php).
     'capabilities' => [
+        'Time series: probabilistic and hierarchical forecasting' => ['demand-forecasting'],
         'Recommender systems: matrix factorisation, cold start, serving' => ['recommender-system'],
         'Resilience: multi-region DR, failover, chaos drills' => ['aws-resilience-lab', 'distributed-ai-inference', 'aws-serverless-event-platform'],
         'Data engineering: lakehouse, contracts, CDC, lineage' => ['aws-data-lakehouse', 'fraud-detection-engine'],
