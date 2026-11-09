@@ -1,0 +1,1 @@
+Offline and production AUC for four ways of building a training set; only point-in-time agrees.
