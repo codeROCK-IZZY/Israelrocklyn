@@ -28,6 +28,10 @@ if ($path === '/resume' || $path === '/resume/') {
     require __DIR__ . '/resume.php';
     return true;
 }
+if ($path === '/insights' || $path === '/insights/') {
+    require __DIR__ . '/insights.php';
+    return true;
+}
 if ($path === '/sitemap.xml') {
     require __DIR__ . '/sitemap.php';
     return true;

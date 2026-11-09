@@ -131,5 +131,34 @@ $sitemap = render('sitemap.php');
 check('the sitemap lists every page', substr_count($sitemap, '<loc>') === count(projects()) + count(notes()) + 2);
 check('the sitemap is valid XML', @simplexml_load_string($sitemap) !== false);
 
+// ---------------------------------------------------------------- analytics and the private dashboard
+$tmp = sys_get_temp_dir() . '/ir-analytics-test-' . getmypid();
+putenv('ANALYTICS_DIR=' . $tmp);
+$chrome = 'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 Chrome/130.0 Safari/537.36';
+$now = 1_800_000_000;
+$client = ['ip' => '203.0.113.9', 'ua' => $chrome, 'lang' => 'en-GB,en;q=0.9', 'host' => 'israelrocklyn.info', 'now' => $now];
+analytics_record(['type' => 'view', 'path' => '/', 'ref' => 'https://www.linkedin.com/feed/'], $client);
+analytics_record(['type' => 'view', 'path' => '/work/x'], $client);
+analytics_record(['type' => 'view', 'path' => '/'], ['ip' => '198.51.100.4'] + $client);
+analytics_record(['type' => 'click', 'target' => 'github.com/codeROCK-IZZY/x'], $client);
+analytics_record(['type' => 'leave', 'seconds' => 40], $client);
+analytics_record(['type' => 'view', 'path' => '/'], ['ua' => 'Googlebot/2.1'] + $client);
+$s = analytics_series(1, $now)['days'][0];
+check('analytics counts views and daily unique visitors', $s['views'] === 3 && $s['visitors'] === 2, (string) json_encode($s));
+check('analytics keeps bots out of the counts', $s['bots'] === 1);
+check('analytics records clicks and engaged time', $s['clicks'] === 1 && $s['engaged_s'] === 40);
+check('analytics groups referrers by site', ($s['referrers']['linkedin.com'] ?? 0) === 1 && ($s['referrers']['(direct)'] ?? 0) === 2);
+$dayFile = (string) file_get_contents($tmp . '/day-' . gmdate('Y-m-d', $now) . '.json');
+check('no IP address is ever stored', !str_contains($dayFile, '203.0.113') && !str_contains($dayFile, '198.51.100'));
+analytics_compact(gmdate('Y-m-d', $now + 3 * 86400));
+check('visitor hashes are dropped after two days', json_decode((string) file_get_contents($tmp . '/day-' . gmdate('Y-m-d', $now) . '.json'), true)['visitors'] === []);
+check('the device and region come from the browser', analytics_device('iPhone Mobile') === 'mobile' && analytics_region('en-GB') === 'GB');
+check('GitHub traffic merges into a history', ght_merge(['2026-01-01' => [5, 2]], ['views' => [['timestamp' => '2026-01-02T00:00:00Z', 'count' => 7, 'uniques' => 3]]], 'views') === ['2026-01-01' => [5, 2], '2026-01-02' => [7, 3]]);
+$page = render('insights.php', [], ['REQUEST_METHOD' => 'GET']);
+check('the dashboard asks for a password when signed out', str_contains($page, 'type="password"') && !str_contains($page, 'insights.js'));
+check('the dashboard data needs a session', !str_contains(render('insights.php', ['data' => '1'], ['REQUEST_METHOD' => 'GET']), '"site"'));
+check('the dashboard is not in the sitemap', !str_contains($sitemap, 'insights'));
+array_map('unlink', glob($tmp . '/*.json') ?: []);
+
 echo "\n{$count} checks, {$failures} failed\n";
 exit($failures > 0 ? 1 : 0);

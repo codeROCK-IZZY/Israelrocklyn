@@ -39,7 +39,7 @@ return [
         'LLM agents and tools with human approval' => ['autonomous-business-platform', 'multimodal-ai-assistant'],
         'Prompt-injection and abuse resistance' => ['llm-guardrails-gateway', 'multimodal-ai-assistant', 'autonomous-business-platform'],
         'Classical ML with explanations (XGBoost, SHAP)' => ['fraud-detection-engine', 'ai-predictive-maintenance', 'aws-mlops-platform'],
-        'Honest evaluation and measured results' => ['llm-guardrails-gateway', 'fraud-detection-engine', 'aws-mlops-platform', 'multimodal-ai-assistant', 'distributed-ai-inference', 'aws-serverless-event-platform', 'aws-security-guardrails'],
+        'Honest evaluation and measured results' => ['llm-evaluation-platform', 'llm-guardrails-gateway', 'fraud-detection-engine', 'aws-mlops-platform', 'multimodal-ai-assistant', 'distributed-ai-inference', 'aws-serverless-event-platform', 'aws-security-guardrails'],
         'MLOps: registry, promotion gates, drift monitoring' => ['aws-mlops-platform', 'ai-predictive-maintenance'],
         'Model serving: batching, load shedding, failover' => ['distributed-ai-inference'],
         'Speech, vision and OCR pipelines' => ['multimodal-ai-assistant', 'intelligent-document-ai'],

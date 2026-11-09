@@ -13,7 +13,7 @@
       <li><a href="/#contact">contact</a></li>
       <li><a href="/sitemap.xml">sitemap</a></li>
     </ul>
-    <p class="muted small">© <?= date('Y') ?> <?= e($p['name']) ?>. Built with plain PHP, CSS and a little JavaScript; no trackers, no cookies except your theme choice. Project data is synthetic; every number comes from the committed evaluation in its repository.</p>
+    <p class="muted small">© <?= date('Y') ?> <?= e($p['name']) ?>. Built with plain PHP, CSS and a little JavaScript; no third-party trackers and no cookies except your theme choice; visits are counted anonymously on this server, and not at all if your browser asks not to be tracked. Project data is synthetic; every number comes from the committed evaluation in its repository.</p>
   </div>
 </footer>
 

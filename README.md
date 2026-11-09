@@ -38,6 +38,24 @@ committed in the project's own repository.
 - **Internal files are never served:** `app/`, `tests/`, the repository metadata and this README all
   return 404.
 
+## Private insights dashboard
+
+`/insights` is a password-protected dashboard for the site owner. It is not linked anywhere, and it
+is sent with `noindex` and `no-store`. It shows two things:
+
+- **Portfolio visits:** page views, daily unique visitors, clicks on links, time on page, top pages,
+  referrers, devices, browsers and regions. Counting is cookie-free: a visitor is a hash with a
+  random salt that changes daily, no IP address is written to disk, bots are counted apart, and
+  browsers that send Do Not Track or Global Privacy Control are not counted (`app/lib/analytics.php`).
+- **GitHub traffic:** views, unique visitors, clones and unique cloners per repository, plus
+  referrers and popular content. GitHub keeps only 14 days, so each collection merges them into a
+  history and weekly and monthly totals build up over time (`app/lib/ghtraffic.php`). This needs a
+  fine-grained, read-only token (Administration: read), pasted once in the dashboard's settings.
+
+All data lives in `.portfolio-cache/analytics/`, above the web root. The password is a bcrypt hash
+in `settings.json` there. Sessions are Secure, HttpOnly and SameSite=Strict, expire after 8 idle
+hours, and sign-in is throttled after 5 failures. Every form carries a CSRF token.
+
 ## Run it locally
 
 ```bash

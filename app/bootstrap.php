@@ -10,13 +10,24 @@
 declare(strict_types=1);
 
 const SITE_URL = 'https://israelrocklyn.info';
-const ASSET_VERSION = '14';
+const ASSET_VERSION = '15';
 
 ini_set('display_errors', '0');
 ini_set('log_errors', '1');
 
 require __DIR__ . '/lib/contact.php';
 require __DIR__ . '/lib/github.php';
+require __DIR__ . '/lib/analytics.php';
+require __DIR__ . '/lib/ghtraffic.php';
+require __DIR__ . '/lib/auth.php';
+
+/** The visitor's address: the CDN passes it in X-Forwarded-For; REMOTE_ADDR is the edge otherwise. */
+function client_ip(): string
+{
+    $xff = (string) ($_SERVER['HTTP_X_FORWARDED_FOR'] ?? '');
+    $first = trim(explode(',', $xff)[0]);
+    return filter_var($first, FILTER_VALIDATE_IP) ? $first : (string) ($_SERVER['REMOTE_ADDR'] ?? '');
+}
 
 /** Settings with safe defaults; the config file overrides them. */
 function config(): array
@@ -106,7 +117,7 @@ function trace_order(): array
 {
     return ['distributed-ai-inference', 'ai-research-engine', 'intelligent-document-ai', 'multimodal-ai-assistant',
         'autonomous-business-platform', 'fraud-detection-engine', 'ai-predictive-maintenance', 'aws-mlops-platform',
-        'ai-developer-intelligence', 'aws-serverless-event-platform', 'aws-security-guardrails', 'aws-finops-optimizer', 'aws-data-lakehouse', 'aws-resilience-lab', 'llm-guardrails-gateway', 'enterprise-aws-cloud-platform'];
+        'ai-developer-intelligence', 'aws-serverless-event-platform', 'aws-security-guardrails', 'aws-finops-optimizer', 'aws-data-lakehouse', 'aws-resilience-lab', 'llm-guardrails-gateway', 'llm-evaluation-platform', 'enterprise-aws-cloud-platform'];
 }
 
 /** Data for the client-side shell and command palette (embedded as JSON; no extra request). */

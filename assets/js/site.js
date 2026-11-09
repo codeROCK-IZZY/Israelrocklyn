@@ -388,3 +388,39 @@
     });
   }
 })();
+
+/* Visit analytics: cookie-free and anonymous (see app/lib/analytics.php). Nothing is sent when the browser
+   asks not to be tracked (Do Not Track or Global Privacy Control). */
+(() => {
+  if (navigator.doNotTrack === "1" || navigator.globalPrivacyControl || !navigator.sendBeacon) return;
+  const send = (event) => {
+    try {
+      navigator.sendBeacon("/t.php", new Blob([JSON.stringify(event)], { type: "text/plain" }));
+    } catch {
+      /* analytics must never break the page */
+    }
+  };
+  send({ type: "view", path: location.pathname, ref: document.referrer });
+
+  let shownAt = Date.now();
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      send({ type: "leave", seconds: Math.round((Date.now() - shownAt) / 1000) });
+    } else {
+      shownAt = Date.now();
+    }
+  });
+
+  document.addEventListener("click", (ev) => {
+    const a = ev.target instanceof Element ? ev.target.closest("a[href]") : null;
+    if (!a) return;
+    const url = new URL(a.href, location.href);
+    let target;
+    if (url.protocol === "mailto:") target = "email";
+    else if (url.protocol === "tel:") target = "phone";
+    else if (url.host !== location.host) target = url.host.replace(/^www\./, "") + url.pathname.replace(/\/$/, "");
+    else if (url.pathname === location.pathname && url.hash) return; // in-page navigation is not a click worth counting
+    else target = "page " + url.pathname;
+    send({ type: "click", target });
+  });
+})();

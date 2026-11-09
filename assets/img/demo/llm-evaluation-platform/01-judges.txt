@@ -1,0 +1,1 @@
+Judges against human labels: exact match and token overlap barely agree with people; the calibrated rubric reaches kappa 0.91.
