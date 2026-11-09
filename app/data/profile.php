@@ -33,6 +33,7 @@ return [
     ],
     // Capability => the projects that demonstrate it (slugs from projects.php).
     'capabilities' => [
+        'Experimentation and causal inference: A/B tests, CUPED, sequential testing' => ['experimentation-platform', 'llm-evaluation-platform'],
         'Entity resolution and data quality' => ['entity-resolution', 'aws-data-lakehouse'],
         'Time series: probabilistic and hierarchical forecasting' => ['demand-forecasting'],
         'Recommender systems: matrix factorisation, cold start, serving' => ['recommender-system'],
