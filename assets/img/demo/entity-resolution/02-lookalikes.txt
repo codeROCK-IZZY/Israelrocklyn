@@ -1,0 +1,1 @@
+How often each method merges twins, fathers and sons, and families; the threshold curve; what the matcher relies on.
