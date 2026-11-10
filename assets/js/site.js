@@ -424,3 +424,10 @@
     send({ type: "click", target });
   });
 })();
+
+/* The owner's way in: double-clicking the name in the footer opens the private dashboard. It looks and
+   behaves like plain text (no link, no hover address); the dashboard itself still asks for a password. */
+document.querySelector("[data-owner]")?.addEventListener("dblclick", () => {
+  window.getSelection()?.removeAllRanges();
+  location.href = "/insights";
+});
