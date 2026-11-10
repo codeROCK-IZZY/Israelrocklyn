@@ -14,7 +14,7 @@ if (!preg_match('/^[a-z0-9-]{1,64}$/', $slug) || !isset($projects[$slug])) {
 $x = $projects[$slug];
 $slugs = array_keys($projects);
 $next = $slugs[(array_search($slug, $slugs, true) + 1) % count($slugs)];
-$area = ['ai' => 'AI & LLM', 'ml' => 'Machine learning', 'platform' => 'Cloud & platform'][$x['area']];
+$area = ['ai' => 'AI & LLM', 'ml' => 'Machine learning', 'platform' => 'Cloud & platform', 'web' => 'WordPress & web'][$x['area']];
 $related = array_filter(notes(), static fn (array $n): bool => $n['project'] === $slug);
 $live = live_status()['repos'][$slug] ?? null;
 

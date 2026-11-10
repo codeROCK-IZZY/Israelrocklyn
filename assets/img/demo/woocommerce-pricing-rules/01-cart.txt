@@ -1,0 +1,1 @@
+Bulk and category discounts in a real WooCommerce cart, with the saving per line.

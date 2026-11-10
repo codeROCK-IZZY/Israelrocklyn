@@ -1,0 +1,1 @@
+Admin page: index status, a test question, text excluded as prompt injection, and questions the site could not answer.

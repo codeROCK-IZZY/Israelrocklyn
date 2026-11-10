@@ -1,0 +1,1 @@
+Evaluation: structured data, hours accuracy, browser/server parity, accessibility and weight.

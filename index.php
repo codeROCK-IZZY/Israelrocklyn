@@ -20,14 +20,14 @@ $token = $formReady ? contact_token($config['secret']) : '';
 $status = (string) ($_GET['contact'] ?? '');
 $statusMessage = CONTACT_MESSAGES[$status] ?? null;
 $portrait = is_file(__DIR__ . '/assets/img/portrait.webp');
-$areaNames = ['ai' => 'AI & LLM', 'ml' => 'Machine learning', 'platform' => 'Cloud & platform'];
+$areaNames = ['ai' => 'AI & LLM', 'ml' => 'Machine learning', 'platform' => 'Cloud & platform', 'web' => 'WordPress & web'];
 
 send_page_headers();
 header('Cache-Control: no-cache'); // the form token is time-stamped
 
 view('head', [
     'title' => $p['name'] . ' · ' . $p['headline'],
-    'description' => 'Israel Rocklyn, AI, ML & Cloud Engineer: ' . count($projects) . ' production-grade AI and cloud systems with tests, CI and measured results. RAG with citations, LLM agents with human approval, MLOps, model serving on Kubernetes, AWS.',
+    'description' => 'Israel Rocklyn, AI, ML & Cloud Engineer: ' . count($projects) . ' production-grade AI, cloud and WordPress projects with tests, CI and measured results. RAG with citations, LLM agents with human approval, MLOps, model serving on Kubernetes, AWS.',
     'path' => '/',
     'rail' => true,
     'jsonld' => [
