@@ -25,7 +25,11 @@ view('head', [
       <p class="mono small resume-links">israelrocklyn.info<br>github.com/codeROCK-IZZY<br>linkedin.com/in/israel-rocklyn-789884140</p>
       <img class="resume-qr" src="<?= e(asset('img/qr-site.svg')) ?>" alt="QR code linking to israelrocklyn.info" width="72" height="72">
     </div>
-    <button class="button print-btn" type="button" data-print>Print or save as PDF</button>
+    <div class="resume-actions">
+      <a class="button" href="/assets/resume/Abraham_Israel_Rocklyn_AI_Engineer_Resume.pdf" download>Download résumé (PDF)</a>
+      <a class="button button-ghost" href="/assets/resume/Abraham_Israel_Rocklyn_Web_Developer_Resume.pdf" download>Web &amp; WordPress version</a>
+      <button class="button button-ghost print-btn" type="button" data-print>Print this page</button>
+    </div>
   </header>
 
   <section>

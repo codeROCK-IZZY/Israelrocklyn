@@ -308,7 +308,8 @@ view('head', [
       <h3 class="small-head mono">elsewhere</h3>
       <p><a href="<?= e($p['github']) ?>" rel="me noopener">github.com/codeROCK-IZZY</a></p>
       <p><a href="<?= e($p['linkedin']) ?>" rel="me noopener">linkedin.com/in/israel-rocklyn-789884140</a></p>
-      <p><a href="/resume">Printable résumé</a></p>
+      <p><a href="/assets/resume/Abraham_Israel_Rocklyn_AI_Engineer_Resume.pdf" download>Download résumé (PDF)</a> · <a href="/assets/resume/Abraham_Israel_Rocklyn_Web_Developer_Resume.pdf" download>web version</a></p>
+      <p><a href="/resume">Résumé page</a></p>
       <h3 class="small-head mono">good to know</h3>
       <p class="muted">Available for hire, based in the <?= e($p['location']) ?>. Messages go straight to my inbox; your address is used only to reply.</p>
     </aside>

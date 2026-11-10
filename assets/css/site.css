@@ -492,7 +492,9 @@ a.hop-host:hover { color: var(--accent); }
 .palette-hint { margin: 0; padding: 0.6rem 1.25rem; border-top: 1px solid var(--line); font-size: 0.75rem; color: var(--ink-3); }
 
 .notfound { min-height: 65vh; }
-.print-btn { margin-top: 0.4rem; }
+.print-btn { margin-top: 0; }
+.resume-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.4rem; }
+@media print { .resume-actions { display: none; } }
 
 @media print {
   .site-header, .rail, .site-footer, .bg-grid, .scroll-progress, .print-btn, .palette, #site-data { display: none !important; }
