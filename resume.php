@@ -22,7 +22,7 @@ view('head', [
       <p class="lede"><?= e($p['headline']) ?> · <?= e($p['location']) ?></p>
     </div>
     <div class="resume-contact">
-      <p class="mono small resume-links">israelrocklyn.info<br>github.com/codeROCK-IZZY</p>
+      <p class="mono small resume-links">israelrocklyn.info<br>github.com/codeROCK-IZZY<br>linkedin.com/in/israel-rocklyn-789884140</p>
       <img class="resume-qr" src="<?= e(asset('img/qr-site.svg')) ?>" alt="QR code linking to israelrocklyn.info" width="72" height="72">
     </div>
     <button class="button print-btn" type="button" data-print>Print or save as PDF</button>

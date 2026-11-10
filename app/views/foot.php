@@ -8,6 +8,7 @@
     </div>
     <ul class="footer-links mono">
       <li><a href="<?= e($p['github']) ?>" rel="me noopener">github</a></li>
+      <li><a href="<?= e($p['linkedin']) ?>" rel="me noopener">linkedin</a></li>
       <li><a href="/resume">résumé</a></li>
       <li><a href="/#notes">notes</a></li>
       <li><a href="/#contact">contact</a></li>

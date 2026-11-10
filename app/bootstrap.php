@@ -129,6 +129,7 @@ function site_data(): array
         'headline' => $p['headline'],
         'location' => $p['location'],
         'github' => $p['github'],
+        'linkedin' => $p['linkedin'],
         'roles' => $p['roles'],
         'education' => array_map(static fn (array $e): string => $e['degree'] . ' (' . $e['focus'] . ')', $p['education']),
         'skills' => $p['skills'],

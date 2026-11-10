@@ -36,7 +36,7 @@ view('head', [
         'name' => $p['name'],
         'jobTitle' => $p['headline'],
         'url' => SITE_URL . '/',
-        'sameAs' => [$p['github']],
+        'sameAs' => [$p['github'], $p['linkedin']],
         'knowsAbout' => array_keys($p['capabilities']),
         'hasCredential' => array_map(static fn (array $ed): array => [
             '@type' => 'EducationalOccupationalCredential', 'credentialCategory' => 'degree', 'name' => $ed['degree'] . ', ' . $ed['focus'],
@@ -302,11 +302,12 @@ view('head', [
       <p class="form-status<?= $statusMessage ? ($status === 'sent' ? ' is-ok' : ' is-error') : '' ?>" role="status" aria-live="polite"><?= e($statusMessage) ?></p>
     </form>
 <?php else: ?>
-    <p class="form-status is-error">The contact form is being set up. Please reach me through GitHub for now.</p>
+    <p class="form-status is-error">The contact form is being set up. Please reach me on LinkedIn for now.</p>
 <?php endif; ?>
     <aside class="contact-aside">
       <h3 class="small-head mono">elsewhere</h3>
       <p><a href="<?= e($p['github']) ?>" rel="me noopener">github.com/codeROCK-IZZY</a></p>
+      <p><a href="<?= e($p['linkedin']) ?>" rel="me noopener">linkedin.com/in/israel-rocklyn-789884140</a></p>
       <p><a href="/resume">Printable résumé</a></p>
       <h3 class="small-head mono">good to know</h3>
       <p class="muted">Available for hire, based in the <?= e($p['location']) ?>. Messages go straight to my inbox; your address is used only to reply.</p>

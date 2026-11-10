@@ -11,6 +11,7 @@ return [
     'headline' => 'AI, ML & Cloud Engineer',
     'location' => 'United States',
     'github' => 'https://github.com/codeROCK-IZZY',
+    'linkedin' => 'https://www.linkedin.com/in/israel-rocklyn-789884140/',
     'intro' => 'I build AI systems that prove they work, and the cloud platforms they run on.',
     'summary' => 'AI, ML & Cloud Engineer and Full-Stack Developer. I take products from data and models through the '
         . 'API and interface to the infrastructure, and every one ships with tests, CI and measured results. '
