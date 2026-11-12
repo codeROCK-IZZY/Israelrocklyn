@@ -1,0 +1,1 @@
+A contract: every term with its evidence and state, risks with the redline to propose, and the renewal deadline.

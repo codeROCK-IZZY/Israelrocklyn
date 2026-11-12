@@ -962,6 +962,52 @@ return [
             'Loitering found 3 of 8 times on the test scenes; reported rather than tuned away.',
         ],
     ],
+    'ai-contract-lifecycle' => [
+        'title' => 'AI Contract Lifecycle Management',
+        'area' => 'ai',
+        'featured' => false,
+        'tagline' => 'Reads supplier contracts with evidence, flags risks with redlines, and never misses a notice deadline.',
+        'problem' => 'Supplier contracts renew silently, hide unlimited liability and foreign law, and are read once at signature. Terms must be extracted accurately from paper the system has never seen, and the system must know which extracted terms it can trust.',
+        'built' => [
+            'Two independent extractors (hand-written rules and a learned clause reader) and routing that accepts a term only when both agree and both cite a supporting sentence; everything else goes to a reviewer.',
+            'A contracting playbook with severities, redline wording and approval routing, and a renewal calendar set from each contract\'s notice deadline rather than its end date.',
+            'Claude reading unfamiliar contracts through a strict tool that needs an exact quote for every value; quotes are checked against the text in code, and invented or inconsistent values are discarded.',
+        ],
+        'results' => [
+            [
+                '98.8% / 72.8%',
+                'of terms read correctly on two unseen templates (hand-written rules: 27.8% / 41.9%)',
+            ],
+            ['100%', 'of automatically accepted terms correct on every bank; the rest go to review'],
+            ['0 of 50', 'unwanted renewals missed (a reminder 30 days before the end missed 50, £7.8m)'],
+        ],
+        'stack' => ['Python', 'scikit-learn', 'Claude API', 'FastAPI', 'Docker'],
+        'image' => 'contract-lifecycle.webp',
+        'image_alt' => 'A contract in the app: every term with its evidence and state, risks with proposed redlines, and the notice deadline',
+        'repo' => GH . 'ai-contract-lifecycle',
+        'run' => [
+            'pip install -e ".[dev]" && pytest',
+            'clm evaluate --gate                        # writes eval/reports/report.html',
+        ],
+        'local_url' => '',
+        'hop' => ['host' => 'contracts.review', 'role' => 'Reading every supplier contract and catching the renewal before it locks in', 'value' => '0 of 50', 'label' => 'unwanted renewals missed'],
+        'flow' => [
+            'Contract text',
+            'Rules + learned clause reader',
+            'Evidence-backed routing',
+            'Reviewer or Claude (quote-checked)',
+            'Playbook and approvals',
+            'Notice-deadline calendar',
+        ],
+        'lessons' => [
+            'Agreement between two extractors is not enough: on a new template both missed the same clauses and reported the same defaults, so only 69% of agreed terms were right until evidence was required.',
+            'Two unseen templates gave the learned reader 98.8% and 72.8%; a single accuracy number for new paper would have misled.',
+        ],
+        'limits' => [
+            'Generated contracts with clear clause headings, not real paper with amendments and cross-references.',
+            'Claude\'s accuracy is not scored in CI (paid calls); the quote and number checks bound its errors.',
+        ],
+    ],
     'enterprise-aws-cloud-platform' => [
         'title' => 'Enterprise AWS Cloud Platform',
         'area' => 'platform',
