@@ -870,6 +870,55 @@ return [
             'Claude\'s own conversation quality is not scored in CI (it would need a paid key on every run); CI checks the request, tool loop and guards with canned responses.',
         ],
     ],
+    'enterprise-multi-agent-workforce' => [
+        'title' => 'Enterprise Multi-Agent Workforce',
+        'area' => 'ai',
+        'featured' => false,
+        'tagline' => 'A service desk staffed by scoped AI agents that can do for you only what you could do yourself.',
+        'problem' => 'Agents wired to company systems through one powerful service account become confused deputies: a ticket that asks for a colleague\'s payslip, or hides an instruction to reset someone else\'s password, only has to convince the model.',
+        'built' => [
+            'A triage agent that splits tickets into requests and routes each to IT, HR, Finance, Facilities or Security specialists, each holding only its department\'s tools; Claude (one conversation per agent) or an offline classifier.',
+            'Company systems where every call carries the authenticated requester: an action needs the agent\'s scope, the requester\'s own rights and, for some actions, a named approver. Identity is never a tool argument.',
+            'An evaluation of five designs on the same tickets in three phrasing banks (the last written after the model was frozen), hostile tickets judged on effects, and a blast-radius test with one agent fully hijacked.',
+        ],
+        'results' => [
+            [
+                '0 / 310',
+                'hostile tickets that caused an unauthorized effect (one service-account agent: 211)',
+            ],
+            ['78.8%', 'of legitimate tickets correct on fresh wording (keyword router: 56.1%)'],
+            [
+                '0.85 vs 51',
+                'colleagues a hijacked HR agent can affect, acting for the requester vs as a service account',
+            ],
+        ],
+        'stack' => ['Python', 'Claude API', 'scikit-learn', 'FastAPI', 'Docker'],
+        'image' => 'workforce.webp',
+        'image_alt' => 'Evaluation report: legitimate tickets handled and hostile tickets blocked by five designs, attacks and blast radius',
+        'repo' => GH . 'enterprise-multi-agent-workforce',
+        'run' => [
+            'pip install -e ".[dev]" && pytest',
+            'workforce evaluate --gate                   # writes eval/reports/report.html',
+        ],
+        'local_url' => '',
+        'hop' => ['host' => 'desk.agents', 'role' => 'Routing an employee\'s request to the right agent, with their rights, not more', 'value' => '0', 'label' => 'unauthorized effects in 310 hostile tickets'],
+        'flow' => [
+            'Ticket (requester from SSO)',
+            'Triage splits and routes',
+            'Scoped specialist agent',
+            'Systems: scope + requester\'s rights + approver',
+            'Effect or refusal',
+            'Reply to the requester',
+        ],
+        'lessons' => [
+            'The comparison showed the safety comes from acting on behalf of the requester, not from having several agents: one agent with every tool is just as safe when it acts for the requester. Splitting into scoped agents earns its place by containing a hijacked agent.',
+            'A third phrasing bank, written only after the model was frozen, gave the honest score (78.8%) instead of the dev score (100%).',
+        ],
+        'limits' => [
+            'Generated tickets and simulated approvers; the systems are in-memory models, not Workday or Entra ID connectors.',
+            'The offline agents ask for clarification on about a quarter of fresh-wording tickets; the Claude agents are not scored in CI.',
+        ],
+    ],
     'enterprise-aws-cloud-platform' => [
         'title' => 'Enterprise AWS Cloud Platform',
         'area' => 'platform',

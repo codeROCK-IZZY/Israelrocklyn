@@ -1,0 +1,1 @@
+Attacks by type, results by ticket type, and the blast radius of one hijacked agent.
