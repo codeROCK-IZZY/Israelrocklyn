@@ -1,0 +1,1 @@
+A rolled-back deploy: the stages it passed, the new and old versions' error rates over the same minutes, the findings and the rollback note.

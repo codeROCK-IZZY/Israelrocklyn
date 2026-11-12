@@ -1,0 +1,1 @@
+A week of deploys: promoted, rolled back automatically, and one stopped because the service had spent its error budget.

@@ -10,7 +10,7 @@
 declare(strict_types=1);
 
 const SITE_URL = 'https://israelrocklyn.info';
-const ASSET_VERSION = '33';
+const ASSET_VERSION = '34';
 
 ini_set('display_errors', '0');
 ini_set('log_errors', '1');
@@ -117,7 +117,7 @@ function trace_order(): array
 {
     return ['distributed-ai-inference', 'ai-research-engine', 'intelligent-document-ai', 'multimodal-ai-assistant',
         'autonomous-business-platform', 'fraud-detection-engine', 'ai-predictive-maintenance', 'aws-mlops-platform',
-        'ai-developer-intelligence', 'aws-serverless-event-platform', 'aws-security-guardrails', 'aws-finops-optimizer', 'aws-data-lakehouse', 'aws-resilience-lab', 'llm-guardrails-gateway', 'llm-evaluation-platform', 'recommender-system', 'demand-forecasting', 'entity-resolution', 'experimentation-platform', 'feature-store', 'visual-anomaly-detection', 'wordpress-lead-capture', 'woocommerce-pricing-rules', 'wordpress-ai-assistant', 'wordpress-business-blocks', 'wordpress-block-theme', 'ai-voice-receptionist', 'enterprise-multi-agent-workforce', 'video-intelligence-platform', 'ai-contract-lifecycle', 'enterprise-aws-cloud-platform'];
+        'ai-developer-intelligence', 'aws-serverless-event-platform', 'aws-security-guardrails', 'aws-finops-optimizer', 'aws-data-lakehouse', 'aws-resilience-lab', 'llm-guardrails-gateway', 'llm-evaluation-platform', 'recommender-system', 'demand-forecasting', 'entity-resolution', 'experimentation-platform', 'feature-store', 'visual-anomaly-detection', 'wordpress-lead-capture', 'woocommerce-pricing-rules', 'wordpress-ai-assistant', 'wordpress-business-blocks', 'wordpress-block-theme', 'ai-voice-receptionist', 'enterprise-multi-agent-workforce', 'video-intelligence-platform', 'ai-contract-lifecycle', 'autonomous-software-delivery', 'enterprise-aws-cloud-platform'];
 }
 
 /** Data for the client-side shell and command palette (embedded as JSON; no extra request). */

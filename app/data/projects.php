@@ -1008,6 +1008,52 @@ return [
             'Claude\'s accuracy is not scored in CI (paid calls); the quote and number checks bound its errors.',
         ],
     ],
+    'autonomous-software-delivery' => [
+        'title' => 'Autonomous Software Delivery Platform',
+        'area' => 'platform',
+        'featured' => false,
+        'tagline' => 'Ships changes without anyone watching dashboards: progressive rollouts, statistical canary analysis and automatic rollback.',
+        'problem' => 'Bad releases are found by users, and the usual safeguards misfire: an alert after a big-bang deploy reacts once everyone is affected, and a canary compared with last hour\'s numbers rolls back healthy versions whenever something else goes wrong during the rollout.',
+        'built' => [
+            'Progressive rollouts (1% to a 95% holdback to 100%) with canary analysis every five minutes: the new version against the old one over the same minutes, for the whole service and every region, endpoint and cell, with exact tests and effect-size floors.',
+            'Guardrails before a rollout (error budget, fast burn, change freezes, risky changes slowed and approved) and test impact analysis from the dependency graph, with known-flaky tests retried.',
+            'Claude writing the rollback note from numbered findings; notes that cite missing findings, unflagged segments or numbers not in the evidence are replaced by the plain note.',
+        ],
+        'results' => [
+            [
+                '97.9%',
+                'of bad versions rolled back on held-out worlds and held-back regression kinds (big-bang + alert: 66.1%)',
+            ],
+            ['1 of 208', 'healthy versions rolled back (canary vs pre-deploy thresholds: 52)'],
+            ['37.5%', 'of tests run per change, catching 99.8% of the bugs a full run catches'],
+        ],
+        'stack' => ['Python', 'SciPy', 'NumPy', 'Claude API', 'FastAPI', 'Docker'],
+        'image' => 'software-delivery.webp',
+        'image_alt' => 'A rolled-back deploy: pipeline stages, the new and old versions\' error rates side by side, the findings and the rollback note',
+        'repo' => GH . 'autonomous-software-delivery',
+        'run' => [
+            'pip install -e ".[dev]" && pytest',
+            'deliver evaluate --gate                    # writes eval/reports/report.html',
+        ],
+        'local_url' => '',
+        'hop' => ['host' => 'deploy.pipeline', 'role' => 'Shipping every change and pulling it back before users notice', 'value' => '97.9%', 'label' => 'bad versions rolled back'],
+        'flow' => [
+            'Change',
+            'Guardrails',
+            'Impact-selected tests',
+            '1% to 95% holdback',
+            'Side-by-side canary analysis',
+            'Promote or roll back + note',
+        ],
+        'lessons' => [
+            'Pooling canary data across rollout steps made healthy versions look broken (Simpson\'s paradox: the traffic split changes between steps); analysing within each step fixed 21% false rollbacks.',
+            'Testing regions and endpoints, not just cells and the whole service, raised the catch rate from 84% to 99% on the tuning worlds with no extra false rollbacks.',
+        ],
+        'limits' => [
+            'A simulated production service; no load balancer or service mesh is driven.',
+            'Full rollout takes 90 minutes; stalls on the quietest endpoint are sometimes missed.',
+        ],
+    ],
     'enterprise-aws-cloud-platform' => [
         'title' => 'Enterprise AWS Cloud Platform',
         'area' => 'platform',
