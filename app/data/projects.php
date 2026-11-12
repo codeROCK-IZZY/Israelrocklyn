@@ -824,6 +824,52 @@ return [
             'Tested on WordPress 6.6 and the latest release only.',
         ],
     ],
+    'ai-voice-receptionist' => [
+        'title' => 'AI Voice Receptionist',
+        'area' => 'ai',
+        'featured' => false,
+        'tagline' => 'A phone receptionist that books, moves and cancels appointments, and can never change the diary without the caller\'s yes.',
+        'problem' => 'Small clinics miss calls, and phone menus fail callers who just say what they want. An AI on the phone line is only acceptable if it cannot book the wrong time, cancel someone else\'s appointment or quote a price that does not exist, even when speech recognition mishears.',
+        'built' => [
+            'Twilio-compatible webhooks (signed, TwiML) with two interchangeable brains: an offline dialogue engine that understands spoken dates, times, numbers and names, and a Claude agent (claude-opus-5-5, tool use, refusal fallbacks).',
+            'A front desk that enforces the rules in code for both brains: only offered slots, a read-back and a clear yes before any change, verified callers, prices only from the list, and a locked SQLite diary.',
+            'An evaluation with goal-driven simulated callers through a speech-recognition error channel at 0/10/20% WER, a held-out phrasing bank, a keyword-IVR baseline, a guard ablation and a booking race.',
+        ],
+        'results' => [
+            [
+                '95% / 78%',
+                'of held-out calls handled end to end at 0% / 20% speech errors (keyword IVR: 20% / 14%)',
+            ],
+            ['0', 'wrong changes to the diary in 1,800 simulated calls; 0 double bookings'],
+            ['0 / 360', 'unsafe agent actions that got through with the guards on / off'],
+        ],
+        'stack' => ['Python', 'Claude API', 'FastAPI', 'Twilio', 'SQLite', 'Docker'],
+        'image' => 'voice-receptionist.webp',
+        'image_alt' => 'Evaluation report: task success by speech error rate against a keyword IVR, call types, and the guard ablation',
+        'repo' => GH . 'ai-voice-receptionist',
+        'run' => [
+            'pip install -e ".[dev]" && pytest',
+            'receptionist evaluate --gate                # writes eval/reports/report.html',
+        ],
+        'local_url' => '',
+        'hop' => ['host' => 'phone.desk', 'role' => 'Answering the clinic\'s phone and booking the appointment', 'value' => '0', 'label' => 'wrong changes in 1,800 calls'],
+        'flow' => [
+            'Caller speaks (Twilio speech recognition)',
+            'Signed webhook',
+            'Offline engine or Claude agent',
+            'Front desk guards',
+            'Read-back and a clear yes',
+            'Diary (locked SQLite)',
+        ],
+        'lessons' => [
+            'The booking race found a real concurrency bug: two threads sharing one SQLite connection lost 24 of 80 attempts and let a double booking through. Every use of the connection is now serialised.',
+            'The guards caught the offline brain\'s own mistake: it tried to book on a \'yes\' that no longer answered the read-back, so the rules hold for any brain, not just the model.',
+        ],
+        'limits' => [
+            'Simulated callers and a statistical recognition-error channel, not recorded audio.',
+            'Claude\'s own conversation quality is not scored in CI (it would need a paid key on every run); CI checks the request, tool loop and guards with canned responses.',
+        ],
+    ],
     'enterprise-aws-cloud-platform' => [
         'title' => 'Enterprise AWS Cloud Platform',
         'area' => 'platform',
