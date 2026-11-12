@@ -1,0 +1,1 @@
+Tracking and alert accuracy on held-out scenes against two simpler designs, and what each stage buys.

@@ -1,0 +1,1 @@
+Annotated frames at the moment each alert fired: loitering, a wrong-way vehicle, a left bag and an intrusion.
