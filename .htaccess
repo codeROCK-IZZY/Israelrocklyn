@@ -1,7 +1,7 @@
 # israelrocklyn.info: Apache configuration (20i Linux hosting)
 
 Options -Indexes -MultiViews
-DirectoryIndex index.php
+DirectoryIndex index.php index.html
 ErrorDocument 404 /404.php
 
 <IfModule mod_rewrite.c>

@@ -14,4 +14,7 @@ $lead = $project['results'][0];
   <p class="card-host mono"><?= e($project['hop']['host']) ?><?php view('ci-badge', ['slug' => $slug]); ?></p>
   <p><?= e($project['tagline']) ?></p>
   <p class="card-metric"><strong class="mono"><?= e($lead[0]) ?></strong> <?= e($lead[1]) ?></p>
+<?php if (is_file(dirname(__DIR__, 2) . '/demo/' . $slug . '/index.html')): ?>
+  <p class="card-demo"><a class="mono" href="/demo/<?= e($slug) ?>/">Open the live demo ›</a></p>
+<?php endif; ?>
 </article>

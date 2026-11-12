@@ -39,6 +39,11 @@ if ($path === '/sitemap.xml') {
 if ($path !== '/' && is_file(__DIR__ . $path)) {
     return false; // static file or a real PHP script
 }
+if (str_starts_with($path, '/demo/') && str_ends_with($path, '/') && is_file(__DIR__ . $path . 'index.html')) {
+    header('Content-Type: text/html; charset=utf-8');
+    readfile(__DIR__ . $path . 'index.html'); // DirectoryIndex index.html, as on Apache
+    return true;
+}
 if ($path === '/' || $path === '/index.php') {
     require __DIR__ . '/index.php';
     return true;

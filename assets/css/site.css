@@ -312,6 +312,9 @@ a.hop-host:hover { color: var(--accent); }
 .card p { color: var(--ink-2); font-size: 0.95rem; }
 .card .card-metric { color: var(--ink); }
 .card-metric strong { color: var(--accent); }
+.card-demo { margin-top: 0.4rem; }
+.card-demo a { font-size: 0.82rem; color: var(--ok); text-decoration: none; position: relative; z-index: 2; }
+.card-demo a:hover { text-decoration: underline; }
 @media (max-width: 960px) { .cards { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .cards { grid-template-columns: 1fr; } }
 

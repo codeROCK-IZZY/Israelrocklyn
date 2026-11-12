@@ -1054,6 +1054,55 @@ return [
             'Full rollout takes 90 minutes; stalls on the quietest endpoint are sometimes missed.',
         ],
     ],
+    'meeting-operations-ai' => [
+        'title' => 'Intelligent Meeting Operations',
+        'area' => 'ai',
+        'featured' => false,
+        'tagline' => 'Schedules across time zones without 2 a.m. calls, and turns meeting talk into owned, dated follow-ups.',
+        'problem' => 'Distributed teams book the first free slot, which is often someone\'s night, and the same people take the late calls every week. After the meeting, commitments live in people\'s memories; requests that were declined or reassigned get lost.',
+        'built' => [
+            'A scheduler that scores every free slot: out-of-hours cost per attendee (night and weekend four times an evening), past late-meeting load, focus time broken and optional attendees; most-constrained requests first.',
+            'An action-item reader that follows the conversation (a request counts once accepted; a declined task goes to whoever picks it up): hand-written rules, a learned turn classifier, and a review queue so nothing is silently dropped.',
+            'Claude extraction with every item checked against the transcript (participant owner, verbatim quote, due date matching the quote), and a follow-up tracker with reminders and overdue lists.',
+        ],
+        'results' => [
+            [
+                '-76%',
+                'night and weekend meeting hours on held-out organisations (67.9 to 16.6 attendee-hours a week)',
+            ],
+            [
+                '0.72',
+                'owner-and-task F1 on phrasing written after the reader was frozen (hand-written rules: 0.00)',
+            ],
+            ['96.4%', 'of action items either extracted or put in front of a person'],
+        ],
+        'stack' => ['Python', 'scikit-learn', 'NumPy', 'Claude API', 'FastAPI', 'Docker'],
+        'image' => 'meeting-operations.webp',
+        'image_alt' => 'This week\'s meetings shown in each attendee\'s local time, with early, late and night slots highlighted',
+        'repo' => GH . 'meeting-operations-ai',
+        'run' => [
+            'pip install -e ".[dev]" && pytest',
+            'meetops evaluate --gate                    # writes eval/reports/report.html',
+        ],
+        'local_url' => '',
+        'hop' => ['host' => 'meetings.ops', 'role' => 'Keeping meetings humane across time zones and their promises kept', 'value' => '-76%', 'label' => 'night meeting hours'],
+        'flow' => [
+            'Request',
+            'Score every free slot',
+            'Book the cheapest',
+            'Transcript',
+            'Classify turns + follow the conversation',
+            'Follow-ups and review queue',
+        ],
+        'lessons' => [
+            'Hand-written rules scored perfectly on their own phrasing and 0.00 on both new phrasings; a learned turn classifier with a few structural cues kept 0.72.',
+            'A draft of the unseen test phrasing was deleted unread once it was clear it had been written before the rules, and a review queue\'s cue words lifted from it were replaced with structural cues.',
+        ],
+        'limits' => [
+            'Generated organisations and transcripts; fixed time-zone offsets, no holidays.',
+            'Due dates on unfamiliar phrasing are often missed by the frozen date resolver.',
+        ],
+    ],
     'enterprise-aws-cloud-platform' => [
         'title' => 'Enterprise AWS Cloud Platform',
         'area' => 'platform',

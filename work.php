@@ -43,7 +43,15 @@ view('head', [
     <h1><?= e($x['title']) ?></h1>
     <p class="lede"><?= e($x['tagline']) ?></p>
     <p class="hero-actions">
+<?php if (is_file(__DIR__ . '/demo/' . $slug . '/index.html')): ?>
+      <a class="button" href="/demo/<?= e($slug) ?>/">Open the live demo</a>
+      <a class="button button-ghost" href="<?= e($x['repo']) ?>" rel="noopener">View the code</a>
+<?php else: ?>
       <a class="button" href="<?= e($x['repo']) ?>" rel="noopener">View the code</a>
+<?php endif; ?>
+<?php if (is_file(__DIR__ . '/reports/' . $slug . '.html')): ?>
+      <a class="button button-ghost" href="/reports/<?= e($slug) ?>.html">Evaluation report</a>
+<?php endif; ?>
 <?php if (demo_shots($slug)): ?>
       <a class="button button-ghost" href="#demo">Demo tour</a>
 <?php endif; ?>

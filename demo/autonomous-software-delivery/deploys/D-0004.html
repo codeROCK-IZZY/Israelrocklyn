@@ -1,0 +1,22 @@
+<!doctype html><html lang='en'><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><meta name='robots' content='noindex'><title>Password rules from the new policy</title><style>
+:root{--bg:#0c1016;--panel:#141b25;--line:#253042;--ink:#e8edf4;--ink2:#97a3b6;--ok:#3ccf8e;--bad:#ff6b6b;--mid:#f5b54a;
+--new:#8b7bff;--old:#7d8aa0}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);
+font:14px/1.5 Inter,system-ui,sans-serif}a{color:inherit}header{padding:14px 26px;border-bottom:1px solid var(--line);
+display:flex;gap:18px;align-items:baseline}header b{font-size:17px}header span{color:var(--ink2)}main{padding:20px 26px 48px;
+max-width:1280px;margin:0 auto}.tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}.tile b{display:block;
+font-size:26px}.tile span{color:var(--ink2);font-size:12.5px}table{width:100%;border-collapse:collapse;
+background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}th,td{padding:8px 12px;
+border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--ink2);font-weight:500;font-size:12px}
+.b{display:inline-block;padding:1px 9px;border-radius:99px;font-size:11.5px;font-weight:600}.promoted{background:#3ccf8e22;
+color:var(--ok)}.rolled{background:#ff6b6b22;color:var(--bad)}.blocked{background:#f5b54a22;color:var(--mid)}
+.muted{color:var(--ink2)}h1{font-size:22px;margin:0 0 2px}h2{font-size:13px;color:var(--ink2);text-transform:uppercase;
+letter-spacing:.05em;margin:22px 0 8px}.sub{color:var(--ink2);margin:0 0 14px}.stages{display:flex;gap:8px;flex-wrap:wrap}
+.st{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 12px;min-width:110px}
+.st b{display:block}.st.ok{border-color:#3ccf8e66}.st.fail{border-color:#ff6b6b99;background:#ff6b6b14}
+.st.skip{opacity:.45}.box{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.cols{display:grid;grid-template-columns:1.4fr 1fr;gap:18px}svg text{fill:var(--ink2);font-size:11px}
+.legend{display:flex;gap:16px;color:var(--ink2);font-size:12.5px;margin:6px 0}.sw{display:inline-block;width:12px;
+height:3px;vertical-align:middle;margin-right:6px}code{background:#0f141c;padding:1px 6px;border-radius:5px}
+@media(max-width:900px){.cols,.tiles{grid-template-columns:1fr}}
+</style><div style="position:sticky;top:0;z-index:99;background:#1d2633;color:#e8edf4;border-bottom:1px solid #33415a;font:13px/1.45 Inter,system-ui,sans-serif;padding:8px 18px;display:flex;gap:14px;flex-wrap:wrap;align-items:center"><b style="color:#8fd3a8">Live demo</b><span>Autonomous Software Delivery Platform &middot; synthetic data &middot; a read-only snapshot of the running app. Forms are switched off here; run it from the repository to try them.</span><a style="color:#9cc2ff" href="https://israelrocklyn.info/work/autonomous-software-delivery">About the project</a><a style="color:#9cc2ff" href="https://github.com/codeROCK-IZZY/autonomous-software-delivery">Code on GitHub</a></div><header><b>Delivery</b><span>progressive rollouts with automatic rollback</span><a href='../index.html' class='muted'>Deployments</a></header><main><h1>Password rules from the new policy <span class='b blocked'>blocked</span></h1><p class='sub'>D-0004 · accounts-api · feature by l.novak · risk standard · <code>apps/app3/m11</code>, <code>services/service10/m22</code></p><div class='stages'><div class='st fail'><b>Guardrails</b><span class='muted'>blocked</span></div><div class='st skip'><b>Build</b><span class='muted'>—</span></div><div class='st skip'><b>Tests</b><span class='muted'>11 of 816</span></div></div><div class='cols'><div></div><div><h2>Guardrails</h2><div class='box'><ul><li>the error budget is spent (-7% left); only fixes ship</li></ul></div></div></div></main></html>
