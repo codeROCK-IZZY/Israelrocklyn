@@ -1,0 +1,1 @@
+An incident fixed by a runbook: the database found as the cause behind the callers' alerts, with the evidence, the verified action and the updates.

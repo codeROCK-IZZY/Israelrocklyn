@@ -1146,6 +1146,52 @@ return [
             'Blast-radius precision is 0.80: dependencies left in config after removal still count.',
         ],
     ],
+    'ai-incident-response' => [
+        'title' => 'AI Cloud Incident Response',
+        'area' => 'ai',
+        'featured' => false,
+        'tagline' => 'Turns an alert storm into one page with the likely cause, its evidence and a verified fix.',
+        'problem' => 'When a cloud system breaks, twenty alerts fire at once and the loudest service is usually a victim: retries make callers look worse than the failing service, and a harmless deploy nearby looks guilty. On-call loses the first hour working out where to look.',
+        'built' => [
+            'Alerts grouped into incidents through the dependency graph and what services log about each other, and causes ranked by following \'my dependency failed\' messages down to the service that blames nothing, confirmed by its own errors, recent changes and timing.',
+            'Guarded runbooks for known faults (rollback, config revert, failover, disk): diagnosis margin, pre-checks, approval for medium risk, verification and automatic revert; on-call paged at once with the ranked causes.',
+            'Responder and status-page updates written by Claude from numbered facts; updates that invent services or numbers, or name internal systems to customers, are replaced.',
+        ],
+        'results' => [
+            [
+                '100%',
+                'of root causes ranked first on held-out incidents (biggest spike: 52%, most alerts: 22.5%)',
+            ],
+            ['24 vs 51 min', 'median time to mitigate vs checking services by alert count'],
+            ['0', 'automatic actions on fault kinds without a runbook; 187 runbooks verified, none reverted'],
+        ],
+        'stack' => ['Python', 'NumPy', 'Claude API', 'FastAPI', 'Docker'],
+        'image' => 'incident-response.webp',
+        'image_alt' => 'An incident: the error rate of the services involved, ranked causes with evidence, the runbook that fixed it and the updates',
+        'repo' => GH . 'ai-incident-response',
+        'run' => [
+            'pip install -e ".[dev]" && pytest',
+            'incident evaluate --gate                   # writes eval/reports/report.html',
+        ],
+        'local_url' => '',
+        'hop' => ['host' => 'oncall.incidents', 'role' => 'Finding what broke first when everything is alerting', 'value' => '24 min', 'label' => 'median time to mitigate'],
+        'flow' => [
+            'Alerts',
+            'Group by graph and logs',
+            'Rank causes with evidence',
+            'Page on-call',
+            'Guarded runbook + verify',
+            'Checked updates',
+        ],
+        'lessons' => [
+            'The first simulator let even \'biggest spike\' find every cause; adding retries, red-herring deploys and bare timeouts made it honest, and treating timeouts as symptoms lifted ranking from 78% to 99% on the tuning set.',
+            'The held-back run showed automation delaying the page on unfamiliar faults (43 vs 28 minutes); on-call is now paged at once and automation runs alongside.',
+        ],
+        'limits' => [
+            'A simulator with single faults and tidier logs than production; 100% is a design check, not a production accuracy.',
+            'Grouping still splits about a quarter of faults across two pages.',
+        ],
+    ],
     'enterprise-aws-cloud-platform' => [
         'title' => 'Enterprise AWS Cloud Platform',
         'area' => 'platform',
