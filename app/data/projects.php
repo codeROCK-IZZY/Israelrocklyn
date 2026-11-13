@@ -1692,6 +1692,49 @@ return [
             'One warehouse block and single-order picking; Claude\'s notice reading is not measured.',
         ],
     ],
+    'field-service-management' => [
+        'title' => 'Field Service Management SaaS',
+        'area' => 'platform',
+        'featured' => false,
+        'tagline' => 'Technicians who arrive in the window, with the part on the van.',
+        'problem' => 'Dispatchers often build tomorrow\'s routes by working down the list of bookings, giving each job to the nearest free technician. Technicians end up scattered across the region, driving eats the day, and a quarter of customers wait in for a window that is missed. Vans carry a standard kit, so jobs needing a brand-specific part become two visits.',
+        'built' => [
+            'A planner that places tight windows first, inserts each job where it adds the least driving without making anyone late, then moves jobs between routes; each planner\'s buffer for jobs running long was tuned separately so the baseline is tuned as carefully.',
+            'Van kits with a core every van carries and flexible slots picked for each route from how often each fault on each brand needed each part, smoothed towards the fault on any brand for unseen brands.',
+            'A dispatch console with tomorrow\'s routes on a map, each technician\'s day with parts and probabilities, and job requests read with Claude into the service catalogue and checked.',
+        ],
+        'results' => [
+            [
+                '91.7% vs 75.7%',
+                'appointments kept (done on the booked day, inside the window) on 10 held-out regions',
+            ],
+            ['43% less', 'driving per job (10.7 km vs 18.7)'],
+            [
+                '99.6% vs 72.8%',
+                'first-time fix with a van kit planned for the day vs a standard kit (90.5% with new brands)',
+            ],
+        ],
+        'stack' => ['Python', 'FastAPI', 'NumPy', 'Claude API', 'Docker'],
+        'image' => 'field-service-management.webp',
+        'image_alt' => 'Tomorrow: every technician\'s route on a map, driving, home time and the parts added for the day',
+        'repo' => GH . 'field-service-management',
+        'run' => [
+            'pip install -e ".[dev]" && pytest',
+            'fieldops evaluate --gate                   # writes eval/reports/report.html',
+        ],
+        'local_url' => '',
+        'hop' => ['host' => 'dispatch.fieldops', 'role' => 'Keeping appointments with less driving', 'value' => '91.7%', 'label' => 'appointments kept'],
+        'flow' => ['Job request', 'Catalogue fault', 'Window-first insertion', 'Routes', 'Van kit', 'First-time fix'],
+        'lessons' => [
+            'The first region was too big and too busy for any planner, and an 8-slot van gave the standard kit no chance; both were made realistic before tuning, so neither side won by construction.',
+            'Each planner got its own tuned planning buffer: with none, the optimiser packed routes too tight and ran late.',
+            'The first-time-fix result is near a ceiling by construction (correct diagnosis, few jobs a day); the shifted regions with new brands show where it really loses ground.',
+        ],
+        'limits' => [
+            'Synthetic regions, straight-line travel, no mid-day re-planning.',
+            'Diagnosis at booking assumed correct; Claude\'s reading of requests is not measured.',
+        ],
+    ],
     'enterprise-aws-cloud-platform' => [
         'title' => 'Enterprise AWS Cloud Platform',
         'area' => 'platform',

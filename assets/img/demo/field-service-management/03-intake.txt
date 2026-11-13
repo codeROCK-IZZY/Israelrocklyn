@@ -1,0 +1,1 @@
+A new job request read into skill, fault, brand and window, with the parts it is likely to need.
