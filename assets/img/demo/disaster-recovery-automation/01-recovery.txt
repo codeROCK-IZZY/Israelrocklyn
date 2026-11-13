@@ -1,0 +1,1 @@
+A rehearsed zone outage: the planned recovery against the manual runbook on the same time scale, each tier-1 RTO marked.

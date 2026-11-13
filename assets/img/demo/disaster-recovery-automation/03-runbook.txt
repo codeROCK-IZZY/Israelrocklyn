@@ -1,0 +1,1 @@
+An old runbook checked against the inventory: a retired system and two restores that skip their dependencies.

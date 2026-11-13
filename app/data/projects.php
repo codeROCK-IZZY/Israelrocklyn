@@ -1278,6 +1278,52 @@ return [
             'Terraform is rendered, not applied; approvals are routed, not collected.',
         ],
     ],
+    'disaster-recovery-automation' => [
+        'title' => 'Automated Disaster Recovery',
+        'area' => 'platform',
+        'featured' => false,
+        'tagline' => 'Backups proven by restoring them, recovery orchestrated by dependency, and old runbooks turned into checked plans.',
+        'problem' => 'Every backup job reports success, but key rotations, retention changes, corruption and data growth silently make backups unrestorable, and teams find out during the disaster. Recovery then follows wiki runbooks written years ago, one step at a time, in an order nobody has checked against how the systems depend on each other.',
+        'built' => [
+            'Risk-based restore testing: a few restore tests a week go to the systems where a silent failure is most likely and costly, scored on tier, time since a verified restore, key rotations and projected restore time against the RTO.',
+            'Recovery orchestration over the dependency graph: restores start as soon as what they depend on is back and checked, six at once, with tier-1 priority passed down to what tier-1 systems need, shown as a Gantt chart against each RTO.',
+            'Runbook conversion with Claude through a strict tool, then checked in code against the inventory and the dependency graph, so retired systems, invented steps and unsafe order are listed for a person to fix.',
+        ],
+        'results' => [
+            [
+                '80 vs 331',
+                'tier-1 restores that failed in disasters: risk-based tests vs trusting the job status (held-out)',
+            ],
+            ['65% vs 8.5%', 'of tier-1 systems back within RTO: orchestrated vs manual runbook'],
+            ['32 h vs 133 h', 'median until everything is back after an outage'],
+        ],
+        'stack' => ['Python', 'FastAPI', 'NumPy', 'Claude API', 'Docker'],
+        'image' => 'disaster-recovery.webp',
+        'image_alt' => 'A rehearsed zone outage: the planned recovery against the manual runbook on the same time scale, with each tier-1 RTO marked',
+        'repo' => GH . 'disaster-recovery-automation',
+        'run' => [
+            'pip install -e ".[dev]" && pytest',
+            'drp evaluate --gate                        # writes eval/reports/report.html',
+        ],
+        'local_url' => '',
+        'hop' => ['host' => 'dr.console', 'role' => 'Finding broken backups before the disaster, and recovering in the right order', 'value' => '65%', 'label' => 'tier-1 back within RTO'],
+        'flow' => [
+            'Backup inventory',
+            'Weekly risk score',
+            'Restore tests',
+            'Outage',
+            'Dependency-ordered recovery',
+            'Checked runbooks',
+        ],
+        'lessons' => [
+            'The first orchestrator restored in whole dependency waves; priority scheduling met the same share of tier-1 targets but brought everything back 40% sooner, so it replaced waves.',
+            'On a held-back estate dominated by corruption, risk-based testing only tied round robin and lost on data loss; the score has no signal for corruption, and the README says so.',
+        ],
+        'limits' => [
+            'The manual baseline is a model (one operator, fixed overhead), so the orchestrated-vs-manual gap is overstated.',
+            'Simulated estates; a restore test finds every problem, and runbook conversion has no accuracy evaluation yet.',
+        ],
+    ],
     'enterprise-aws-cloud-platform' => [
         'title' => 'Enterprise AWS Cloud Platform',
         'area' => 'platform',
