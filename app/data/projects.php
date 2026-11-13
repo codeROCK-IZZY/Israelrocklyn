@@ -1546,6 +1546,59 @@ return [
             'Deadlines use US federal holidays; Claude\'s inquiry reading is not measured for accuracy.',
         ],
     ],
+    'property-management-saas' => [
+        'title' => 'Property Management SaaS',
+        'area' => 'platform',
+        'featured' => false,
+        'tagline' => 'Maintenance triage that gets a Friday-night emergency to someone in hours, and a rent ledger that never piles fees on tenants who paid.',
+        'problem' => 'Tenants report problems in their own words at any hour, and the office reads the inbox on weekdays. Keyword rules follow the tenant\'s tone, not the problem, so a burst pipe described calmly waits until Monday. On the money side, applying payments strictly oldest first lets one unpaid late fee eat into every later month\'s rent, so a tenant who pays in full is charged a fee every month and shown owing rent.',
+        'built' => [
+            'Triage of each request into urgency and trade: a hazard lexicon (water escaping, heat or fire, gas, no power, security, structure, cold) as a screen and as features for numpy logistic regressions, with settings chosen by cross-validation that holds out whole phrasings.',
+            'A dispatch simulation of a portfolio\'s month (inbox read three times each weekday, on-call call-backs for flagged requests) to measure how long emergencies wait under each policy.',
+            'A rent ledger in whole cents: proration by days let, one late fee per month after grace, payments to rent before fees, credit carried forward, and owner statements; plus a FastAPI console and an optional Claude second reading that may raise urgency but never lower it.',
+        ],
+        'results' => [
+            [
+                '97% vs 51%',
+                'of emergencies attended within 4 hours, triage vs inbox order, on phrasings written after the freeze',
+            ],
+            [
+                '90% vs 15%',
+                'of emergency messages caught on unseen wording, triage vs keyword rules (19% false alarms)',
+            ],
+            [
+                '0 vs 1,756',
+                'late fees charged while all rent was paid: rent-first vs oldest-first allocation',
+            ],
+        ],
+        'stack' => ['Python', 'FastAPI', 'NumPy', 'Claude API', 'Docker'],
+        'image' => 'property-management-saas.webp',
+        'image_alt' => 'The maintenance board after a weekend: requests sent to on-call, urgent jobs to dispatch, routine jobs to schedule',
+        'repo' => GH . 'property-management-saas',
+        'run' => [
+            'pip install -e ".[dev]" && pytest',
+            'propman evaluate --gate                    # writes eval/reports/report.html',
+        ],
+        'local_url' => '',
+        'hop' => ['host' => 'maint.keyhold', 'role' => 'Getting a night-time emergency to on-call', 'value' => '97%', 'label' => 'emergencies within 4 h'],
+        'flow' => [
+            'Tenant message',
+            'Hazard screen',
+            'Urgency + trade model',
+            'On-call or inbox',
+            'Rent ledger',
+            'Owner statement',
+        ],
+        'lessons' => [
+            'A word model was perfect on new messages that reused its training sentences and caught 30% of emergencies on new phrasings; splitting by phrasing, not by message, exposed it.',
+            'A fresh phrasing set written after the freeze commit is the test; one limit set in advance (night false alarms 3.0 a week) was missed at 3.1 and reported, not tuned away.',
+            'The console caught \'smoke alarm battery chirps\' flagged as fire; equipment names are now ignored by the screen, every bank was rerun and the change is in the ADR.',
+        ],
+        'limits' => [
+            'Synthetic messages by one author; real tenant messages would be the real test.',
+            'The dispatch simulation assumes contractors are always available; Claude\'s reading is not measured.',
+        ],
+    ],
     'enterprise-aws-cloud-platform' => [
         'title' => 'Enterprise AWS Cloud Platform',
         'area' => 'platform',
