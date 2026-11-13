@@ -1,0 +1,1 @@
+A workload: which violations were fixed automatically and which need a decision, CPU use against today's and the recommended request, and the manifest before and after.

@@ -1,0 +1,1 @@
+Upgrade blockers per cluster along the one-minor-at-a-time upgrade path, with the replacement API.

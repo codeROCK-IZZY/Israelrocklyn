@@ -1,0 +1,142 @@
+<!doctype html><html lang='en'><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><meta name='robots' content='noindex'><title>Pod/svc-5</title><style>
+:root{--bg:#0c1117;--panel:#151c25;--line:#26303f;--ink:#e8edf4;--ink2:#97a3b6;--hi:#ff6b6b;--md:#f5b54a;--lo:#7aa2ff;
+--ok:#3ccf8e;--acc:#7aa2ff}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);
+font:14px/1.5 Inter,system-ui,sans-serif}a{color:inherit}header{padding:14px 26px;border-bottom:1px solid var(--line);
+display:flex;gap:18px;align-items:baseline}header b{font-size:17px}header nav a{color:var(--ink2);text-decoration:none;
+margin-right:14px}main{padding:20px 26px 48px;max-width:1280px;margin:0 auto}.tiles{display:grid;
+grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.tile{background:var(--panel);border:1px solid var(--line);
+border-radius:12px;padding:14px 16px}.tile b{display:block;font-size:26px}.tile span{color:var(--ink2);font-size:12.5px}
+table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:12px;
+overflow:hidden;margin-bottom:16px}th,td{padding:7px 12px;border-bottom:1px solid var(--line);text-align:left;
+vertical-align:top}th{color:var(--ink2);font-weight:500;font-size:12px}.muted{color:var(--ink2)}.b{display:inline-block;
+padding:1px 8px;border-radius:99px;font-size:11.5px;font-weight:600;margin:1px 3px 1px 0}.high{background:#ff6b6b22;
+color:var(--hi)}.medium{background:#f5b54a22;color:var(--md)}.low{background:#7aa2ff22;color:var(--lo)}.ok{
+background:#3ccf8e22;color:var(--ok)}h1{font-size:22px;margin:0 0 4px}h2{font-size:13px;color:var(--ink2);
+text-transform:uppercase;letter-spacing:.05em;margin:22px 0 8px}.cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+pre{background:#0f141c;border:1px solid var(--line);border-radius:10px;padding:12px;font-size:12px;max-height:520px;
+overflow:auto}.box{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+svg text{fill:var(--ink2);font-size:11px}.legend{display:flex;gap:14px;color:var(--ink2);font-size:12.5px}
+.sw{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:6px}
+@media(max-width:900px){.cols,.tiles{grid-template-columns:1fr}}
+</style><div style="position:sticky;top:0;z-index:99;background:#1d2633;color:#e8edf4;border-bottom:1px solid #33415a;font:13px/1.45 Inter,system-ui,sans-serif;padding:8px 18px;display:flex;gap:14px;flex-wrap:wrap;align-items:center"><b style="color:#8fd3a8">Live demo</b><span>Enterprise Kubernetes Management &middot; synthetic data &middot; a read-only snapshot of the running app. Forms are switched off here; run it from the repository to try them.</span><a style="color:#9cc2ff" href="https://israelrocklyn.info/work/kubernetes-management-platform">About the project</a><a style="color:#9cc2ff" href="https://github.com/codeROCK-IZZY/kubernetes-management-platform">Code on GitHub</a></div><header><b>Fleet</b><nav><a href='../index.html'>Clusters</a><a href='../workloads.html'>Workloads</a><a href='../upgrades.html'>Upgrades</a></nav></header><main><h1>Pod/svc-5</h1><p class='muted'>staging · <span class='b high'>1 high</span></p><table><tr><th>Severity</th><th>Problem</th><th>Fix</th><th>Status</th></tr><tr><td><span class='b high'>high</span></td><td>Container runs privileged<div class='muted'>svc-5-1</div></td><td class='muted'>Set securityContext.privileged to false.</td><td>fixed automatically</td></tr></table><div class='cols'><div><h2>Manifest</h2><pre>apiVersion: v1
+kind: Pod
+metadata:
+  name: svc-5
+  labels:
+    app: svc-5
+spec:
+  containers:
+  - name: svc-5-0
+    image: registry.example.com/team/svc-5-0:1.1.3
+    ports:
+    - containerPort: 8080
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 10001
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 1000m
+        memory: 1024Mi
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: 8080
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+  - name: svc-5-1
+    image: registry.example.com/team/svc-5-1:1.8.3
+    ports:
+    - containerPort: 8080
+    securityContext:
+      privileged: true
+      runAsNonRoot: true
+      runAsUser: 10001
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 1000m
+        memory: 1024Mi
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: 8080
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+</pre></div><div><h2>After the automatic fixes (checked again: 1 fixed, 0 introduced)</h2><pre>apiVersion: v1
+kind: Pod
+metadata:
+  name: svc-5
+  labels:
+    app: svc-5
+spec:
+  containers:
+  - name: svc-5-0
+    image: registry.example.com/team/svc-5-0:1.1.3
+    ports:
+    - containerPort: 8080
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 10001
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 1000m
+        memory: 1024Mi
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: 8080
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+  - name: svc-5-1
+    image: registry.example.com/team/svc-5-1:1.8.3
+    ports:
+    - containerPort: 8080
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 10001
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 1000m
+        memory: 1024Mi
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: 8080
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+</pre></div></div></main></html>

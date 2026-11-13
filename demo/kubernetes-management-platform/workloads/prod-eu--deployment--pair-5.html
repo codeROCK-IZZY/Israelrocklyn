@@ -1,0 +1,106 @@
+<!doctype html><html lang='en'><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><meta name='robots' content='noindex'><title>Deployment/pair-5</title><style>
+:root{--bg:#0c1117;--panel:#151c25;--line:#26303f;--ink:#e8edf4;--ink2:#97a3b6;--hi:#ff6b6b;--md:#f5b54a;--lo:#7aa2ff;
+--ok:#3ccf8e;--acc:#7aa2ff}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);
+font:14px/1.5 Inter,system-ui,sans-serif}a{color:inherit}header{padding:14px 26px;border-bottom:1px solid var(--line);
+display:flex;gap:18px;align-items:baseline}header b{font-size:17px}header nav a{color:var(--ink2);text-decoration:none;
+margin-right:14px}main{padding:20px 26px 48px;max-width:1280px;margin:0 auto}.tiles{display:grid;
+grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.tile{background:var(--panel);border:1px solid var(--line);
+border-radius:12px;padding:14px 16px}.tile b{display:block;font-size:26px}.tile span{color:var(--ink2);font-size:12.5px}
+table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:12px;
+overflow:hidden;margin-bottom:16px}th,td{padding:7px 12px;border-bottom:1px solid var(--line);text-align:left;
+vertical-align:top}th{color:var(--ink2);font-weight:500;font-size:12px}.muted{color:var(--ink2)}.b{display:inline-block;
+padding:1px 8px;border-radius:99px;font-size:11.5px;font-weight:600;margin:1px 3px 1px 0}.high{background:#ff6b6b22;
+color:var(--hi)}.medium{background:#f5b54a22;color:var(--md)}.low{background:#7aa2ff22;color:var(--lo)}.ok{
+background:#3ccf8e22;color:var(--ok)}h1{font-size:22px;margin:0 0 4px}h2{font-size:13px;color:var(--ink2);
+text-transform:uppercase;letter-spacing:.05em;margin:22px 0 8px}.cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+pre{background:#0f141c;border:1px solid var(--line);border-radius:10px;padding:12px;font-size:12px;max-height:520px;
+overflow:auto}.box{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+svg text{fill:var(--ink2);font-size:11px}.legend{display:flex;gap:14px;color:var(--ink2);font-size:12.5px}
+.sw{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:6px}
+@media(max-width:900px){.cols,.tiles{grid-template-columns:1fr}}
+</style><div style="position:sticky;top:0;z-index:99;background:#1d2633;color:#e8edf4;border-bottom:1px solid #33415a;font:13px/1.45 Inter,system-ui,sans-serif;padding:8px 18px;display:flex;gap:14px;flex-wrap:wrap;align-items:center"><b style="color:#8fd3a8">Live demo</b><span>Enterprise Kubernetes Management &middot; synthetic data &middot; a read-only snapshot of the running app. Forms are switched off here; run it from the repository to try them.</span><a style="color:#9cc2ff" href="https://israelrocklyn.info/work/kubernetes-management-platform">About the project</a><a style="color:#9cc2ff" href="https://github.com/codeROCK-IZZY/kubernetes-management-platform">Code on GitHub</a></div><header><b>Fleet</b><nav><a href='../index.html'>Clusters</a><a href='../workloads.html'>Workloads</a><a href='../upgrades.html'>Upgrades</a></nav></header><main><h1>Deployment/pair-5</h1><p class='muted'>prod-eu · <span class='b high'>1 high</span></p><table><tr><th>Severity</th><th>Problem</th><th>Fix</th><th>Status</th></tr><tr><td><span class='b high'>high</span></td><td>Container runs privileged<div class='muted'>two</div></td><td class='muted'>Set securityContext.privileged to false.</td><td>fixed automatically</td></tr></table><h2>CPU use and requests</h2><div class='box'><div class='legend'><span><i class='sw' style='background:#7aa2ff'></i>CPU used (hourly peak, cores)</span><span><i class='sw' style='background:#ff6b6b'></i>requested today</span><span><i class='sw' style='background:#3ccf8e'></i>recommended</span></div><svg viewBox='0 0 760 214' width='100%' role='img' aria-label='CPU use against today and the recommended request'><line x1='46' x2='750' y1='190.0' y2='190.0' stroke='#26303f'/><text x='40' y='194.0' text-anchor='end'>0.00</text><line x1='46' x2='750' y1='145.0' y2='145.0' stroke='#26303f'/><text x='40' y='149.0' text-anchor='end'>0.25</text><line x1='46' x2='750' y1='100.0' y2='100.0' stroke='#26303f'/><text x='40' y='104.0' text-anchor='end'>0.51</text><line x1='46' x2='750' y1='55.0' y2='55.0' stroke='#26303f'/><text x='40' y='59.0' text-anchor='end'>0.76</text><line x1='46' x2='750' y1='10.0' y2='10.0' stroke='#26303f'/><text x='40' y='14.0' text-anchor='end'>1.02</text><polyline points='46.0,161.4 47.0,161.7 48.1,160.7 49.1,160.9 50.2,161.6 51.2,159.1 52.3,160.8 53.3,157.6 54.4,149.7 55.4,138.8 56.5,138.3 57.5,128.9 58.6,130.8 59.6,120.2 60.7,123.2 61.7,123.2 62.8,125.0 63.8,133.2 64.9,125.9 65.9,141.2 67.0,145.3 68.0,159.2 69.1,159.8 70.1,161.8 71.2,159.3 72.2,160.1 73.3,162.8 74.3,161.2 75.4,161.0 76.4,160.5 77.5,162.3 78.5,156.4 79.6,148.5 80.6,143.8 81.7,136.0 82.7,127.2 83.8,120.8 84.8,122.5 85.9,120.6 86.9,122.1 88.0,127.5 89.0,130.3 90.1,135.0 91.1,143.1 92.2,150.2 93.2,153.5 94.3,160.3 95.3,160.5 96.4,160.6 97.4,159.7 98.5,161.0 99.5,155.0 100.6,160.8 101.6,158.3 102.7,160.7 103.7,156.5 104.8,148.3 105.8,141.9 106.9,134.7 107.9,130.8 109.0,123.4 110.0,120.4 111.0,122.0 112.1,124.2 113.1,124.6 114.2,129.9 115.2,131.2 116.3,141.1 117.3,148.3 118.4,159.4 119.4,160.2 120.5,161.1 121.5,160.0 122.6,160.8 123.6,162.4 124.7,161.1 125.7,162.4 126.8,160.3 127.8,160.3 128.9,157.5 129.9,152.0 131.0,142.0 132.0,134.8 133.1,132.6 134.1,126.1 135.2,122.1 136.2,120.4 137.3,120.1 138.3,126.2 139.4,132.3 140.4,136.6 141.5,143.0 142.5,148.0 143.6,158.1 144.6,159.3 145.7,158.7 146.7,160.8 147.8,162.4 148.8,159.2 149.9,160.5 150.9,159.5 152.0,161.3 153.0,161.1 154.1,155.7 155.1,150.3 156.2,139.4 157.2,133.1 158.3,129.2 159.3,125.0 160.4,121.1 161.4,122.2 162.5,120.9 163.5,124.3 164.6,131.2 165.6,134.3 166.7,140.7 167.7,149.6 168.8,160.8 169.8,159.1 170.9,157.1 171.9,168.4 173.0,167.9 174.0,169.2 175.0,169.4 176.1,168.2 177.1,170.3 178.2,168.8 179.2,166.1 180.3,162.8 181.3,156.2 182.4,153.3 183.4,149.6 184.5,146.7 185.5,143.9 186.6,142.4 187.6,141.9 188.7,144.9 189.7,147.3 190.8,150.4 191.8,155.4 192.9,162.4 193.9,167.8 195.0,169.1 196.0,169.6 197.1,169.1 198.1,169.0 199.2,167.2 200.2,170.1 201.3,169.1 202.3,171.0 203.4,169.1 204.4,166.3 205.5,162.2 206.5,156.7 207.6,152.2 208.6,148.1 209.7,143.3 210.7,144.9 211.8,141.5 212.8,140.3 213.9,142.5 214.9,148.6 216.0,150.0 217.0,156.7 218.1,161.2 219.1,167.7 220.2,169.3 221.2,168.5 222.3,161.7 223.3,161.2 224.4,161.7 225.4,160.7 226.5,158.9 227.5,162.0 228.6,160.8 229.6,154.4 230.7,150.0 231.7,140.7 232.8,135.1 233.8,125.6 234.9,124.3 235.9,125.1 237.0,124.4 238.0,121.7 239.0,124.2 240.1,128.7 241.1,135.7 242.2,144.8 243.2,149.3 244.3,155.9 245.3,158.9 246.4,159.5 247.4,161.6 248.5,161.8 249.5,158.8 250.6,160.5 251.6,161.2 252.7,155.9 253.7,160.2 254.8,155.6 255.8,150.7 256.9,136.9 257.9,135.0 259.0,126.0 260.0,129.0 261.1,123.6 262.1,123.1 263.2,125.0 264.2,127.0 265.3,128.5 266.3,134.4 267.4,144.6 268.4,152.3 269.5,157.9 270.5,160.3 271.6,158.5 272.6,161.8 273.7,159.7 274.7,160.6 275.8,158.8 276.8,160.2 277.9,159.8 278.9,160.6 280.0,156.3 281.0,149.7 282.1,141.6 283.1,135.9 284.2,130.8 285.2,122.2 286.3,121.5 287.3,121.0 288.4,120.4 289.4,127.8 290.5,124.6 291.5,137.5 292.6,137.3 293.6,151.0 294.7,157.1 295.7,159.6 296.8,160.7 297.8,157.3 298.9,160.2 299.9,158.4 301.0,160.0 302.0,158.9 303.0,160.9 304.1,161.1 305.1,156.2 306.2,147.6 307.2,138.8 308.3,135.8 309.3,128.7 310.4,125.9 311.4,124.6 312.5,121.9 313.5,123.1 314.6,126.2 315.6,131.6 316.7,136.6 317.7,140.9 318.8,149.9 319.8,157.6 320.9,161.0 321.9,160.9 323.0,161.4 324.0,160.7 325.1,161.4 326.1,161.8 327.2,160.0 328.2,160.7 329.3,159.6 330.3,156.2 331.4,147.3 332.4,142.8 333.5,136.8 334.5,126.2 335.6,121.7 336.6,123.4 337.7,122.8 338.7,119.9 339.8,125.1 340.8,125.8 341.9,131.9 342.9,141.0 344.0,152.0 345.0,158.3 346.1,158.8 347.1,157.2 348.2,170.6 349.2,170.3 350.3,169.9 351.3,168.5 352.4,170.7 353.4,169.5 354.5,168.4 355.5,167.2 356.6,162.0 357.6,156.8 358.7,152.3 359.7,147.0 360.8,144.7 361.8,141.7 362.9,141.8 363.9,142.4 365.0,143.1 366.0,146.8 367.0,151.9 368.1,152.9 369.1,161.8 370.2,168.6 371.2,170.1 372.3,169.8 373.3,169.8 374.4,169.8 375.4,167.9 376.5,169.8 377.5,170.1 378.6,170.7 379.6,168.7 380.7,167.3 381.7,160.2 382.8,154.8 383.8,152.3 384.9,145.3 385.9,143.8 387.0,144.6 388.0,141.3 389.1,141.0 390.1,141.2 391.2,148.5 392.2,151.0 393.3,156.2 394.3,161.8 395.4,168.4 396.4,169.4 397.5,170.6 398.5,160.9 399.6,161.0 400.6,159.9 401.7,160.7 402.7,161.7 403.8,159.9 404.8,161.9 405.9,156.2 406.9,149.4 408.0,141.9 409.0,137.9 410.1,130.6 411.1,127.9 412.2,123.0 413.2,124.3 414.3,121.2 415.3,128.7 416.4,128.1 417.4,135.6 418.5,138.5 419.5,146.3 420.6,154.7 421.6,159.6 422.7,162.3 423.7,163.0 424.8,160.5 425.8,161.5 426.9,161.1 427.9,160.4 429.0,160.1 430.0,161.3 431.0,156.6 432.1,144.1 433.1,139.8 434.2,133.4 435.2,129.9 436.3,127.1 437.3,119.9 438.4,116.6 439.4,116.3 440.5,129.5 441.5,127.8 442.6,134.7 443.6,141.2 444.7,150.6 445.7,159.9 446.8,158.9 447.8,159.5 448.9,162.1 449.9,161.3 451.0,159.6 452.0,161.1 453.1,160.9 454.1,159.7 455.2,162.3 456.2,157.2 457.3,146.1 458.3,138.6 459.4,133.5 460.4,131.2 461.5,126.7 462.5,119.2 463.6,114.5 464.6,125.2 465.7,126.2 466.7,126.9 467.8,134.8 468.8,141.6 469.9,150.6 470.9,156.1 472.0,160.2 473.0,159.6 474.1,161.9 475.1,161.9 476.2,162.6 477.2,161.2 478.3,159.5 479.3,160.2 480.4,160.8 481.4,158.3 482.5,145.8 483.5,138.2 484.6,137.2 485.6,128.7 486.7,120.8 487.7,119.9 488.8,121.7 489.8,123.4 490.9,127.8 491.9,131.2 493.0,131.2 494.0,142.5 495.0,151.4 496.1,158.0 497.1,160.2 498.2,161.0 499.2,160.5 500.3,161.6 501.3,160.6 502.4,160.5 503.4,160.5 504.5,159.3 505.5,160.3 506.6,156.3 507.6,150.8 508.7,138.2 509.7,131.0 510.8,126.2 511.8,119.2 512.9,127.4 513.9,121.4 515.0,125.2 516.0,129.2 517.1,127.7 518.1,139.0 519.2,138.6 520.2,147.5 521.3,153.0 522.3,161.2 523.4,161.5 524.4,169.5 525.5,168.7 526.5,169.4 527.6,166.9 528.6,169.4 529.7,170.0 530.7,168.7 531.8,166.1 532.8,162.4 533.9,156.4 534.9,152.6 536.0,148.2 537.0,144.2 538.1,142.9 539.1,138.6 540.2,143.6 541.2,145.2 542.3,148.3 543.3,152.2 544.4,158.0 545.4,163.2 546.5,167.2 547.5,170.5 548.6,168.1 549.6,169.0 550.7,169.5 551.7,170.0 552.8,170.0 553.8,169.6 554.9,169.6 555.9,168.8 557.0,166.4 558.0,162.7 559.0,156.5 560.1,149.4 561.1,148.0 562.2,143.8 563.2,145.2 564.3,141.5 565.3,145.3 566.4,144.5 567.4,146.6 568.5,153.9 569.5,154.6 570.6,161.0 571.6,168.9 572.7,169.9 573.7,169.0 574.8,160.3 575.8,159.8 576.9,159.1 577.9,161.1 579.0,159.7 580.0,160.1 581.1,161.2 582.1,157.2 583.2,147.0 584.2,142.0 585.3,136.5 586.3,127.0 587.4,124.8 588.4,121.9 589.5,121.6 590.5,124.8 591.6,123.7 592.6,130.4 593.7,134.7 594.7,137.8 595.8,151.7 596.8,157.4 597.9,159.9 598.9,161.9 600.0,160.6 601.0,157.1 602.1,163.0 603.1,161.4 604.2,160.0 605.2,161.5 606.3,159.5 607.3,157.8 608.4,146.2 609.4,142.7 610.5,134.0 611.5,124.4 612.6,122.3 613.6,123.3 614.7,122.4 615.7,119.1 616.8,126.5 617.8,130.6 618.9,135.4 619.9,140.7 621.0,145.0 622.0,155.4 623.0,161.6 624.1,159.4 625.1,161.7 626.2,161.7 627.2,161.5 628.3,160.6 629.3,160.6 630.4,157.5 631.4,158.8 632.5,157.9 633.5,149.4 634.6,143.7 635.6,129.8 636.7,130.3 637.7,126.7 638.8,120.6 639.8,122.7 640.9,120.4 641.9,120.6 643.0,123.5 644.0,134.9 645.1,140.6 646.1,150.1 647.2,156.2 648.2,161.4 649.3,160.3 650.3,161.3 651.4,158.6 652.4,159.8 653.5,160.2 654.5,160.8 655.6,160.0 656.6,161.0 657.7,159.6 658.7,148.3 659.8,138.2 660.8,130.6 661.9,127.7 662.9,121.7 664.0,125.0 665.0,119.8 666.1,118.8 667.1,120.0 668.2,128.9 669.2,136.0 670.3,142.1 671.3,149.2 672.4,158.4 673.4,162.5 674.5,158.7 675.5,159.2 676.6,163.3 677.6,162.9 678.7,161.6 679.7,160.9 680.8,161.1 681.8,158.2 682.9,154.9 683.9,151.7 685.0,142.3 686.0,131.9 687.0,126.3 688.1,121.9 689.1,125.5 690.2,120.8 691.2,122.5 692.3,124.3 693.3,127.0 694.4,133.4 695.4,143.7 696.5,146.3 697.5,158.8 698.6,161.2 699.6,161.9 700.7,169.5 701.7,169.7 702.8,170.5 703.8,168.7 704.9,169.3 705.9,170.1 707.0,168.4 708.0,167.1 709.1,161.9 710.1,150.2 711.2,151.8 712.2,148.1 713.3,142.1 714.3,145.5 715.4,143.9 716.4,141.4 717.5,144.5 718.5,143.2 719.6,151.1 720.6,157.2 721.7,159.2 722.7,167.2 723.8,169.7 724.8,169.6 725.9,169.7 726.9,170.1 728.0,169.8 729.0,170.8 730.1,170.3 731.1,168.5 732.2,169.2 733.2,167.8 734.3,158.7 735.3,155.9 736.4,149.8 737.4,146.7 738.5,144.6 739.5,141.4 740.6,141.2 741.6,145.0 742.7,142.1 743.7,149.3 744.8,149.6 745.8,155.5 746.9,161.8 747.9,168.2 749.0,169.9 750.0,168.5' fill='none' stroke='#7aa2ff' stroke-width='1.5'/><line x1='46' x2='750' y1='26.4' y2='26.4' stroke='#ff6b6b' stroke-width='2'/><line x1='46' x2='750' y1='115.9' y2='115.9' stroke='#3ccf8e' stroke-width='2'/><line x1='398.5' x2='398.5' y1='10' y2='190' stroke='#97a3b6' stroke-dasharray='4 3'/><text x='402.5' y='22'>recommended from the weeks before this line</text><text x='46' y='208'>4 weeks</text></svg></div><div class='cols'><div><h2>Manifest</h2><pre>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pair-5
+spec:
+  selector:
+    matchLabels:
+      app: pair
+  template:
+    metadata:
+      labels:
+        app: pair
+    spec:
+      containers:
+      - name: one
+        image: registry.example.com/pair/one:1.0.5
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 10001
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+        resources: &amp;id001
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        readinessProbe: &amp;id002
+          httpGet:
+            path: /ready
+            port: 8080
+      - name: two
+        image: registry.example.com/pair/two:1.0.5
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 10001
+          allowPrivilegeEscalation: false
+          privileged: true
+        resources: *id001
+        readinessProbe: *id002
+</pre></div><div><h2>After the automatic fixes (checked again: 1 fixed, 0 introduced)</h2><pre>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pair-5
+spec:
+  selector:
+    matchLabels:
+      app: pair
+  template:
+    metadata:
+      labels:
+        app: pair
+    spec:
+      containers:
+      - name: one
+        image: registry.example.com/pair/one:1.0.5
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 10001
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+        resources: &amp;id001
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        readinessProbe: &amp;id002
+          httpGet:
+            path: /ready
+            port: 8080
+      - name: two
+        image: registry.example.com/pair/two:1.0.5
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 10001
+          allowPrivilegeEscalation: false
+        resources: *id001
+        readinessProbe: *id002
+</pre></div></div></main></html>

@@ -1,0 +1,112 @@
+<!doctype html><html lang='en'><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><meta name='robots' content='noindex'><title>Deployment/svc-11</title><style>
+:root{--bg:#0c1117;--panel:#151c25;--line:#26303f;--ink:#e8edf4;--ink2:#97a3b6;--hi:#ff6b6b;--md:#f5b54a;--lo:#7aa2ff;
+--ok:#3ccf8e;--acc:#7aa2ff}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);
+font:14px/1.5 Inter,system-ui,sans-serif}a{color:inherit}header{padding:14px 26px;border-bottom:1px solid var(--line);
+display:flex;gap:18px;align-items:baseline}header b{font-size:17px}header nav a{color:var(--ink2);text-decoration:none;
+margin-right:14px}main{padding:20px 26px 48px;max-width:1280px;margin:0 auto}.tiles{display:grid;
+grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.tile{background:var(--panel);border:1px solid var(--line);
+border-radius:12px;padding:14px 16px}.tile b{display:block;font-size:26px}.tile span{color:var(--ink2);font-size:12.5px}
+table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:12px;
+overflow:hidden;margin-bottom:16px}th,td{padding:7px 12px;border-bottom:1px solid var(--line);text-align:left;
+vertical-align:top}th{color:var(--ink2);font-weight:500;font-size:12px}.muted{color:var(--ink2)}.b{display:inline-block;
+padding:1px 8px;border-radius:99px;font-size:11.5px;font-weight:600;margin:1px 3px 1px 0}.high{background:#ff6b6b22;
+color:var(--hi)}.medium{background:#f5b54a22;color:var(--md)}.low{background:#7aa2ff22;color:var(--lo)}.ok{
+background:#3ccf8e22;color:var(--ok)}h1{font-size:22px;margin:0 0 4px}h2{font-size:13px;color:var(--ink2);
+text-transform:uppercase;letter-spacing:.05em;margin:22px 0 8px}.cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+pre{background:#0f141c;border:1px solid var(--line);border-radius:10px;padding:12px;font-size:12px;max-height:520px;
+overflow:auto}.box{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+svg text{fill:var(--ink2);font-size:11px}.legend{display:flex;gap:14px;color:var(--ink2);font-size:12.5px}
+.sw{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:6px}
+@media(max-width:900px){.cols,.tiles{grid-template-columns:1fr}}
+</style><div style="position:sticky;top:0;z-index:99;background:#1d2633;color:#e8edf4;border-bottom:1px solid #33415a;font:13px/1.45 Inter,system-ui,sans-serif;padding:8px 18px;display:flex;gap:14px;flex-wrap:wrap;align-items:center"><b style="color:#8fd3a8">Live demo</b><span>Enterprise Kubernetes Management &middot; synthetic data &middot; a read-only snapshot of the running app. Forms are switched off here; run it from the repository to try them.</span><a style="color:#9cc2ff" href="https://israelrocklyn.info/work/kubernetes-management-platform">About the project</a><a style="color:#9cc2ff" href="https://github.com/codeROCK-IZZY/kubernetes-management-platform">Code on GitHub</a></div><header><b>Fleet</b><nav><a href='../index.html'>Clusters</a><a href='../workloads.html'>Workloads</a><a href='../upgrades.html'>Upgrades</a></nav></header><main><h1>Deployment/svc-11</h1><p class='muted'>prod-eu · <span class='b high'>1 high</span></p><table><tr><th>Severity</th><th>Problem</th><th>Fix</th><th>Status</th></tr><tr><td><span class='b high'>high</span></td><td>Container runs privileged<div class='muted'>svc-11</div></td><td class='muted'>Set securityContext.privileged to false.</td><td>fixed automatically</td></tr></table><h2>CPU use and requests</h2><div class='box'><div class='legend'><span><i class='sw' style='background:#7aa2ff'></i>CPU used (hourly peak, cores)</span><span><i class='sw' style='background:#ff6b6b'></i>requested today</span><span><i class='sw' style='background:#3ccf8e'></i>recommended</span></div><svg viewBox='0 0 760 214' width='100%' role='img' aria-label='CPU use against today and the recommended request'><line x1='46' x2='750' y1='190.0' y2='190.0' stroke='#26303f'/><text x='40' y='194.0' text-anchor='end'>0.00</text><line x1='46' x2='750' y1='145.0' y2='145.0' stroke='#26303f'/><text x='40' y='149.0' text-anchor='end'>0.06</text><line x1='46' x2='750' y1='100.0' y2='100.0' stroke='#26303f'/><text x='40' y='104.0' text-anchor='end'>0.12</text><line x1='46' x2='750' y1='55.0' y2='55.0' stroke='#26303f'/><text x='40' y='59.0' text-anchor='end'>0.18</text><line x1='46' x2='750' y1='10.0' y2='10.0' stroke='#26303f'/><text x='40' y='14.0' text-anchor='end'>0.24</text><polyline points='46.0,104.5 47.0,102.5 48.1,108.2 49.1,108.0 50.2,105.6 51.2,100.6 52.3,108.3 53.3,101.5 54.4,100.9 55.4,106.8 56.5,97.1 57.5,107.3 58.6,107.7 59.6,103.1 60.7,104.7 61.7,105.5 62.8,112.6 63.8,102.4 64.9,105.0 65.9,105.4 67.0,106.2 68.0,103.8 69.1,103.4 70.1,104.4 71.2,103.1 72.2,111.3 73.3,105.5 74.3,102.0 75.4,107.2 76.4,106.1 77.5,104.7 78.5,105.6 79.6,106.5 80.6,103.7 81.7,105.0 82.7,101.3 83.8,105.1 84.8,99.7 85.9,110.1 86.9,103.5 88.0,107.5 89.0,108.6 90.1,100.8 91.1,99.8 92.2,104.2 93.2,105.6 94.3,105.7 95.3,102.4 96.4,104.4 97.4,102.8 98.5,102.7 99.5,108.4 100.6,104.1 101.6,106.4 102.7,102.2 103.7,108.1 104.8,109.2 105.8,106.6 106.9,103.8 107.9,111.7 109.0,107.8 110.0,105.1 111.0,104.4 112.1,99.0 113.1,107.2 114.2,110.4 115.2,101.9 116.3,102.6 117.3,112.9 118.4,110.4 119.4,110.4 120.5,107.1 121.5,111.2 122.6,100.5 123.6,109.8 124.7,108.8 125.7,103.0 126.8,103.0 127.8,106.7 128.9,103.2 129.9,110.2 131.0,106.4 132.0,108.1 133.1,109.2 134.1,107.4 135.2,103.6 136.2,104.5 137.3,106.2 138.3,108.0 139.4,100.7 140.4,108.4 141.5,107.0 142.5,106.2 143.6,102.8 144.6,107.4 145.7,99.5 146.7,104.3 147.8,109.1 148.8,111.5 149.9,104.1 150.9,106.8 152.0,105.4 153.0,104.3 154.1,100.1 155.1,106.7 156.2,105.5 157.2,103.7 158.3,99.5 159.3,113.3 160.4,104.8 161.4,103.3 162.5,108.4 163.5,106.3 164.6,95.2 165.6,104.5 166.7,107.1 167.7,102.3 168.8,100.1 169.8,100.5 170.9,101.4 171.9,104.3 173.0,111.6 174.0,100.3 175.0,103.1 176.1,108.4 177.1,107.2 178.2,106.7 179.2,104.5 180.3,100.9 181.3,101.9 182.4,106.9 183.4,93.5 184.5,101.7 185.5,110.0 186.6,107.4 187.6,110.2 188.7,109.1 189.7,107.9 190.8,101.2 191.8,107.1 192.9,109.5 193.9,108.5 195.0,105.3 196.0,97.5 197.1,105.6 198.1,104.3 199.2,107.7 200.2,110.0 201.3,107.1 202.3,99.5 203.4,104.3 204.4,108.2 205.5,101.1 206.5,107.6 207.6,102.6 208.6,104.6 209.7,107.5 210.7,106.8 211.8,106.3 212.8,104.3 213.9,99.4 214.9,111.5 216.0,103.7 217.0,103.1 218.1,100.2 219.1,106.8 220.2,101.3 221.2,107.3 222.3,105.2 223.3,105.7 224.4,106.3 225.4,103.9 226.5,102.1 227.5,105.8 228.6,109.7 229.6,104.9 230.7,99.0 231.7,104.5 232.8,97.6 233.8,109.2 234.9,107.2 235.9,105.4 237.0,111.0 238.0,101.8 239.0,104.4 240.1,106.4 241.1,99.4 242.2,112.6 243.2,101.9 244.3,103.0 245.3,108.9 246.4,107.4 247.4,108.7 248.5,110.9 249.5,108.3 250.6,105.5 251.6,104.0 252.7,107.1 253.7,108.7 254.8,100.4 255.8,100.2 256.9,108.3 257.9,100.3 259.0,104.3 260.0,101.7 261.1,101.8 262.1,100.3 263.2,106.3 264.2,96.8 265.3,103.6 266.3,102.8 267.4,107.3 268.4,108.5 269.5,105.2 270.5,106.0 271.6,109.6 272.6,108.3 273.7,104.5 274.7,100.8 275.8,102.5 276.8,109.8 277.9,104.9 278.9,107.1 280.0,108.2 281.0,109.3 282.1,103.2 283.1,100.5 284.2,110.5 285.2,103.1 286.3,109.7 287.3,105.0 288.4,103.2 289.4,105.2 290.5,108.3 291.5,104.4 292.6,103.6 293.6,105.0 294.7,107.7 295.7,108.3 296.8,104.2 297.8,106.6 298.9,108.6 299.9,103.1 301.0,106.7 302.0,109.5 303.0,106.9 304.1,106.8 305.1,104.9 306.2,105.6 307.2,112.6 308.3,107.0 309.3,102.4 310.4,107.4 311.4,110.1 312.5,103.3 313.5,107.0 314.6,100.2 315.6,108.0 316.7,105.8 317.7,103.6 318.8,107.7 319.8,109.2 320.9,101.9 321.9,101.5 323.0,106.0 324.0,108.1 325.1,106.1 326.1,103.2 327.2,109.5 328.2,108.4 329.3,107.0 330.3,110.3 331.4,107.7 332.4,106.9 333.5,104.3 334.5,100.3 335.6,103.9 336.6,100.3 337.7,108.3 338.7,104.8 339.8,105.4 340.8,103.0 341.9,108.4 342.9,104.4 344.0,108.6 345.0,108.6 346.1,106.8 347.1,93.9 348.2,101.2 349.2,108.4 350.3,107.2 351.3,95.9 352.4,109.3 353.4,98.1 354.5,109.4 355.5,106.5 356.6,107.4 357.6,109.4 358.7,107.6 359.7,106.5 360.8,108.2 361.8,109.1 362.9,107.5 363.9,102.7 365.0,104.1 366.0,105.6 367.0,104.0 368.1,106.5 369.1,107.8 370.2,110.9 371.2,104.7 372.3,104.8 373.3,106.3 374.4,105.7 375.4,99.5 376.5,109.1 377.5,109.0 378.6,108.1 379.6,106.2 380.7,105.7 381.7,105.9 382.8,109.6 383.8,106.3 384.9,104.6 385.9,109.3 387.0,106.6 388.0,105.2 389.1,106.4 390.1,100.2 391.2,105.4 392.2,102.9 393.3,93.1 394.3,105.6 395.4,112.0 396.4,104.6 397.5,109.5 398.5,104.3 399.6,111.1 400.6,109.5 401.7,106.0 402.7,105.7 403.8,105.7 404.8,107.5 405.9,104.4 406.9,104.6 408.0,107.7 409.0,106.1 410.1,100.6 411.1,101.7 412.2,109.2 413.2,103.8 414.3,101.8 415.3,103.9 416.4,103.1 417.4,104.7 418.5,104.2 419.5,106.6 420.6,108.7 421.6,105.7 422.7,107.0 423.7,104.5 424.8,106.9 425.8,108.2 426.9,104.5 427.9,101.0 429.0,98.8 430.0,106.1 431.0,105.3 432.1,107.2 433.1,105.7 434.2,105.3 435.2,107.1 436.3,108.9 437.3,107.9 438.4,104.4 439.4,107.7 440.5,103.9 441.5,105.9 442.6,110.0 443.6,108.4 444.7,101.2 445.7,106.0 446.8,104.8 447.8,105.3 448.9,101.0 449.9,110.2 451.0,106.6 452.0,103.6 453.1,107.6 454.1,106.5 455.2,103.7 456.2,106.8 457.3,108.2 458.3,105.7 459.4,105.2 460.4,105.8 461.5,111.0 462.5,111.5 463.6,106.1 464.6,106.6 465.7,108.5 466.7,105.4 467.8,109.6 468.8,107.5 469.9,101.5 470.9,101.8 472.0,103.9 473.0,100.7 474.1,107.9 475.1,103.4 476.2,100.9 477.2,108.8 478.3,105.4 479.3,102.1 480.4,110.7 481.4,105.8 482.5,107.0 483.5,98.3 484.6,101.6 485.6,109.8 486.7,101.5 487.7,103.9 488.8,100.3 489.8,108.1 490.9,107.9 491.9,108.6 493.0,109.3 494.0,102.1 495.0,102.8 496.1,107.1 497.1,105.5 498.2,107.5 499.2,103.4 500.3,93.6 501.3,112.7 502.4,99.1 503.4,103.1 504.5,107.2 505.5,102.9 506.6,107.6 507.6,106.6 508.7,107.0 509.7,107.2 510.8,106.2 511.8,103.3 512.9,104.9 513.9,105.0 515.0,105.2 516.0,101.4 517.1,105.4 518.1,113.0 519.2,103.1 520.2,107.5 521.3,105.3 522.3,108.7 523.4,104.1 524.4,108.5 525.5,101.6 526.5,105.8 527.6,101.3 528.6,106.2 529.7,106.5 530.7,108.2 531.8,107.3 532.8,102.3 533.9,107.4 534.9,107.1 536.0,105.5 537.0,108.7 538.1,104.2 539.1,110.6 540.2,107.0 541.2,108.3 542.3,109.1 543.3,104.8 544.4,108.0 545.4,102.1 546.5,102.9 547.5,103.8 548.6,106.7 549.6,102.5 550.7,105.7 551.7,104.9 552.8,105.4 553.8,107.7 554.9,105.8 555.9,107.2 557.0,107.1 558.0,105.5 559.0,102.8 560.1,110.8 561.1,107.4 562.2,107.5 563.2,103.0 564.3,102.4 565.3,102.4 566.4,109.9 567.4,100.2 568.5,107.2 569.5,107.4 570.6,103.7 571.6,104.3 572.7,106.3 573.7,103.8 574.8,110.4 575.8,108.4 576.9,103.0 577.9,102.4 579.0,104.7 580.0,105.1 581.1,107.6 582.1,106.2 583.2,103.5 584.2,107.5 585.3,105.4 586.3,102.7 587.4,103.9 588.4,107.8 589.5,107.9 590.5,108.8 591.6,105.6 592.6,104.4 593.7,102.6 594.7,106.9 595.8,107.1 596.8,105.3 597.9,106.1 598.9,104.7 600.0,104.6 601.0,103.3 602.1,113.2 603.1,104.3 604.2,99.2 605.2,105.3 606.3,104.0 607.3,103.3 608.4,103.5 609.4,99.5 610.5,107.0 611.5,105.4 612.6,106.9 613.6,99.7 614.7,104.5 615.7,103.3 616.8,98.8 617.8,105.5 618.9,104.1 619.9,101.7 621.0,104.7 622.0,110.4 623.0,104.9 624.1,106.0 625.1,108.9 626.2,106.3 627.2,103.0 628.3,108.5 629.3,96.2 630.4,105.6 631.4,107.9 632.5,106.8 633.5,109.2 634.6,106.6 635.6,104.4 636.7,108.7 637.7,102.6 638.8,102.4 639.8,107.7 640.9,102.6 641.9,111.8 643.0,109.5 644.0,96.1 645.1,106.0 646.1,105.4 647.2,105.3 648.2,105.8 649.3,107.7 650.3,105.6 651.4,107.1 652.4,102.3 653.5,105.8 654.5,103.7 655.6,103.7 656.6,107.9 657.7,107.3 658.7,106.8 659.8,109.3 660.8,105.7 661.9,105.4 662.9,109.9 664.0,108.1 665.0,105.2 666.1,109.7 667.1,106.4 668.2,110.3 669.2,105.7 670.3,108.9 671.3,104.3 672.4,107.9 673.4,110.5 674.5,109.5 675.5,104.7 676.6,110.5 677.6,101.6 678.7,106.0 679.7,106.2 680.8,108.8 681.8,103.8 682.9,104.1 683.9,102.4 685.0,106.3 686.0,104.7 687.0,112.2 688.1,109.8 689.1,104.4 690.2,106.5 691.2,109.1 692.3,106.0 693.3,106.5 694.4,109.2 695.4,110.4 696.5,111.8 697.5,109.9 698.6,111.2 699.6,101.0 700.7,102.0 701.7,101.8 702.8,103.0 703.8,106.5 704.9,107.6 705.9,100.9 707.0,102.8 708.0,104.9 709.1,112.8 710.1,103.4 711.2,100.0 712.2,103.7 713.3,101.5 714.3,110.6 715.4,103.6 716.4,103.9 717.5,100.3 718.5,100.5 719.6,98.5 720.6,102.6 721.7,105.9 722.7,105.2 723.8,104.8 724.8,109.1 725.9,105.3 726.9,111.4 728.0,108.0 729.0,99.3 730.1,106.8 731.1,104.1 732.2,104.3 733.2,106.8 734.3,102.5 735.3,107.8 736.4,104.2 737.4,106.7 738.5,104.9 739.5,101.2 740.6,110.1 741.6,101.4 742.7,105.0 743.7,105.5 744.8,104.6 745.8,107.4 746.9,109.2 747.9,109.9 749.0,103.4 750.0,101.4' fill='none' stroke='#7aa2ff' stroke-width='1.5'/><line x1='46' x2='750' y1='26.4' y2='26.4' stroke='#ff6b6b' stroke-width='2'/><line x1='46' x2='750' y1='88.2' y2='88.2' stroke='#3ccf8e' stroke-width='2'/><line x1='398.5' x2='398.5' y1='10' y2='190' stroke='#97a3b6' stroke-dasharray='4 3'/><text x='402.5' y='22'>recommended from the weeks before this line</text><text x='46' y='208'>4 weeks</text></svg></div><div class='cols'><div><h2>Manifest</h2><pre>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: svc-11
+  labels:
+    app: svc-11
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: svc-11
+  template:
+    metadata:
+      labels:
+        app: svc-11
+    spec:
+      containers:
+      - name: svc-11
+        image: registry.example.com/team/svc-11:1.8.15
+        ports:
+        - containerPort: 8080
+        securityContext:
+          privileged: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+        resources:
+          requests:
+            cpu: 250m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 1024Mi
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+</pre></div><div><h2>After the automatic fixes (checked again: 1 fixed, 0 introduced)</h2><pre>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: svc-11
+  labels:
+    app: svc-11
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: svc-11
+  template:
+    metadata:
+      labels:
+        app: svc-11
+    spec:
+      containers:
+      - name: svc-11
+        image: registry.example.com/team/svc-11:1.8.15
+        ports:
+        - containerPort: 8080
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          runAsNonRoot: true
+          runAsUser: 10001
+        resources:
+          requests:
+            cpu: 250m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 1024Mi
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+</pre></div></div></main></html>
