@@ -1370,6 +1370,58 @@ return [
             'The slot-offering results come from simulated businesses; the concurrency race figures come from one machine.',
         ],
     ],
+    'wordpress-site-manager' => [
+        'title' => 'WordPress Site Manager: Safe Updates',
+        'area' => 'web',
+        'featured' => false,
+        'tagline' => 'Plugin updates that check key pages before and after and roll back an update that breaks them, plus a dashboard for other sites.',
+        'problem' => 'Plugin updates are the most common way a working WordPress site breaks, and most breakage is quiet: a form that no longer renders, a shortcode printed as text, a missing stylesheet, a fatal error served as 200 OK. WordPress\'s own check after an auto-update only looks for fatal errors.',
+        'built' => [
+            'Structural page snapshots (status, error markers, landmarks, forms, stylesheets, unrendered shortcodes, PHP warnings, visible text with nonces and counters masked) and a comparison that says page by page why an update looks broken.',
+            'Safe updates through WordPress\'s own upgrader: back up the plugin folder via WP_Filesystem, update, re-check, restore on a regression and confirm the pages recovered; daily safe auto-updates.',
+            'A hub dashboard that reads other sites\' versions, waiting updates and results over REST with WordPress application passwords, stored encrypted with AES-256-GCM.',
+        ],
+        'results' => [
+            [
+                '100% vs 34%',
+                'breaking updates caught on held-out sites (WordPress\'s error check: 34%), with no harmless update rolled back',
+            ],
+            [
+                '59% vs 0%',
+                'of breakage kinds written after freezing caught; the three missed kinds are documented',
+            ],
+            [
+                '3 of 3',
+                'breaking fixture updates rolled back on real WordPress, including a fatal error served as 200 OK',
+            ],
+        ],
+        'stack' => ['PHP 8.1', 'WordPress', 'REST API', 'WP_Filesystem', 'Application passwords', 'PHPUnit', 'Docker'],
+        'image' => 'site-manager.webp',
+        'image_alt' => 'Site Manager\'s Updates screen: two updates waiting and five earlier updates, three rolled back with the reason on each page',
+        'repo' => GH . 'wordpress-site-manager',
+        'run' => [
+            'docker compose up -d && bash tests/integration/run.sh',
+            'php eval/run.php --gate               # writes eval/reports/report.html',
+        ],
+        'local_url' => '',
+        'hop' => ['host' => 'updates.harbor', 'role' => 'Updating plugins without breaking the site', 'value' => '0', 'label' => 'harmless updates rolled back'],
+        'flow' => [
+            'Snapshot key pages',
+            'Back up the plugin',
+            'Update',
+            'Snapshot again',
+            'Compare structure',
+            'Keep or roll back',
+        ],
+        'lessons' => [
+            'The first version scored 100% on breakage I had written alongside the rules, so eight new kinds were written after freezing: 59% caught, and the misses are documented rather than tuned away.',
+            'On real WordPress a fatal error thrown while a shortcode rendered came back as 200 OK: the headers had already been sent, so a status check would have kept the broken update.',
+        ],
+        'limits' => [
+            'Misses an emptied menu, prices dropping to zero and duplicated content; only five pages are checked.',
+            'Plugins only, and files are rolled back but database migrations are not.',
+        ],
+    ],
     'enterprise-aws-cloud-platform' => [
         'title' => 'Enterprise AWS Cloud Platform',
         'area' => 'platform',

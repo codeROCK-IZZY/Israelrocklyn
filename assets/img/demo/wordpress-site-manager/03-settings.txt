@@ -1,0 +1,1 @@
+Settings: the pages to check, safe auto-updates, and a loopback address for hosts that cannot reach themselves.
