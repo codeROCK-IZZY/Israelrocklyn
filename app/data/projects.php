@@ -1642,6 +1642,56 @@ return [
             'Per company, 9 of 15 held-out companies were still below four-fifths (chance alone: about 1); the audit needs history.',
         ],
     ],
+    'inventory-warehouse-management' => [
+        'title' => 'Inventory and Warehouse Management System',
+        'area' => 'platform',
+        'featured' => false,
+        'tagline' => 'Reorder points from each item\'s own forecast errors, and pick routes that walk less.',
+        'problem' => 'Stockrooms often reorder with a min/max set from average demand, which gives every item the same weeks of cover: lumpy spare parts and fast movers alike, erratic suppliers and punctual ones. The result is overstock and stock-outs at the same time. In the warehouse, stock is put away wherever there was space and pickers walk every aisle with a pick end to end.',
+        'built' => [
+            'Per-SKU forecasting by demand class (exponential smoothing for steady items, Syntetos-Boylan for intermittent ones) and reorder points from the forecast\'s own errors and the supplier\'s learned lead-time spread, with cover by ABC class.',
+            'An evaluation that compares policies at equal stock value (min/max scaled on the bank itself) and reports how much more stock min/max needs for the same fill rate.',
+            'Velocity slotting and pick routes by nearest neighbour plus 2-opt on true walking distances; and supplier shipping notices read with Claude, every line checked against the open purchase orders.',
+        ],
+        'results' => [
+            [
+                '98.5% vs 92.4%',
+                'fill rate at the same stock value, forecast reorder points vs min/max, 1,200 held-out SKUs',
+            ],
+            [
+                '1.86x',
+                'the stock min/max needs to serve as much (1.92x with erratic suppliers and a disruption)',
+            ],
+            ['29% less', 'walking per order with velocity slotting and routed picks'],
+        ],
+        'stack' => ['Python', 'FastAPI', 'NumPy', 'Claude API', 'Docker'],
+        'image' => 'inventory-warehouse-management.webp',
+        'image_alt' => 'Reorder: every SKU with its demand pattern, stock position, reorder point and days of cover',
+        'repo' => GH . 'inventory-warehouse-management',
+        'run' => [
+            'pip install -e ".[dev]" && pytest',
+            'stockroom evaluate --gate                  # writes eval/reports/report.html',
+        ],
+        'local_url' => '',
+        'hop' => ['host' => 'stock.room', 'role' => 'Keeping the right stock without tying up cash', 'value' => '1.86x', 'label' => 'stock min/max needs'],
+        'flow' => [
+            'Demand history',
+            'Demand class + forecast',
+            'Reorder point',
+            'Purchase order',
+            'Shipping notice',
+            'Slot + pick route',
+        ],
+        'lessons' => [
+            'Comparing a variable policy with a fixed rule only means something at equal stock; the min/max scale is chosen on the measured bank itself, which favours min/max.',
+            'A mostly empty warehouse layout suggested slotting must match the routing rule; sized realistically, that effect vanished, so it is not claimed.',
+            'The forecast policy places 55% more purchase orders; that cost is reported rather than hidden.',
+        ],
+        'limits' => [
+            'Synthetic catalogues, lost sales, one location, no ordering cost.',
+            'One warehouse block and single-order picking; Claude\'s notice reading is not measured.',
+        ],
+    ],
     'enterprise-aws-cloud-platform' => [
         'title' => 'Enterprise AWS Cloud Platform',
         'area' => 'platform',

@@ -1,0 +1,1 @@
+Receiving: a supplier's notice read into lines, each checked against the open purchase orders.

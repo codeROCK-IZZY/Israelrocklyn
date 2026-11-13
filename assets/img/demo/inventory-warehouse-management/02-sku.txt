@@ -1,0 +1,1 @@
+One SKU: stock on hand against its reorder point, stock-out days and the last three weeks.
