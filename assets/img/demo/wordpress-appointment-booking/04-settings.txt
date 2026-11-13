@@ -1,0 +1,1 @@
+Settings: timezone, how times are offered, services with buffers, and staff hours in plain text.

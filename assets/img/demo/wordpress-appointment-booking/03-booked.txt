@@ -1,0 +1,1 @@
+Booked: a confirmation with an Add to calendar link and a signed link to change or cancel.

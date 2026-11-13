@@ -1324,6 +1324,52 @@ return [
             'Simulated estates; a restore test finds every problem, and runbook conversion has no accuracy evaluation yet.',
         ],
     ],
+    'wordpress-appointment-booking' => [
+        'title' => 'WordPress Appointment Booking',
+        'area' => 'web',
+        'featured' => false,
+        'tagline' => 'A booking plugin that cannot double-book, keeps opening hours right when the clocks change, and offers times that fill the day.',
+        'problem' => 'Booking systems let small businesses down quietly: two customers pressing Book at once both get the same time, opening hours drift an hour out after a daylight-saving change, and every-15-minutes slot pickers strand gaps too short to sell while customers are turned away.',
+        'built' => [
+            'Atomic slot claims: each booking claims its five-minute units in one multi-row INSERT against a (staff, unit) primary key, so of two overlapping bookings arriving together exactly one succeeds. Tested over HTTP with real WordPress and MariaDB.',
+            'Opening hours stored as wall-clock times and resolved per date in the business timezone, with a warning when a site uses a fixed UTC offset; the widget shows the visitor\'s own time beside each slot.',
+            'Gap-aware start times tuned on simulated businesses, a booking block and shortcode with no build step, emails with calendar files and signed cancel links, reminders, an admin day agenda, and privacy export and erasure.',
+        ],
+        'results' => [
+            ['0 vs 3', 'double bookings in 10 rounds of 30 simultaneous requests (check-then-insert: 3)'],
+            [
+                '0 of 4,380',
+                'days with wrong opening times across DST in 12 timezones (offset worked out once: 1,645)',
+            ],
+            ['+1.6 pts', 'customers booked with gap-aware times on held-out businesses, +3.8% revenue'],
+        ],
+        'stack' => ['PHP 8.1', 'WordPress', 'REST API', 'Gutenberg block', 'MariaDB', 'PHPUnit', 'Docker'],
+        'image' => 'appointment-booking.webp',
+        'image_alt' => 'The booking widget: days with free times, each time in the business\'s timezone with the visitor\'s own time beneath, and the booking form',
+        'repo' => GH . 'wordpress-appointment-booking',
+        'run' => [
+            'docker compose up -d && bash tests/integration/run.sh',
+            'php eval/run.php --gate               # writes eval/reports/report.html',
+        ],
+        'local_url' => '',
+        'hop' => ['host' => 'book.northside', 'role' => 'Taking bookings that never collide, whatever the clocks do', 'value' => '0', 'label' => 'double bookings under concurrent requests'],
+        'flow' => [
+            'Opening hours per date',
+            'Free intervals',
+            'Gap-aware start times',
+            'Validate and re-check',
+            'Atomic claim',
+            'Email with calendar file',
+        ],
+        'lessons' => [
+            'Gap-aware offering helps, but modestly (+1.6 points): most unbooked time comes from demand clustering on certain days, which slot placement cannot fix.',
+            'A screenshot exposed a real race in the widget: a slow response for a day the visitor had left could replace the times on screen; responses are now sequenced.',
+        ],
+        'limits' => [
+            'One person per booking: no rooms, group classes, payments, deposits or waitlist.',
+            'The slot-offering results come from simulated businesses; the concurrency race figures come from one machine.',
+        ],
+    ],
     'enterprise-aws-cloud-platform' => [
         'title' => 'Enterprise AWS Cloud Platform',
         'area' => 'platform',

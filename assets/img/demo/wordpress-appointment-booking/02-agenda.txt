@@ -1,0 +1,1 @@
+The admin day agenda: each person's opening hours, bookings and the buffers after them, and the day's list.

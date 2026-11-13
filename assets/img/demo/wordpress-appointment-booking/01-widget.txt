@@ -1,0 +1,1 @@
+The booking widget for a visitor in New York booking a London practice: each time also shows the visitor's own time.
