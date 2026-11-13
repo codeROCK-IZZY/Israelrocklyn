@@ -1,0 +1,1 @@
+A property page: photo, key facts as tiles, the description and a call to book a viewing.
