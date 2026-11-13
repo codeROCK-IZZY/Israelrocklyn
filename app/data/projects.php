@@ -1422,6 +1422,52 @@ return [
             'Plugins only, and files are rolled back but database migrations are not.',
         ],
     ],
+    'wordpress-church-suite' => [
+        'title' => 'Congregation: Church Management for WordPress',
+        'area' => 'web',
+        'featured' => false,
+        'tagline' => 'Volunteer rotas that fill every place without double-booking or overloading anyone, plus giving statements and a sermon podcast.',
+        'problem' => 'Church rotas live in one spreadsheet per team. Nobody can see that the same person is on sound and welcome at 11:00, or that someone who offered one Sunday a month is down for three; the reliable few burn out while a quarter of willing volunteers are never asked.',
+        'built' => [
+            'A rota scheduler that keeps every hard rule (trained roles, dates away, one role per service, monthly limits), fills the scarcest places first, shares load by what people offered, avoids back-to-back Sundays and keeps households together, with a repair pass that never moves places people already confirmed.',
+            'Can-you-serve emails with signed accept and decline links that need no login; a decline immediately asks the best other person, or tells the office when nobody can.',
+            'People and households, giving records in whole cents with printable year-end statements (refunds shown, not counted), sermons with speakers and series and a podcast feed with iTunes tags, and privacy tools that keep anonymous financial records.',
+        ],
+        'results' => [
+            [
+                '0 vs 3,478',
+                'double bookings and over-limit asks per quarter on 40 held-out churches (team spreadsheets)',
+            ],
+            ['0.1% vs 26.2%', 'of volunteers never asked (a careful one-coordinator rota)'],
+            ['11% vs 34%', 'of Sundays served back-to-back, with 90.9% of places filled vs 88.5%'],
+        ],
+        'stack' => ['PHP 8.1', 'WordPress', 'Custom tables', 'RSS / iTunes', 'PHPUnit', 'Docker'],
+        'image' => 'church-suite.webp',
+        'image_alt' => 'The rota: four Sundays with two services, each place showing who is in it and whether they have answered',
+        'repo' => GH . 'wordpress-church-suite',
+        'run' => [
+            'docker compose up -d && bash tests/integration/run.sh',
+            'php eval/run.php --gate               # writes eval/reports/report.html',
+        ],
+        'local_url' => '',
+        'hop' => ['host' => 'rota.harbour', 'role' => 'Filling every place without wearing anyone out', 'value' => '0.1%', 'label' => 'volunteers never asked'],
+        'flow' => [
+            'People, roles and dates away',
+            'Scarcest places first',
+            'Fair-share scoring',
+            'Repair pass',
+            'Signed accept/decline links',
+            'Automatic replacement',
+        ],
+        'lessons' => [
+            'Writing a unit test after the held-out run showed preferences only penalised mismatches, so people who asked for 09:00 kept losing ties; it was fixed, every bank rerun, and the change recorded in the ADR.',
+            'The repair pass could have moved places people had already confirmed, which the WordPress layer would not have saved; repair now only rearranges places made in the same plan.',
+        ],
+        'limits' => [
+            'The rota is not proven optimal; at least 9% of places stay empty under every rule-keeping method in the simulation.',
+            'No online giving, events or check-in; statements are printable HTML.',
+        ],
+    ],
     'enterprise-aws-cloud-platform' => [
         'title' => 'Enterprise AWS Cloud Platform',
         'area' => 'platform',
