@@ -1599,6 +1599,49 @@ return [
             'The dispatch simulation assumes contractors are always available; Claude\'s reading is not measured.',
         ],
     ],
+    'applicant-tracking-system' => [
+        'title' => 'Recruitment and Applicant Tracking System',
+        'area' => 'platform',
+        'featured' => false,
+        'tagline' => 'An ATS that makes interviews pick better people and checks, per stage, that it treats groups fairly.',
+        'problem' => 'Hiring rests on interviews, and interviews are noisy: one person\'s overall impression, debriefs anchored by the first voice, interviewers who are simply harsher or kinder, and some who favour their own group or a well-known school. Different candidates meet different panels, so luck and bias decide close calls, and most systems never measure either.',
+        'built' => [
+            'Panels that score a rubric per competency independently, with each interviewer\'s leniency learned from past panels (alternating least squares, shrunk) and taken out.',
+            'An audit comparing each interviewer with co-panelists on the same candidates, own group versus others, flagging the clearest case first and removing it before looking again; flags change who sits on panels, never a candidate\'s score.',
+            'Schools hidden from the screen and interview packet, a four-fifths check per stage in both directions, and a blind résumé screen where code redacts identity and education and Claude must quote the résumé for every level.',
+        ],
+        'results' => [
+            [
+                '0.58 → 0.97',
+                'hire-rate ratio between groups on 15 held-out companies, plain rubric panels vs the fair process',
+            ],
+            [
+                '+0.23 SD',
+                'better hires with calibrated rubric scores than one interviewer\'s overall impression',
+            ],
+            ['37 of 53', 'biased interviewers found by the audit, 1 false flag among 157 others'],
+        ],
+        'stack' => ['Python', 'FastAPI', 'NumPy', 'Claude API', 'Docker'],
+        'image' => 'applicant-tracking-system.webp',
+        'image_alt' => 'A shortlist: each panel member\'s rubric score, their leniency adjustment, and the calibrated result',
+        'repo' => GH . 'applicant-tracking-system',
+        'run' => [
+            'pip install -e ".[dev]" && pytest',
+            'ats evaluate --gate                        # writes eval/reports/report.html',
+        ],
+        'local_url' => '',
+        'hop' => ['host' => 'hire.fairhire', 'role' => 'Hiring the best candidate, fairly', 'value' => '0.97', 'label' => 'group hire-rate ratio'],
+        'flow' => ['Blind screen', 'Rubric panels', 'Leniency calibration', 'Interviewer audit', 'Offers', 'Four-fifths check'],
+        'lessons' => [
+            'Calibration made hires better and the group ratio worse: with noise removed, a consistent bias decides more close calls. Fairness needed its own fix.',
+            'A unit test written after the held-out run showed the audit flagging unbiased colleagues of a biased interviewer; it now peels off the clearest case first. Both runs are in the ADR.',
+            'The four-fifths check was one-sided and marked a company passing where group A was hired at 0.6 of group B\'s rate; it now works both ways.',
+        ],
+        'limits' => [
+            'A simulation: bias sizes are assumptions, two groups only.',
+            'Per company, 9 of 15 held-out companies were still below four-fifths (chance alone: about 1); the audit needs history.',
+        ],
+    ],
     'enterprise-aws-cloud-platform' => [
         'title' => 'Enterprise AWS Cloud Platform',
         'area' => 'platform',
