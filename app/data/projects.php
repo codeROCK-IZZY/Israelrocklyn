@@ -1745,7 +1745,9 @@ return [
             'A Laravel API that is the system of record: tenants and roles, two-step sign-in, an append-only audit log, consents, export and deletion, with tenant isolation enforced by an application scope and by PostgreSQL row-level security.',
             'The Candidate Knowledge Vault: résumé facts (roles, education, certifications, skills, contact) stored with the exact span of text they came from, usable only once confirmed; edits supersede rather than overwrite.',
             'A FastAPI service that parses PDF, DOCX and text résumés, with Claude filling a strict schema whose every field must quote the résumé (checked by code) and a rules parser as the fallback; Laravel re-checks every evidence span it is given.',
-            'A Next.js web app served as a static export by Laravel, and a public demo where every visitor gets a private synthetic workspace, removed after a day.',
+            'Live jobs from companies\' Greenhouse, Lever and Ashby boards, explainable matching with dealbreakers, and scam signals with their evidence.',
+            'Résumé and Writing Studios whose every claim is checked against confirmed facts, an Answer Bank that sends sensitive questions to the candidate, and application kits with an approval queue and receipts.',
+            'Interview prep with spoken mock interviews and coaching, a visible Live Copilot for interviews that allow AI help, coding practice, a career coach and analytics, all in one Next.js dashboard served by Laravel.',
         ],
         'results' => [
             [
@@ -1783,8 +1785,8 @@ return [
             'On shared hosting, SQLite locked under the web app\'s parallel requests until the cache and sessions moved to files and SQLite got a busy timeout and WAL.',
         ],
         'limits' => [
-            'Milestone 1 of 6: matching, the application engine and the interview tools are designed, not built yet.',
-            'Claude\'s extraction accuracy is not measured yet; the measured numbers are the rules parser\'s.',
+            'Only the résumé parser is measured against labelled data so far; matching and the other engines are tested but not yet evaluated.',
+            'Claude\'s extraction accuracy is not measured yet, and payments are not switched on.',
         ],
     ],
     'enterprise-aws-cloud-platform' => [
