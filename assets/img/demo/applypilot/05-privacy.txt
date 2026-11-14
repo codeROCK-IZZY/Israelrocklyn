@@ -1,0 +1,1 @@
+Account and privacy: two-step sign-in, consents, a full data export and deletion.

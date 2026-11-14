@@ -1735,6 +1735,58 @@ return [
             'Diagnosis at booking assumed correct; Claude\'s reading of requests is not measured.',
         ],
     ],
+    'applypilot' => [
+        'title' => 'ApplyPilot AI',
+        'area' => 'ai',
+        'featured' => true,
+        'tagline' => 'A career operating system that only ever says what the candidate has confirmed.',
+        'problem' => 'Job-search tools that write résumés and fill applications with AI tend to state things nobody checked: a skill read from a job title, a metric inflated in a rewrite, a parsing mistake that ends up in front of an employer. ApplyPilot starts from a verified record of the candidate and treats everything the AI reads or writes as a suggestion until the candidate confirms it.',
+        'built' => [
+            'A Laravel API that is the system of record: tenants and roles, two-step sign-in, an append-only audit log, consents, export and deletion, with tenant isolation enforced by an application scope and by PostgreSQL row-level security.',
+            'The Candidate Knowledge Vault: résumé facts (roles, education, certifications, skills, contact) stored with the exact span of text they came from, usable only once confirmed; edits supersede rather than overwrite.',
+            'A FastAPI service that parses PDF, DOCX and text résumés, with Claude filling a strict schema whose every field must quote the résumé (checked by code) and a rules parser as the fallback; Laravel re-checks every evidence span it is given.',
+            'A Next.js web app served as a static export by Laravel, and a public demo where every visitor gets a private synthetic workspace, removed after a day.',
+        ],
+        'results' => [
+            [
+                '2 layers',
+                'of tenant isolation: an application scope, and row-level security tested with raw SQL as a role that cannot bypass it',
+            ],
+            [
+                '0',
+                'facts usable before the candidate confirms them; every one shows the résumé text it came from',
+            ],
+            [
+                'F1 0.77',
+                'rules parser on résumé layouts written after it was frozen: the 0.90 target was missed and is reported',
+            ],
+        ],
+        'stack' => ['Laravel', 'PHP', 'Python', 'FastAPI', 'Next.js', 'TypeScript', 'PostgreSQL', 'Claude API'],
+        'image' => 'applypilot.webp',
+        'image_alt' => 'The Knowledge Vault: a suggested role shown next to the highlighted résumé text it came from',
+        'repo' => '',
+        'live_url' => 'https://applypilot.israelrocklyn.info',
+        'run' => [],
+        'local_url' => '',
+        'hop' => ['host' => 'applypilot.israelrocklyn.info', 'role' => 'Verified candidate facts with evidence', 'value' => '2 layers', 'label' => 'tenant isolation'],
+        'flow' => [
+            'Résumé upload',
+            'Text and sections',
+            'Claude or rules, quotes checked',
+            'Suggestions with evidence',
+            'Candidate confirms',
+            'Knowledge Vault',
+        ],
+        'lessons' => [
+            'The rules parser scored 1.00 on layouts it was built for, 0.82 and then 0.77 on two sets of layouts written after it was frozen. The miss is reported, not tuned away: every fact stays a suggestion shown with its source, and Claude becomes the primary extractor.',
+            'Tests that switch between users in one process hit cached sessions and guards that a real request never would: two apparent tenant leaks were test artefacts, and the database-level row-level-security test is what proves isolation.',
+            'On shared hosting, SQLite locked under the web app\'s parallel requests until the cache and sessions moved to files and SQLite got a busy timeout and WAL.',
+        ],
+        'limits' => [
+            'Milestone 1 of 6: matching, the application engine and the interview tools are designed, not built yet.',
+            'Claude\'s extraction accuracy is not measured yet; the measured numbers are the rules parser\'s.',
+        ],
+    ],
     'enterprise-aws-cloud-platform' => [
         'title' => 'Enterprise AWS Cloud Platform',
         'area' => 'platform',

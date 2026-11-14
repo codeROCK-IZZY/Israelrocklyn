@@ -1,0 +1,1 @@
+A demo workspace: profile completeness as a checklist, and the Vault's suggestions waiting for review.

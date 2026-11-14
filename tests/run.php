@@ -122,7 +122,12 @@ check('every note belongs to a real project', array_diff(array_column(notes(), '
 check('the trace covers every project once', count(array_unique(trace_order())) === count(projects()) && array_diff(trace_order(), array_keys(projects())) === []);
 $shots = array_merge(...array_map('demo_shots', array_keys(projects())));
 check('every demo screenshot has a caption', count($shots) > 20 && array_filter($shots, static fn ($x) => $x['caption'] === '') === []);
-check('every project has run-it-yourself commands', array_filter(projects(), static fn ($x) => count($x['run']) < 2) === []);
+check('every public project has run-it-yourself commands', array_filter(projects(), static fn ($x) => $x['repo'] !== '' && count($x['run']) < 2) === []);
+foreach (array_filter(projects(), static fn ($x) => $x['repo'] === '') as $slug => $x) {
+    $page = render('work.php', ['slug' => $slug]);
+    check("private product {$slug} links to its live site", str_starts_with((string) ($x['live_url'] ?? ''), 'https://') && str_contains($page, 'Open the live product'));
+    check("private product {$slug} shows no code link or clone command", !str_contains($page, 'View the code') && !str_contains($page, 'git clone'));
+}
 check('the portrait exists', is_file(dirname(__DIR__) . '/assets/img/portrait.webp'));
 check('an unknown project is a 404', str_contains(render('work.php', ['slug' => 'nope']), 'No route to'));
 check('a malicious slug is a 404', str_contains(render('work.php', ['slug' => '../app/bootstrap']), 'No route to'));

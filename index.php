@@ -141,7 +141,7 @@ view('head', [
 <?php endforeach; ?>
       </ul>
       <p class="tags mono"><?= e(implode(' · ', $x['stack'])) ?></p>
-      <p class="links"><a href="/work/<?= e($slug) ?>">Case study →</a><?php if (demo_shots($slug)): ?> <a href="/work/<?= e($slug) ?>#demo">Demo tour</a><?php endif; ?> <a href="<?= e($x['repo']) ?>" rel="noopener">Code</a></p>
+      <p class="links"><a href="/work/<?= e($slug) ?>">Case study →</a><?php if (demo_shots($slug)): ?> <a href="/work/<?= e($slug) ?>#demo">Demo tour</a><?php endif; ?><?php if (($x['live_url'] ?? '') !== ''): ?> <a href="<?= e($x['live_url']) ?>" rel="noopener">Live product</a><?php endif; ?><?php if ($x['repo'] !== ''): ?> <a href="<?= e($x['repo']) ?>" rel="noopener">Code</a><?php endif; ?></p>
     </div>
   </article>
 <?php endforeach; ?>

@@ -1,0 +1,1 @@
+A real parser mistake: 'patient-scheduling services' read as a scheduling skill. The candidate rejects it and nothing ever uses it.
